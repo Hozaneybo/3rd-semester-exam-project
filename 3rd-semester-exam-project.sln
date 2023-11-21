@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3rd-semester-exam-project", "3rd-semester-exam-project\3rd-semester-exam-project.csproj", "{7DB67645-486B-4A3C-A2B8-2C6F626D1A5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{7DB67645-486B-4A3C-A2B8-2C6F626D1A5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{16595D9D-5705-43DF-A99E-2842DA6D6780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{6ED4FA5A-E8BC-40A8-B5E9-93AC1E4A5F9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{7DB67645-486B-4A3C-A2B8-2C6F626D1A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DB67645-486B-4A3C-A2B8-2C6F626D1A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DB67645-486B-4A3C-A2B8-2C6F626D1A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16595D9D-5705-43DF-A99E-2842DA6D6780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16595D9D-5705-43DF-A99E-2842DA6D6780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16595D9D-5705-43DF-A99E-2842DA6D6780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16595D9D-5705-43DF-A99E-2842DA6D6780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED4FA5A-E8BC-40A8-B5E9-93AC1E4A5F9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED4FA5A-E8BC-40A8-B5E9-93AC1E4A5F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED4FA5A-E8BC-40A8-B5E9-93AC1E4A5F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED4FA5A-E8BC-40A8-B5E9-93AC1E4A5F9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
