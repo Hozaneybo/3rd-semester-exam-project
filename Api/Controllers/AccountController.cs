@@ -1,9 +1,11 @@
 ﻿using _3rd_semester_exam_project.DTOs;
+using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
 namespace _3rd_semester_exam_project.Controllers;
 
+[ValidateModel]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
@@ -18,12 +20,24 @@ public class AccountController : ControllerBase
     public ResponseDto Login([FromBody] LoginDto dto)
     {
         var user = _service.Authenticate(dto.Email, dto.Password);
+        HttpContext.SetSessionData(SessionData.FromUser(user));
         return new ResponseDto
         {
             MessageToClient = "Successfully authenticated"
         };
     }
 
+    [HttpPost]
+    [Route("/api/account/logout")]
+    public ResponseDto Logout()
+    {
+        HttpContext.Session.Clear();
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully logged out"
+        };
+    }
+    
     [HttpPost]
     [Route("/api/account/register")]
     public ResponseDto Register([FromBody] RegisterDto dto)
@@ -45,5 +59,18 @@ public class AccountController : ControllerBase
                 MessageToClient = ex.Message
             };
         }
+    }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/account/whoami")]
+    public ResponseDto WhoAmI()
+    {
+        var data = HttpContext.GetSessionData();
+        var user = _service.Get(data);
+        return new ResponseDto
+        {
+            ResponseData = user
+        };
     }
 }

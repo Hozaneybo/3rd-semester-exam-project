@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Models;
 
-public enum UserRole
+public enum Role
 {
     Admin,
     Teacher,

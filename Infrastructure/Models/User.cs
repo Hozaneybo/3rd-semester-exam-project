@@ -8,5 +8,5 @@ public class User
     public required string Fullname { get; set; }
     public required string Email { get; set; }
     public string? AvatarUrl { get; set; }
-    public UserRole Role { get; set; }
+    public Role Role { get; set; }
 }

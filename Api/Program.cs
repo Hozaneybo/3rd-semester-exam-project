@@ -6,7 +6,13 @@ using Service;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDistributedMemoryCache();
 
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(4);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+});
 
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
@@ -30,6 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSecurityHeaders();
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.MapControllers();
