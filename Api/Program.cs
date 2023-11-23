@@ -1,6 +1,21 @@
-var builder = WebApplication.CreateBuilder(args);
+using _3rd_semester_exam_project.Middleware;
+using Infrastructure;
+using Infrastructure.Repositories;
+using Service;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDistributedMemoryCache();
+
+
+
+builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
+    dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<PasswordHashRepository>();
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<AccountService>();
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -14,5 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSecurityHeaders();
+
 app.UseHttpsRedirection();
+app.MapControllers();
+app.UseMiddleware<GlobalExceptionHandler>();
 app.Run();
