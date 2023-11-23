@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "Dapper/2.1.15": {
+      "Dapper/2.0.151": {
         "type": "package",
         "compile": {
           "lib/net5.0/Dapper.dll": {
@@ -11,6 +11,36 @@
         },
         "runtime": {
           "lib/net5.0/Dapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Konscious.Security.Cryptography.Argon2/1.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Konscious.Security.Cryptography.Blake2": "1.1.0",
+          "System.Memory": "4.5.4"
+        },
+        "compile": {
+          "lib/net6.0/Konscious.Security.Cryptography.Argon2.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Konscious.Security.Cryptography.Argon2.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Konscious.Security.Cryptography.Blake2/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Konscious.Security.Cryptography.Blake2.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Konscious.Security.Cryptography.Blake2.dll": {
             "related": ".xml"
           }
         }
@@ -45,15 +75,15 @@
           "buildMultiTargeting/Microsoft.Extensions.ApiDescription.Server.targets": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0-rc.2.23479.6": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
         "type": "package",
         "compile": {
-          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
@@ -61,23 +91,20 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/8.0.0-rc.2.23479.6": {
+      "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
         "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0-rc.2.23479.6"
-        },
         "compile": {
-          "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/net6.0/Microsoft.Extensions.Logging.Abstractions.targets": {}
+          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "Microsoft.OpenApi/1.4.3": {
@@ -93,10 +120,26 @@
           }
         }
       },
-      "Npgsql/8.0.0-rc.2": {
+      "NetEscapades.AspNetCore.SecurityHeaders/0.21.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.0/NetEscapades.AspNetCore.SecurityHeaders.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/NetEscapades.AspNetCore.SecurityHeaders.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "Npgsql/8.0.0-preview.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0-rc.2.23479.6"
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
         },
         "compile": {
           "lib/net8.0/Npgsql.dll": {
@@ -109,11 +152,11 @@
           }
         }
       },
-      "Npgsql.DependencyInjection/8.0.0-rc.2": {
+      "Npgsql.DependencyInjection/8.0.0-preview.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0-rc.2.23479.6",
-          "Npgsql": "8.0.0-rc.2"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Npgsql": "8.0.0-preview.4"
         },
         "compile": {
           "lib/net7.0/Npgsql.DependencyInjection.dll": {
@@ -189,12 +232,21 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "System.Memory/4.5.4": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.1/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/_._": {}
+        }
+      },
       "Infrastructure/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Dapper": "2.1.15",
-          "Npgsql": "8.0.0-rc.2"
+          "Dapper": "2.0.151",
+          "Npgsql": "8.0.0-preview.4"
         },
         "compile": {
           "bin/placeholder/Infrastructure.dll": {}
@@ -207,7 +259,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Infrastructure": "1.0.0"
+          "Infrastructure": "1.0.0",
+          "Konscious.Security.Cryptography.Argon2": "1.3.0"
         },
         "compile": {
           "bin/placeholder/Service.dll": {}
@@ -219,23 +272,56 @@
     }
   },
   "libraries": {
-    "Dapper/2.1.15": {
-      "sha512": "1aWSAosZymEM+mRwfrXteRIN74/JTUjqj9B/KqEbanH6vfUKy9D9cemRN0q1ZOEfSB7d1PpFTpVOCbf2Uv70Og==",
+    "Dapper/2.0.151": {
+      "sha512": "mMcZgx1lim0/i1Ozu+lgnBM4GwNIHpCuxV6BV2ovsEfZAXRAq4jb6RIhxGDcVjtmXMLPpdp85jHPdDjBMMwejw==",
       "type": "package",
-      "path": "dapper/2.1.15",
+      "path": "dapper/2.0.151",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Dapper.png",
-        "dapper.2.1.15.nupkg.sha512",
+        "dapper.2.0.151.nupkg.sha512",
         "dapper.nuspec",
         "lib/net461/Dapper.dll",
         "lib/net461/Dapper.xml",
         "lib/net5.0/Dapper.dll",
         "lib/net5.0/Dapper.xml",
         "lib/netstandard2.0/Dapper.dll",
-        "lib/netstandard2.0/Dapper.xml",
-        "readme.md"
+        "lib/netstandard2.0/Dapper.xml"
+      ]
+    },
+    "Konscious.Security.Cryptography.Argon2/1.3.0": {
+      "sha512": "/pNPlNmjx7r7CGvw0WqO8Rk5vHHyUuzAWhB/PRKLZ2cmhQXoM6TYUooJcuES9zE9D+6yTOl+4LmFV2nKtgDyFg==",
+      "type": "package",
+      "path": "konscious.security.cryptography.argon2/1.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "konscious.security.cryptography.argon2.1.3.0.nupkg.sha512",
+        "konscious.security.cryptography.argon2.nuspec",
+        "lib/net46/Konscious.Security.Cryptography.Argon2.dll",
+        "lib/net46/Konscious.Security.Cryptography.Argon2.xml",
+        "lib/net6.0/Konscious.Security.Cryptography.Argon2.dll",
+        "lib/net6.0/Konscious.Security.Cryptography.Argon2.xml",
+        "lib/netstandard1.3/Konscious.Security.Cryptography.Argon2.dll",
+        "lib/netstandard1.3/Konscious.Security.Cryptography.Argon2.xml"
+      ]
+    },
+    "Konscious.Security.Cryptography.Blake2/1.1.0": {
+      "sha512": "enWOzNAlBjFcKoiBNVVLsa1ZzOciExznu+sUURE8dx322GI1LzrBxzEuZqjeOoK9oo9RubLtg96/7Y4JtUk9zA==",
+      "type": "package",
+      "path": "konscious.security.cryptography.blake2/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "konscious.security.cryptography.blake2.1.1.0.nupkg.sha512",
+        "konscious.security.cryptography.blake2.nuspec",
+        "lib/net46/Konscious.Security.Cryptography.Blake2.dll",
+        "lib/net46/Konscious.Security.Cryptography.Blake2.xml",
+        "lib/net6.0/Konscious.Security.Cryptography.Blake2.dll",
+        "lib/net6.0/Konscious.Security.Cryptography.Blake2.xml",
+        "lib/netstandard1.3/Konscious.Security.Cryptography.Blake2.dll",
+        "lib/netstandard1.3/Konscious.Security.Cryptography.Blake2.xml"
       ]
     },
     "Microsoft.AspNetCore.OpenApi/8.0.0-preview.7.23375.9": {
@@ -484,16 +570,15 @@
         "tools/netcoreapp2.1/System.Diagnostics.DiagnosticSource.dll"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0-rc.2.23479.6": {
-      "sha512": "QLTBDvE/E05Xl2UVFXOBFIW0VLn/mMJ8DSbTyK6ODsO3sqDs0fyPqydACTnX/nbGZRrTMeud3XDbUrt24ab1EA==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/7.0.0": {
+      "sha512": "h3j/QfmFN4S0w4C2A6X7arXij/M/OVw3uQHSOFxnND4DyAzO1F9eMX7Eti7lU/OkSthEE0WzRsfT/Dmx86jzCw==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0-rc.2.23479.6",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/7.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
-        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
         "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
         "buildTransitive/net462/_._",
@@ -505,27 +590,24 @@
         "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.8.0.0-rc.2.23479.6.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/8.0.0-rc.2.23479.6": {
-      "sha512": "xuQcOpvz76nTYytCf9HrHGCbMq/PU/ZGSkhX/grDBfWHZ1gjz38hDjrYn4NMr5DnndNtou4yn6tR5q0hjCr9pw==",
+    "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
+      "sha512": "/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/8.0.0-rc.2.23479.6",
+      "path": "microsoft.extensions.logging.abstractions/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
-        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
         "analyzers/dotnet/roslyn3.11/cs/Microsoft.Extensions.Logging.Generators.dll",
         "analyzers/dotnet/roslyn3.11/cs/cs/Microsoft.Extensions.Logging.Generators.resources.dll",
@@ -555,36 +637,16 @@
         "analyzers/dotnet/roslyn4.0/cs/tr/Microsoft.Extensions.Logging.Generators.resources.dll",
         "analyzers/dotnet/roslyn4.0/cs/zh-Hans/Microsoft.Extensions.Logging.Generators.resources.dll",
         "analyzers/dotnet/roslyn4.0/cs/zh-Hant/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Logging.Generators.dll",
-        "analyzers/dotnet/roslyn4.4/cs/cs/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/de/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/es/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/fr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/it/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/ja/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/ko/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/pl/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/pt-BR/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/ru/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/tr/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/zh-Hans/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "analyzers/dotnet/roslyn4.4/cs/zh-Hant/Microsoft.Extensions.Logging.Generators.resources.dll",
-        "buildTransitive/net461/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/net462/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/net6.0/Microsoft.Extensions.Logging.Abstractions.targets",
+        "build/Microsoft.Extensions.Logging.Abstractions.targets",
         "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.targets",
-        "lib/net462/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net462/Microsoft.Extensions.Logging.Abstractions.xml",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/net461/Microsoft.Extensions.Logging.Abstractions.dll",
+        "lib/net461/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.8.0.0-rc.2.23479.6.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -603,10 +665,29 @@
         "microsoft.openapi.nuspec"
       ]
     },
-    "Npgsql/8.0.0-rc.2": {
-      "sha512": "iTIX8+YztrS0zjlmhmKQY1ExvIEhhko5dzKAKvuxtYaVd/ZDeOGD90RdwCiqwlnqcw8m3k3DJNOFpmAucY8A3w==",
+    "NetEscapades.AspNetCore.SecurityHeaders/0.21.0": {
+      "sha512": "Y0qnwxwZeTrni7G2yt8aDdM6RZ2dAjvvALgdLCNCd+lpBIGgi7qf/3I+0nj7MHwwCDg6fL1e2OAGAE4CtV2pKg==",
       "type": "package",
-      "path": "npgsql/8.0.0-rc.2",
+      "path": "netescapades.aspnetcore.securityheaders/0.21.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/NetEscapades.AspNetCore.SecurityHeaders.dll",
+        "lib/net461/NetEscapades.AspNetCore.SecurityHeaders.xml",
+        "lib/net472/NetEscapades.AspNetCore.SecurityHeaders.dll",
+        "lib/net472/NetEscapades.AspNetCore.SecurityHeaders.xml",
+        "lib/netcoreapp3.0/NetEscapades.AspNetCore.SecurityHeaders.dll",
+        "lib/netcoreapp3.0/NetEscapades.AspNetCore.SecurityHeaders.xml",
+        "lib/netstandard2.0/NetEscapades.AspNetCore.SecurityHeaders.dll",
+        "lib/netstandard2.0/NetEscapades.AspNetCore.SecurityHeaders.xml",
+        "netescapades.aspnetcore.securityheaders.0.21.0.nupkg.sha512",
+        "netescapades.aspnetcore.securityheaders.nuspec"
+      ]
+    },
+    "Npgsql/8.0.0-preview.4": {
+      "sha512": "wvbiipddbRgaiYOij4fQYqnfDlxKz1XlpCNY7mWErF+CPmg+ujfs9u1ovx40TsV0Q7GKlgdyr6dugV15HvZ2Pw==",
+      "type": "package",
+      "path": "npgsql/8.0.0-preview.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -621,15 +702,15 @@
         "lib/netstandard2.0/Npgsql.xml",
         "lib/netstandard2.1/Npgsql.dll",
         "lib/netstandard2.1/Npgsql.xml",
-        "npgsql.8.0.0-rc.2.nupkg.sha512",
+        "npgsql.8.0.0-preview.4.nupkg.sha512",
         "npgsql.nuspec",
         "postgresql.png"
       ]
     },
-    "Npgsql.DependencyInjection/8.0.0-rc.2": {
-      "sha512": "6qjGYP2Khq0gB2vF/jW0mPoDfi/E1i2h/JrcgDeXMFayN/fjKUgQuuJLVAMV6BiUw8gwXjsYG8G5qo0iVHVLbQ==",
+    "Npgsql.DependencyInjection/8.0.0-preview.4": {
+      "sha512": "NgBmuavcXuK5/raCfCWR4Q31of896MKsIXyAV1zMmckvzg+VosPBIZbqoD2q0S+m3qSKtLYt3qPXJ61WnWlBGA==",
       "type": "package",
-      "path": "npgsql.dependencyinjection/8.0.0-rc.2",
+      "path": "npgsql.dependencyinjection/8.0.0-preview.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -638,7 +719,7 @@
         "lib/net7.0/Npgsql.DependencyInjection.xml",
         "lib/netstandard2.0/Npgsql.DependencyInjection.dll",
         "lib/netstandard2.0/Npgsql.DependencyInjection.xml",
-        "npgsql.dependencyinjection.8.0.0-rc.2.nupkg.sha512",
+        "npgsql.dependencyinjection.8.0.0-preview.4.nupkg.sha512",
         "npgsql.dependencyinjection.nuspec",
         "postgresql.png"
       ]
@@ -724,6 +805,29 @@
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
     },
+    "System.Memory/4.5.4": {
+      "sha512": "1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
+      "type": "package",
+      "path": "system.memory/4.5.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Memory.dll",
+        "lib/net461/System.Memory.xml",
+        "lib/netcoreapp2.1/_._",
+        "lib/netstandard1.1/System.Memory.dll",
+        "lib/netstandard1.1/System.Memory.xml",
+        "lib/netstandard2.0/System.Memory.dll",
+        "lib/netstandard2.0/System.Memory.xml",
+        "ref/netcoreapp2.1/_._",
+        "system.memory.4.5.4.nupkg.sha512",
+        "system.memory.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "Infrastructure/1.0.0": {
       "type": "project",
       "path": "../Infrastructure/Infrastructure.csproj",
@@ -738,29 +842,30 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Microsoft.AspNetCore.OpenApi >= 8.0.0-preview.7.23375.9",
-      "Npgsql.DependencyInjection >= 8.0.0-rc.2",
+      "NetEscapades.AspNetCore.SecurityHeaders >= 0.21.0",
+      "Npgsql.DependencyInjection >= 8.0.0-preview.4",
       "Service >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ahmad\\.nuget\\packages\\": {},
+    "C:\\Users\\dilbe\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
-      "packagesPath": "C:\\Users\\ahmad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\obj\\",
+      "projectPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\dilbe\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ahmad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dilbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -775,8 +880,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj": {
-              "projectPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj"
+            "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj": {
+              "projectPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj"
             }
           }
         }
@@ -798,9 +903,13 @@
             "target": "Package",
             "version": "[8.0.0-preview.7.23375.9, )"
           },
+          "NetEscapades.AspNetCore.SecurityHeaders": {
+            "target": "Package",
+            "version": "[0.21.0, )"
+          },
           "Npgsql.DependencyInjection": {
             "target": "Package",
-            "version": "[8.0.0-rc.2, )"
+            "version": "[8.0.0-preview.4, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
