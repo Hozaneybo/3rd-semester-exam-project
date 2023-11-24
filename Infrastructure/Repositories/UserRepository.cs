@@ -55,19 +55,5 @@ WHERE id = @id;
         using var connection = _dataSource.OpenConnection();
         return connection.QueryFirstOrDefault<User>(sql, new { id });
     }
-
-    public IEnumerable<User> GetAll()
-    {
-        const string sql = $@"
-SELECT
-    id as {nameof(User.Id)},
-    full_name as {nameof(User.Fullname)},
-    email as {nameof(User.Email)},
-    avatar_url as {nameof(User.AvatarUrl)},
-    role as {nameof(User.Role)}
-FROM learning_platform.users
-";
-        using var connection = _dataSource.OpenConnection();
-        return connection.Query<User>(sql);
-    }
+  
 }

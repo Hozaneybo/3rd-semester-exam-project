@@ -2,6 +2,7 @@
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
+using Service.PasswordService;
 
 namespace Service;
 
