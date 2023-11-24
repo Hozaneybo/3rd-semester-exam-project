@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Service;
+namespace Service.PasswordService;
 
 public abstract class PasswordHashAlgorithm
 {

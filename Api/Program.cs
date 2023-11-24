@@ -2,6 +2,7 @@ using _3rd_semester_exam_project.Middleware;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Service;
+using Service.AdminService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDistributedMemoryCache();
@@ -18,7 +19,8 @@ builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<AdminRepository>();
+builder.Services.AddSingleton<AdminService>();
 builder.Services.AddSingleton<AccountService>();
 
 builder.Services.AddControllers();
