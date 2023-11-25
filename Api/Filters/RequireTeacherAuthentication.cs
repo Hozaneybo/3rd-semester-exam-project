@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace _3rd_semester_exam_project.Filters;
 
-public class TeacherRequireAuthentication : ActionFilterAttribute
+public class RequireTeacherAuthentication : ActionFilterAttribute
 {
     private readonly Role _requiredRole;
 
-    public TeacherRequireAuthentication(Role requiredRole = Role.Teacher)
+    public RequireTeacherAuthentication(Role requiredRole = Role.Teacher)
     {
         _requiredRole = requiredRole;
     }

@@ -1,0 +1,51 @@
+﻿CREATE SCHEMA IF NOT EXISTS learning_platform;
+
+-- Check and create the 'users' table if it does not exist within the 'learning_platform' schema
+CREATE TABLE IF NOT EXISTS learning_platform.users (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    avatar_url VARCHAR(100)
+);
+
+-- Check and create the 'password_hash' table if it does not exist within the 'learning_platform' schema
+CREATE TABLE IF NOT EXISTS learning_platform.password_hash (
+    user_id INTEGER,
+    hash VARCHAR(350) NOT NULL,
+    salt VARCHAR(180) NOT NULL,
+    algorithm VARCHAR(12) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES learning_platform.users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS learning_platform.courses
+(
+    id          SERIAL PRIMARY KEY,
+    title       VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    course_img_url VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS learning_platform.lessons
+(
+    id         SERIAL PRIMARY KEY,
+    title      VARCHAR(255) NOT NULL,
+    content    TEXT NOT NULL,
+    course_id  INTEGER NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES learning_platform.courses (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS learning_platform.lesson_videos
+(
+    id         SERIAL PRIMARY KEY,
+    video_url  VARCHAR(255) NOT NULL,
+    lesson_id  INTEGER NOT NULL,
+    FOREIGN KEY (lesson_id) REFERENCES learning_platform.lessons (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS learning_platform.lesson_pictures
+(
+    id         SERIAL PRIMARY KEY,
+    img_url    VARCHAR(255) NOT NULL,
+    lesson_id  INTEGER NOT NULL,
+    FOREIGN KEY (lesson_id) REFERENCES learning_platform.lessons (id) ON DELETE CASCADE
+);

@@ -19,6 +19,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<ILessonRepository, LessonRepository>();
+builder.Services.AddSingleton<LessonService>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<AdminRepository>();
 builder.Services.AddSingleton<AdminService>();

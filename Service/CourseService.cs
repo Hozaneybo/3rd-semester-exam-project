@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models;
-using System.Collections.Generic;
 
 namespace Service;
 
@@ -23,14 +22,14 @@ public class CourseService
         return _courseRepository.GetCourseById(id).Result;
     }
 
-    public Course CreateCourse(Course course)
+    public Course CreateCourse(string title, string description, string courseImgUrl)
     {
-        return _courseRepository.AddCourse(course).Result;
+        return _courseRepository.AddCourse(title, description, courseImgUrl).Result;
     }
 
-    public Course UpdateCourse(Course course)
+    public Course UpdateCourse(int id, string title, string description, string courseImgUrl)
     {
-        return _courseRepository.UpdateCourse(course).Result;
+        return _courseRepository.UpdateCourse(id, title, description, courseImgUrl).Result;
     }
 
     public void DeleteCourse(int id)
