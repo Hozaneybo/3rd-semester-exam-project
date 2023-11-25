@@ -1,5 +1,6 @@
 using _3rd_semester_exam_project.Middleware;
 using Infrastructure;
+using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Service;
 using Service.AdminService;
@@ -22,6 +23,8 @@ builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<AdminRepository>();
 builder.Services.AddSingleton<AdminService>();
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<CourseService>();
+builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
