@@ -1,5 +1,6 @@
 ﻿using _3rd_semester_exam_project.DTOs;
 using _3rd_semester_exam_project.Filters;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
@@ -117,15 +118,87 @@ public class TeacherController : ControllerBase
         };
     }
     
+    
+    
+    /*
     [HttpPost("/api/courses/lesson/create")]
-    public ResponseDto CreateLesson( [FromBody] LessonDto lessonDto)
+    public async Task<ResponseDto> CreateLesson([FromBody] LessonDto lessonDto)
     {
-      
+        var lesson = await _lessonService.AddLesson(lessonDto);
         return new ResponseDto
         {
             MessageToClient = "Successfully created",
-            ResponseData = _lessonService.AddLesson(lessonDto.Title, lessonDto.Content, lessonDto.CourseId, null, null)
-                
+            ResponseData = lesson
         };
     }
+    */
+
+    
+    
+    [HttpPost("/api/courses/lesson/create")]
+    public async Task<ResponseDto> CreateLesson([FromBody] LessonDto lessonDto)
+    {
+        
+        var lessonPictures = lessonDto.ImgUrls?
+            .Select(p => new LessonPicture { ImgUrl = p.ImgUrl, LessonId = p.LessonId })
+            .ToList();
+
+        var lessonVideos = lessonDto.VideoUrls?
+            .Select(v => new LessonVideo { VideoUrl = v.VideoUrl, LessonId = v.LessonId })
+            .ToList();
+        var lesson = new Lesson
+        {
+            Title = lessonDto.Title,
+            Content = lessonDto.Content,
+            CourseId = lessonDto.CourseId,
+            ImgUrls = lessonPictures, 
+            VideoUrls = lessonVideos 
+        };
+
+        var createdLesson = await _lessonService.AddLesson(lesson);
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully created",
+            ResponseData = createdLesson
+        };
+    }
+    
+    
+    [HttpPut("/api/lessons/update/{id}")]
+    public ResponseDto UpdateLesson(int id, [FromBody] LessonDto lessonDto)
+    {
+        var updatedLesson =  _lessonService.UpdateLesson(
+            id, 
+            lessonDto.Title, 
+            lessonDto.Content, 
+            lessonDto.CourseId, 
+            lessonDto.ImgUrls?.Select(p => p.ImgUrl) ?? Enumerable.Empty<string>(), 
+            lessonDto.VideoUrls?.Select(v => v.VideoUrl) ?? Enumerable.Empty<string>()
+        );
+
+        if (updatedLesson == null)
+        {
+            return new ResponseDto { MessageToClient = "Lesson not found or update failed" };
+        }
+
+        return new ResponseDto
+        {
+            MessageToClient = "Lesson successfully updated",
+            ResponseData = updatedLesson
+        };
+    }
+
+    
+    [HttpDelete("/api/lessons/delete/{id}")]
+    public ResponseDto DeleteLesson(int id)
+    {
+         _lessonService.DeleteLesson(id);
+         return new ResponseDto
+         {
+             MessageToClient = "Successfully deleted "
+         };
+    }
+
+    
+
 }

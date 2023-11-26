@@ -57,7 +57,7 @@ WHERE lesson_id = @Id;
     }
 
 
-    public async Task<Lesson> AddLesson(string title, string content, int courseId, ICollection<LessonPicture> pictureUrls, ICollection<LessonVideo> videoUrls)
+    public async Task<Lesson> AddLesson(string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
     {
         const string insertLessonSql = @"
 INSERT INTO learning_platform.lessons (title, content, course_id)
@@ -103,7 +103,7 @@ VALUES (@VideoUrl, @LessonId);
     }
 
 
-    public async Task<Lesson> UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+    /*public async Task<Lesson> UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
 {
     // Update only the fields that have new values provided
     var parameters = new DynamicParameters();
@@ -190,7 +190,79 @@ ON CONFLICT (video_url, lesson_id) DO NOTHING;
         transaction.Rollback();
         throw;
     }
+}*/
+    
+    
+    
+    public async Task<Lesson> UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+{
+    using var connection = _dataSource.OpenConnection();
+    using var transaction = connection.BeginTransaction();
+
+    try
+    {
+        // Update the lesson
+        var updateLessonSql = @"
+UPDATE learning_platform.lessons
+SET title = @Title, content = @Content, course_id = @CourseId
+WHERE id = @Id
+RETURNING *;";
+
+        var lesson = await connection.QueryFirstOrDefaultAsync<Lesson>(updateLessonSql, new { Id = id, Title = title, Content = content, CourseId = courseId }, transaction);
+
+        if (lesson == null)
+        {
+            transaction.Rollback();
+            return null; // or throw an exception as per your application's error handling policy
+        }
+
+        // Update pictures and videos
+        var pictureUrlList = pictureUrls.ToList();
+        var videoUrlList = videoUrls.ToList();
+
+        // Delete existing pictures and videos not in the new list
+        var deletePicturesSql = @"
+DELETE FROM learning_platform.lesson_pictures
+WHERE lesson_id = @LessonId AND img_url != ALL(@ImgUrls);";
+
+        var deleteVideosSql = @"
+DELETE FROM learning_platform.lesson_videos
+WHERE lesson_id = @LessonId AND video_url != ALL(@VideoUrls);";
+
+        await connection.ExecuteAsync(deletePicturesSql, new { LessonId = id, ImgUrls = pictureUrlList }, transaction);
+        await connection.ExecuteAsync(deleteVideosSql, new { LessonId = id, VideoUrls = videoUrlList }, transaction);
+
+        // Insert new pictures and videos
+        var insertPictureSql = @"
+INSERT INTO learning_platform.lesson_pictures (img_url, lesson_id)
+VALUES (@ImgUrl, @LessonId)
+ON CONFLICT (img_url, lesson_id) DO NOTHING;";
+
+        var insertVideoSql = @"
+INSERT INTO learning_platform.lesson_videos (video_url, lesson_id)
+VALUES (@VideoUrl, @LessonId)
+ON CONFLICT (video_url, lesson_id) DO NOTHING;";
+
+        foreach (var imgUrl in pictureUrlList)
+        {
+            await connection.ExecuteAsync(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
+        }
+
+        foreach (var videoUrl in videoUrlList)
+        {
+            await connection.ExecuteAsync(insertVideoSql, new { VideoUrl = videoUrl, LessonId = id }, transaction);
+        }
+
+        transaction.Commit();
+        return lesson;
+    }
+    catch
+    {
+        transaction.Rollback();
+        throw;
+    }
 }
+
 
 
     public async Task DeleteLesson(int id)
