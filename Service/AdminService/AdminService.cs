@@ -5,12 +5,12 @@ namespace Service.AdminService;
 public class AdminService
 {
     private readonly AdminRepository _repository;
-    private readonly UserRepository _userRepository;
+    private readonly AccountRepository _accountRepository;
 
-    public AdminService(AdminRepository repository, UserRepository userRepository )
+    public AdminService(AdminRepository repository, AccountRepository accountRepository )
     {
         _repository = repository;
-        _userRepository = userRepository;
+        _accountRepository = accountRepository;
     }
 
     public IEnumerable<User> GetAll()
@@ -25,6 +25,11 @@ public class AdminService
 
     public User GetUserById(int id)
     {
-        return _userRepository.GetById(id);
+        return _accountRepository.GetById(id);
+    }
+
+    public void DeleteUser(int id)
+    {
+        _repository.DeleteUser(id);
     }
 }

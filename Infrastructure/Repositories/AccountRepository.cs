@@ -4,11 +4,11 @@ using Npgsql;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepository
+public class AccountRepository
 {
     private readonly NpgsqlDataSource _dataSource;
 
-    public UserRepository(NpgsqlDataSource dataSource)
+    public AccountRepository(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
@@ -55,5 +55,7 @@ WHERE id = @id;
         using var connection = _dataSource.OpenConnection();
         return connection.QueryFirstOrDefault<User>(sql, new { id });
     }
+
+    
   
 }

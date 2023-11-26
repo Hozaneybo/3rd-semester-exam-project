@@ -1,24 +1,25 @@
 ﻿using _3rd_semester_exam_project.DTOs;
 using _3rd_semester_exam_project.Filters;
-using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
 namespace _3rd_semester_exam_project.Controllers;
 
 
-[TeacherRequireAuthentication]
+[RequireTeacherAuthentication]
+[Route("api/[controller]")]
 public class TeacherController : ControllerBase
 {
      private readonly CourseService _courseService;
+     private readonly LessonService _lessonService;
 
-    public TeacherController(CourseService courseService)
+    public TeacherController(CourseService courseService, LessonService lessonService)
     {
         _courseService = courseService;
+        _lessonService = lessonService;
     }
 
-    [HttpGet("/api/courses")]
-    [RequireAuthentication]
+    [HttpGet("courses")]
     public ResponseDto GetAllCourses()
     {
        
@@ -30,8 +31,7 @@ public class TeacherController : ControllerBase
         };
     }
 
-    [HttpGet("/api/courses/{id}")]
-    [RequireAuthentication]
+    [HttpGet("courses/{id}")]
     public ResponseDto GetCourseById(int id)
     {
         var course =  _courseService.GetCourseById(id);
@@ -50,61 +50,66 @@ public class TeacherController : ControllerBase
                 
         };
     }
+    
 
-    [HttpPost("/api/courses/create")]
-    [RequireAuthentication]
-    public ResponseDto CreateCourse(Course course)
+    
+    [HttpGet("courses/lessons/{id}")] 
+    public ResponseDto GetLessonById([FromQuery] int id)
     {
-      
+        return new ResponseDto()
+        {
+            MessageToClient = "Successfully found",
+            ResponseData = _lessonService.GetLessonById(id)
+        };
+    }
+    
+    
+    [HttpPost("courses/lesson/create")]
+    public ResponseDto CreateLesson([FromBody] LessonDto lessonDto)
+    {
+
+        var createdLesson = _lessonService.AddLesson(lessonDto.Title, lessonDto.Content, lessonDto.CourseId, lessonDto.ImgUrls?.Select(p => p.ImgUrl) ?? Enumerable.Empty<string>(), 
+            lessonDto.VideoUrls?.Select(v => v.VideoUrl) ?? Enumerable.Empty<string>());
         return new ResponseDto
         {
             MessageToClient = "Successfully created",
-            ResponseData = _courseService.CreateCourse(course)
-                
+            ResponseData = createdLesson
         };
     }
-
-    [HttpPut("/api/courses/update/{id}")]
-    [RequireAuthentication]
-    public ResponseDto UpdateCourse(int id, [FromBody] CourseDto courseDto)
+    
+    
+    [HttpPut("lessons/update/{id}")]
+    public ResponseDto UpdateLesson(int id, [FromBody] LessonDto lessonDto)
     {
-        
-        var courseToUpdate = new Course
-        {
-            Id = id,
-            Title = courseDto.Title,
-            Description = courseDto.Description
-        };
+        var updatedLesson =  _lessonService.UpdateLesson(
+            id, 
+            lessonDto.Title, 
+            lessonDto.Content, 
+            lessonDto.CourseId, 
+            lessonDto.ImgUrls?.Select(p => p.ImgUrl) ?? Enumerable.Empty<string>(), 
+            lessonDto.VideoUrls?.Select(v => v.VideoUrl) ?? Enumerable.Empty<string>()
+        );
 
-        var updatedCourse =  _courseService.UpdateCourse(courseToUpdate);
-        if (updatedCourse == null)
+        if (updatedLesson == null)
         {
-            return new ResponseDto
-            {
-                MessageToClient = "This Course's id not founded",
-                
-            };
+            return new ResponseDto { MessageToClient = "Lesson not found or update failed" };
         }
-        
+
         return new ResponseDto
         {
-            MessageToClient = "Successfully updated",
-            ResponseData = _courseService.UpdateCourse(courseToUpdate)
-                
+            MessageToClient = "Lesson successfully updated",
+            ResponseData = updatedLesson
         };
-        
     }
 
-    [HttpDelete("/api/courses/delete/{id}")]
-    [RequireAuthentication]
-    public ResponseDto DeleteCourse(int id)
+    
+    [HttpDelete("lessons/delete/{id}")]
+    public ResponseDto DeleteLesson(int id)
     {
-       
-        _courseService.DeleteCourse(id);
-        
-        return new ResponseDto
-        {
-            MessageToClient = "Successfully deleted "
-        };
+         _lessonService.DeleteLesson(id);
+         return new ResponseDto
+         {
+             MessageToClient = "Successfully deleted "
+         };
     }
 }
