@@ -10,13 +10,13 @@ public class AccountService
 {
     private readonly ILogger<AccountService> _logger;
     private readonly PasswordHashRepository _passwordHashRepository;
-    private readonly UserRepository _userRepository;
+    private readonly AccountRepository _accountRepository;
 
-    public AccountService(ILogger<AccountService> logger, UserRepository userRepository,
+    public AccountService(ILogger<AccountService> logger, AccountRepository accountRepository,
         PasswordHashRepository passwordHashRepository)
     {
         _logger = logger;
-        _userRepository = userRepository;
+        _accountRepository = accountRepository;
         _passwordHashRepository = passwordHashRepository;
     }
 
@@ -27,7 +27,7 @@ public class AccountService
             var passwordHash = _passwordHashRepository.GetByEmail(email);
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
             var isValid = hashAlgorithm.VerifyHashedPassword(password, passwordHash.Hash, passwordHash.Salt);
-            if (isValid) return _userRepository.GetById(passwordHash.UserId);
+            if (isValid) return _accountRepository.GetById(passwordHash.UserId);
         }
         catch (Exception e)
         {
@@ -44,7 +44,7 @@ public class AccountService
             var hashAlgorithm = PasswordHashAlgorithm.Create();
             var salt = hashAlgorithm.GenerateSalt();
             var hash = hashAlgorithm.HashPassword(password, salt);
-            var user = _userRepository.Create(fullName, email, avatarUrl);
+            var user = _accountRepository.Create(fullName, email, avatarUrl);
             _passwordHashRepository.Create(user.Id, hash, salt, hashAlgorithm.GetName());
             return user;
         }
@@ -57,6 +57,6 @@ public class AccountService
     }
     public User? Get(SessionData data)
     {
-        return _userRepository.GetById(data.UserId);
+        return _accountRepository.GetById(data.UserId);
     }
 }

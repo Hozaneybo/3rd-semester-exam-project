@@ -45,6 +45,15 @@ FROM learning_platform.users
         return connection.QuerySingle<User>(sql, new { id, fullname, email, role = role.ToString()});
     }
     
+    public async Task DeleteUser(int id)
+    {
+        const string sql = @"DELETE FROM learning_platform.users WHERE id = @Id;";
+        using (var connection = _dataSource.OpenConnection())
+        {
+            await connection.ExecuteAsync(sql, new { Id = id });
+        }
+    }
+    
     
 
 }
