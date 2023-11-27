@@ -3,10 +3,15 @@
 
 CREATE TABLE IF NOT EXISTS learning_platform.users (
     id SERIAL PRIMARY KEY,
-    full_name VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    avatar_url VARCHAR(100),
-    role       VARCHAR(12) DEFAULT 'Student'
+        full_name VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
+        avatar_url VARCHAR(100),
+        role VARCHAR(12) DEFAULT 'Student'::character varying,
+        email_verification_token VARCHAR(255),
+        email_token_expires_at TIMESTAMP,
+        password_reset_token VARCHAR(255),
+        password_reset_token_expires_at TIMESTAMP,
+        email_verified BOOLEAN DEFAULT false
 );
 
 

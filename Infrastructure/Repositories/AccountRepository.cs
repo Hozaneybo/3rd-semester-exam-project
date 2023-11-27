@@ -56,6 +56,77 @@ WHERE id = @id;
         return connection.QueryFirstOrDefault<User>(sql, new { id });
     }
 
+    public void VerifyEmail(int userId)
+    {
+        const string sql = @"
+UPDATE learning_platform.users
+SET email_verified = TRUE, email_verification_token = NULL, email_token_expires_at = NULL
+WHERE id = @UserId;
+";
+        using var connection = _dataSource.OpenConnection();
+        connection.Execute(sql, new { UserId = userId });
+    }
+
+    public void SetPasswordResetToken(int userId, string token, DateTime? expiresAt)
+    {
+        const string sql = @"
+UPDATE learning_platform.users
+SET password_reset_token = @Token, password_reset_token_expires_at = @ExpiresAt
+WHERE id = @UserId;
+";
+        using var connection = _dataSource.OpenConnection();
+        connection.Execute(sql, new { UserId = userId, Token = token, ExpiresAt = expiresAt });
+    }
+
+    public User GetUserByPasswordResetToken(string token)
+    {
+        const string sql = @"
+SELECT * FROM learning_platform.users
+WHERE password_reset_token = @Token AND password_reset_token_expires_at > CURRENT_TIMESTAMP;
+";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QuerySingleOrDefault<User>(sql, new { Token = token });
+    }
+    
+    
+    public void SetEmailVerificationToken(int userId, string token, DateTime expiresAt)
+    {
+
+        const string sql = @"
+UPDATE learning_platform.users
+SET email_verification_token = @Token, email_token_expires_at = @ExpiresAt
+WHERE id = @UserId;
+";
+        using var connection = _dataSource.OpenConnection();
+        connection.Execute(sql, new { UserId = userId, Token = token, ExpiresAt = expiresAt });
+    }
+
+
+    public User GetUserByVerificationToken(string token)
+    {
+        const string sql = @"
+SELECT * FROM learning_platform.users
+WHERE email_verification_token = @Token AND email_token_expires_at > CURRENT_TIMESTAMP;
+";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QuerySingleOrDefault<User>(sql, new { Token = token });
+    }
+    
+    public User? GetUserByEmail(string email)
+    {
+        const string sql = $@"
+SELECT
+    id as {nameof(User.Id)},
+    full_name as {nameof(User.Fullname)},
+    email as {nameof(User.Email)},
+    avatar_url as {nameof(User.AvatarUrl)},
+    role as {nameof(User.Role)}
+FROM learning_platform.users
+WHERE email = @Email;
+";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirstOrDefault<User>(sql, new { Email = email }); 
+    }
     
   
 }
