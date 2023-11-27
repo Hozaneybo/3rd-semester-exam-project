@@ -18,9 +18,9 @@ public class AdminService
         return _repository.GetAll();
     }
 
-    public User UpdateUser(int id, string fullname, string email, Role role)
+    public User UpdateUser(int id, string fullname, string email, string avatarUrl, Role role)
     {
-        return _repository.UpdateUser(id, fullname, email, role );
+        return _repository.UpdateUser(id, fullname, email, avatarUrl, role );
     }
 
     public User GetUserById(int id)

@@ -1,4 +1,6 @@
 ﻿using _3rd_semester_exam_project.DTOs;
+using _3rd_semester_exam_project.DTOs.CommandDTOs.UserDTOs;
+using _3rd_semester_exam_project.DTOs.QueryDTOs.UserDTOs;
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -20,16 +22,28 @@ public class AdminController : ControllerBase
         _courseService = courseService;
         _lessonService = lessonService;
     }
-
+    
+    
     [HttpGet("users")]
     public ResponseDto Get()
     {
+        var users = _service.GetAll().Select(user => new UserDto
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            EmailVerified = user.EmailVerified
+        }).ToList();
+
         return new ResponseDto
         {
             MessageToClient = "Successfully fetched",
-            ResponseData = _service.GetAll()
+            ResponseData = users
         };
     }
+
 
     [HttpPut("users/update/{id}")]
     public ResponseDto UpdateUser(int id , [FromBody] UpdateUserDto user)
@@ -46,9 +60,8 @@ public class AdminController : ControllerBase
                     ResponseData = null
                 };
             }
-
-            user.Id = id;
-            var updated = _service.UpdateUser(user.Id, user.Fullname, user.Email, user.Role);
+            
+            var updated = _service.UpdateUser(id, user.Fullname, user.Email, user.AvatarUrl, user.Role);
             if (updated != null)
             {
                 return new ResponseDto()
@@ -91,7 +104,7 @@ public class AdminController : ControllerBase
         return new ResponseDto()
         {
             MessageToClient = "Successfully fetched",
-            ResponseData = _courseService.GetAllCourses(),
+            ResponseData = courses
         };
     }
     
@@ -111,13 +124,6 @@ public class AdminController : ControllerBase
     public ResponseDto UpdateCourse(int id, [FromBody] CourseDto courseDto)
     {
         
-        var courseToUpdate = new CourseDto()
-        {
-            Id = id,
-            Title = courseDto.Title,
-            Description = courseDto.Description,
-            CourseImgUrl = courseDto.CourseImgUrl
-        };
 
         var updatedCourse =  _courseService.UpdateCourse(id, courseDto.Title, courseDto.Description, courseDto.CourseImgUrl);
         if (updatedCourse == null)

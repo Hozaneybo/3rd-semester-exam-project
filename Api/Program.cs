@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using _3rd_semester_exam_project.Middleware;
 using Infrastructure;
 using Infrastructure.Interfaces;
@@ -7,6 +8,8 @@ using Service.AdminService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddSession(options =>
 {

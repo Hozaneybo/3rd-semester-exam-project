@@ -48,7 +48,8 @@ SELECT
     full_name as {nameof(User.Fullname)},
     email as {nameof(User.Email)},
     avatar_url as {nameof(User.AvatarUrl)},
-    role as {nameof(User.Role)}
+    role as {nameof(User.Role)},
+    email_verified as {nameof(User.EmailVerified)}
 FROM learning_platform.users
 WHERE id = @id;
 ";

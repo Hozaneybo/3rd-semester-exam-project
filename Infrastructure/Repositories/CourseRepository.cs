@@ -16,7 +16,13 @@ public class CourseRepository : ICourseRepository
 
     public async Task<IEnumerable<Course>> GetAllCourses()
     {
-        const string sql = @"SELECT * FROM learning_platform.courses;";
+        const string sql = $@"
+SELECT 
+id as {nameof(Course.Id)},
+title as {nameof(Course.Title)},
+description as {nameof(Course.Description)},
+course_img_url as {nameof(Course.CourseImgUrl)}
+FROM learning_platform.courses;";
         
         using var connection = _dataSource.OpenConnection();
         return await connection.QueryAsync<Course>(sql);
