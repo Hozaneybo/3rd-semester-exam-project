@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication;
+using System.Security.Cryptography;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
@@ -46,6 +47,9 @@ public class AccountService
             var hash = hashAlgorithm.HashPassword(password, salt);
             var user = _accountRepository.Create(fullName, email, avatarUrl);
             _passwordHashRepository.Create(user.Id, hash, salt, hashAlgorithm.GetName());
+            
+            GenerateAndSendEmailVerificationToken(user);
+            
             return user;
         }
         catch (InvalidOperationException ex)
@@ -58,5 +62,72 @@ public class AccountService
     public User? Get(SessionData data)
     {
         return _accountRepository.GetById(data.UserId);
+    }
+    
+    public void GenerateAndSendEmailVerificationToken(User user)
+    {
+        var token = GenerateToken();
+        var expiresAt = DateTime.UtcNow.AddHours(24);
+        _accountRepository.SetEmailVerificationToken(user.Id, token, expiresAt);
+        MailService.SendVerificationEmail(user.Email, token);
+    }
+
+
+    public bool VerifyEmailToken(string token)
+    {
+        var user = _accountRepository.GetUserByVerificationToken(token);
+        if (user != null)
+        {
+            _accountRepository.VerifyEmail(user.Id);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public void GenerateAndSendPasswordResetToken(User user)
+    {
+        var token = GenerateToken();
+        var expiresAt = DateTime.UtcNow.AddHours(2);
+        _accountRepository.SetPasswordResetToken(user.Id, token, expiresAt);
+        MailService.SendPasswordResetEmail(user.Email, token);
+    }
+
+    public bool ResetPasswordWithToken(string token, string newPassword)
+    {
+        var user = _accountRepository.GetUserByPasswordResetToken(token);
+        if (user != null)
+        {
+            var hashAlgorithm = PasswordHashAlgorithm.Create();
+            var salt = hashAlgorithm.GenerateSalt();
+            var hash = hashAlgorithm.HashPassword(newPassword, salt);
+            _passwordHashRepository.Update(user.Id, hash, salt, hashAlgorithm.GetName());
+            // Clear the reset token
+            _accountRepository.SetPasswordResetToken(user.Id, null, null);
+            return true;
+        }
+        return false;
+    }
+
+    private string GenerateToken()
+    {
+        using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+        var randomBytes = new byte[32]; // 256 bits
+        rngCryptoServiceProvider.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes);
+    }
+
+    public User? GetUserByEmail(string email)
+    {
+        try
+        {
+            return _accountRepository.GetUserByEmail(email);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error retrieving user by email: {Message}", ex.Message);
+            throw;
+        }
     }
 }

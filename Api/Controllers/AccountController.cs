@@ -1,11 +1,11 @@
 ﻿using _3rd_semester_exam_project.DTOs;
+using _3rd_semester_exam_project.DTOs.CommandDTOs.AccountDTOs;
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
 namespace _3rd_semester_exam_project.Controllers;
 
-[ValidateModel]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
@@ -40,26 +40,91 @@ public class AccountController : ControllerBase
     
     [HttpPost]
     [Route("/api/account/register")]
-    public ResponseDto Register([FromBody] RegisterDto dto)
+    public IActionResult Register([FromBody] RegisterDto dto)
     {
         try
         {
-            var user = _service.Register(dto.FullName, dto.Email, dto.Password, avatarUrl: dto.AvatarUrl);
-            HttpContext.Response.StatusCode = 201;
-            return new ResponseDto
+            var user = _service.Register(dto.FullName, dto.Email, dto.Password, dto.AvatarUrl);
+
+            return CreatedAtAction(nameof(WhoAmI), new { id = user.Id }, new ResponseDto
             {
-                MessageToClient = "Successfully registered"
-            };
+                MessageToClient = "Registration successful. Please check your email to verify your account."
+            });
         }
         catch (InvalidOperationException ex)
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            return new ResponseDto
+            return BadRequest(new ResponseDto
             {
                 MessageToClient = ex.Message
-            };
+            });
         }
     }
+    
+    [HttpGet]
+    [Route("/api/account/verify-email")]
+    public IActionResult VerifyEmail([FromQuery] string token)
+    {
+        try
+        {
+            var result = _service.VerifyEmailToken(token);
+            if (result)
+            {
+                return Ok(new ResponseDto { MessageToClient = "Email successfully verified." });
+            }
+            else
+            {
+                return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired verification token." });
+            }
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = "An error occurred during email verification." });
+        }
+    }
+    
+    [HttpPost]
+    [Route("/api/account/request-password-reset")]
+    public IActionResult RequestPasswordReset([FromBody] RequestPasswordResetDto dto)
+    {
+        try
+        {
+            var user = _service.GetUserByEmail(dto.Email);
+            if (user != null)
+            {
+                _service.GenerateAndSendPasswordResetToken(user);
+                return Ok(new ResponseDto { MessageToClient = "Password reset email sent. Please check your inbox." });
+            }
+            return NotFound(new ResponseDto { MessageToClient = "User not found." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = "An error occurred during password reset request." });
+        }
+    }
+
+    [HttpPost]
+    [Route("/api/account/reset-password")]
+    public IActionResult ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        try
+        {
+            var result = _service.ResetPasswordWithToken(dto.Token, dto.NewPassword);
+            if (result)
+            {
+                return Ok(new ResponseDto { MessageToClient = "Password has been reset successfully." });
+            }
+            else
+            {
+                return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired password reset token." });
+            }
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = "An error occurred during password reset." });
+        }
+    }
+
+
     
     [RequireAuthentication]
     [HttpGet]
@@ -70,7 +135,7 @@ public class AccountController : ControllerBase
         var user = _service.Get(data);
         return new ResponseDto
         {
-            ResponseData = user
+            ResponseData = new { user.Id, user.Fullname, user.AvatarUrl, user.Role, user.EmailVerified }
         };
     }
 }
