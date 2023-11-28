@@ -135,7 +135,7 @@ public class AccountController : ControllerBase
         var user = _service.Get(data);
         return new ResponseDto
         {
-            ResponseData = user
+            ResponseData = new { user.Id, user.Fullname, user.AvatarUrl, user.Role, user.EmailVerified }
         };
     }
 }

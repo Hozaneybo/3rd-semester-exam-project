@@ -67,7 +67,7 @@ public class AdminController : ControllerBase
                 return new ResponseDto()
                 {
                     MessageToClient = "Successfully updated",
-                    ResponseData = updated
+                    ResponseData = new { id, user.Fullname, user.Email, user.AvatarUrl, user.Role }
                 };
             }
             else

@@ -55,7 +55,4 @@ FROM learning_platform.users
             await connection.ExecuteAsync(sql, new { Id = id });
         }
     }
-    
-    
-
 }
