@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Models;
 using Infrastructure.Repositories;
+using Service.CQ.Commands;
 
 namespace Service.AdminService;
 public class AdminService
@@ -18,9 +19,9 @@ public class AdminService
         return _repository.GetAll();
     }
 
-    public User UpdateUser(int id, string fullname, string email, string avatarUrl, Role role)
+    public User UpdateUser(UpdateUserCommand command)
     {
-        return _repository.UpdateUser(id, fullname, email, avatarUrl, role );
+        return _repository.UpdateUser(command.Id, command.FullName, command.Email, command.AvatarUrl, command.Role );
     }
 
     public User GetUserById(int id)

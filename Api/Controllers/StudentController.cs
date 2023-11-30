@@ -22,11 +22,18 @@ public class StudentController : ControllerBase
     public ResponseDto GetAllCourses()
     {
        
-        var courses =  _courseService.GetAllCourses();
+        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            CourseImgUrl = course.CourseImgUrl
+            
+        }).ToList();
         return new ResponseDto()
         {
             MessageToClient = "Successfully fetched",
-            ResponseData = _courseService.GetAllCourses(),
+            ResponseData = courses,
         };
     }
 
@@ -34,29 +41,61 @@ public class StudentController : ControllerBase
     public ResponseDto GetCourseById(int id)
     {
         var course =  _courseService.GetCourseById(id);
+        var courseResult = new CourseContentById()
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            CourseImgUrl = course.CourseImgUrl,
+            Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+            {
+                Id = lesson.Id,
+                Title = lesson.Title
+            }).ToList()
+        };
         if (course == null)
         {
             return new ResponseDto
             {
-                MessageToClient = "No Course be funded",
+                MessageToClient = "Course not found",
                 
             };
         }
         return new ResponseDto
         {
             MessageToClient = "Successfully found ",
-            ResponseData = _courseService.GetCourseById(id),
+            ResponseData = courseResult,
                 
         };
     }
     
-    [HttpGet("courses/lessons/{id}")] 
-    public ResponseDto GetLessonById([FromQuery] int id)
+    [HttpGet("courses/{courseId}/lessons/{id}")] 
+    public ResponseDto GetLessonById(int courseId, int id)
     {
+        
+        var lesson = _lessonService.GetLessonById(courseId, id);
+        var lessonContent = new LessonByIdResult()
+        {
+            Id = lesson.Id,
+            Title = lesson.Title,
+            Content = lesson.Content,
+            ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult()
+            {
+                Id = imgUrl.Id,
+                PictureUrl = imgUrl.ImgUrl
+            }).ToList(),
+            VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult()
+            {
+                Id = videoUrl.Id,
+                VideoUrl = videoUrl.VideoUrl
+            }).ToList(),
+            CourseId = lesson.CourseId
+
+        };
         return new ResponseDto()
         {
             MessageToClient = "Successfully found",
-            ResponseData = _lessonService.GetLessonById(id)
+            ResponseData = lessonContent
         };
     }
     

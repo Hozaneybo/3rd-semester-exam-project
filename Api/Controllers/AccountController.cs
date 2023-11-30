@@ -1,8 +1,9 @@
 ﻿using _3rd_semester_exam_project.DTOs;
-using _3rd_semester_exam_project.DTOs.CommandDTOs.AccountDTOs;
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using Service.CQ.Commands;
+using Service.CQ.Queries;
 
 namespace _3rd_semester_exam_project.Controllers;
 
@@ -17,9 +18,9 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Route("/api/account/login")]
-    public ResponseDto Login([FromBody] LoginDto dto)
+    public ResponseDto Login([FromBody] UserLoginCommand command)
     {
-        var user = _service.Authenticate(dto.Email, dto.Password);
+        var user = _service.Authenticate(command);
         HttpContext.SetSessionData(SessionData.FromUser(user));
         return new ResponseDto
         {
@@ -40,11 +41,11 @@ public class AccountController : ControllerBase
     
     [HttpPost]
     [Route("/api/account/register")]
-    public IActionResult Register([FromBody] RegisterDto dto)
+    public IActionResult Register([FromBody] CreateUserCommand command)
     {
         try
         {
-            var user = _service.Register(dto.FullName, dto.Email, dto.Password, dto.AvatarUrl);
+            var user = _service.Register(command);
 
             return CreatedAtAction(nameof(WhoAmI), new { id = user.Id }, new ResponseDto
             {
@@ -84,11 +85,11 @@ public class AccountController : ControllerBase
     
     [HttpPost]
     [Route("/api/account/request-password-reset")]
-    public IActionResult RequestPasswordReset([FromBody] RequestPasswordResetDto dto)
+    public IActionResult RequestPasswordReset([FromBody] UserQuery query)
     {
         try
         {
-            var user = _service.GetUserByEmail(dto.Email);
+            var user = _service.GetUserByEmail(query);
             if (user != null)
             {
                 _service.GenerateAndSendPasswordResetToken(user);
@@ -104,11 +105,11 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Route("/api/account/reset-password")]
-    public IActionResult ResetPassword([FromBody] ResetPasswordDto dto)
+    public IActionResult ResetPassword([FromBody] ResetPasswordCommand command)
     {
         try
         {
-            var result = _service.ResetPasswordWithToken(dto.Token, dto.NewPassword);
+            var result = _service.ResetPasswordWithToken(command.Token, command.NewPassword);
             if (result)
             {
                 return Ok(new ResponseDto { MessageToClient = "Password has been reset successfully." });

@@ -29,6 +29,8 @@ builder.Services.AddSingleton<AdminRepository>();
 builder.Services.AddSingleton<AdminService>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<CourseService>();
+builder.Services.AddSingleton<SharedRepository>();
+builder.Services.AddSingleton<SharedService>();
 builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
 
 builder.Services.AddControllers();
