@@ -4,9 +4,9 @@ namespace Infrastructure.Interfaces;
 
 public interface ICourseRepository
 {
-    Task<IEnumerable<Course>> GetAllCourses();
-    Task<Course> GetCourseById(int id);
-    Task<Course> AddCourse(string title, string description, string courseImgUrl);
-    Task<Course> UpdateCourse(int id, string title, string description, string courseImgUrl);
-    Task DeleteCourse(int id);
+    IEnumerable<Course> GetAllCourses();
+    Course GetCourseById(int id);
+    Course AddCourse(string title, string description, string courseImgUrl);
+    Course UpdateCourse(int id, string title, string description, string courseImgUrl);
+    void DeleteCourse(int id);
 }

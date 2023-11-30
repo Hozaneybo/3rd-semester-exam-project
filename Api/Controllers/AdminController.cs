@@ -1,10 +1,9 @@
 ﻿using _3rd_semester_exam_project.DTOs;
-using _3rd_semester_exam_project.DTOs.CommandDTOs.UserDTOs;
-using _3rd_semester_exam_project.DTOs.QueryDTOs.UserDTOs;
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.AdminService;
+using Service.CQ.Commands;
 
 namespace _3rd_semester_exam_project.Controllers;
 
@@ -27,7 +26,7 @@ public class AdminController : ControllerBase
     [HttpGet("users")]
     public ResponseDto Get()
     {
-        var users = _service.GetAll().Select(user => new UserDto
+        var users = _service.GetAll().Select(user => new UserResult
         {
             Id = user.Id,
             Fullname = user.Fullname,
@@ -46,7 +45,7 @@ public class AdminController : ControllerBase
 
 
     [HttpPut("users/update/{id}")]
-    public ResponseDto UpdateUser(int id , [FromBody] UpdateUserDto user)
+    public ResponseDto UpdateUser(int id , [FromBody] UpdateUserCommand user)
     {
         try
         {
@@ -60,14 +59,15 @@ public class AdminController : ControllerBase
                     ResponseData = null
                 };
             }
-            
-            var updated = _service.UpdateUser(id, user.Fullname, user.Email, user.AvatarUrl, user.Role);
+
+            user.Id = id;
+            var updated = _service.UpdateUser(user);
             if (updated != null)
             {
                 return new ResponseDto()
                 {
                     MessageToClient = "Successfully updated",
-                    ResponseData = new { id, user.Fullname, user.Email, user.AvatarUrl, user.Role }
+                    ResponseData = new { id, user.FullName, user.Email, user.AvatarUrl, user.Role }
                 };
             }
             else
@@ -100,7 +100,14 @@ public class AdminController : ControllerBase
     public ResponseDto GetAllCourses()
     {
        
-        var courses =  _courseService.GetAllCourses();
+        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            CourseImgUrl = course.CourseImgUrl
+            
+        }).ToList();
         return new ResponseDto()
         {
             MessageToClient = "Successfully fetched",
@@ -109,23 +116,23 @@ public class AdminController : ControllerBase
     }
     
     [HttpPost("courses/create")]
-    public ResponseDto CreateCourse( [FromBody] CourseDto courseDto)
+    public ResponseDto CreateCourse( [FromBody] CreateCourseCommand command)
     {
       
         return new ResponseDto
         {
             MessageToClient = "Successfully created",
-            ResponseData = _courseService.CreateCourse(courseDto.Title, courseDto.Description, courseDto.CourseImgUrl)
+            ResponseData = _courseService.CreateCourse(command)
                 
         };
     }
 
     [HttpPut("courses/update/{id}")]
-    public ResponseDto UpdateCourse(int id, [FromBody] CourseDto courseDto)
+    public ResponseDto UpdateCourse(int id, [FromBody] UpdateCourseCommand command)
     {
         
 
-        var updatedCourse =  _courseService.UpdateCourse(id, courseDto.Title, courseDto.Description, courseDto.CourseImgUrl);
+        var updatedCourse =  _courseService.UpdateCourse(command);
         if (updatedCourse == null)
         {
             return new ResponseDto
@@ -138,7 +145,7 @@ public class AdminController : ControllerBase
         return new ResponseDto
         {
             MessageToClient = "Successfully updated",
-            ResponseData = _courseService.UpdateCourse(id, courseDto.Title, courseDto.Description, courseDto.CourseImgUrl)
+            ResponseData = _courseService.UpdateCourse(command)
                 
         };
     }
@@ -147,18 +154,30 @@ public class AdminController : ControllerBase
     public ResponseDto GetCourseById(int id)
     {
         var course =  _courseService.GetCourseById(id);
+        var courseResult = new CourseContentById()
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            CourseImgUrl = course.CourseImgUrl,
+            Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+            {
+                Id = lesson.Id,
+                Title = lesson.Title
+            }).ToList()
+        };
         if (course == null)
         {
             return new ResponseDto
             {
-                MessageToClient = "No Course be funded",
+                MessageToClient = "Course not found",
                 
             };
         }
         return new ResponseDto
         {
             MessageToClient = "Successfully found ",
-            ResponseData = _courseService.GetCourseById(id),
+            ResponseData = courseResult,
                 
         };
     }
@@ -175,27 +194,40 @@ public class AdminController : ControllerBase
         };
     }
     
-    [HttpGet("courses/lessons/{id}")] 
-    public ResponseDto GetLessonById([FromQuery] int id)
+    [HttpGet("courses/{courseId}/lessons/{id}")] 
+    public ResponseDto GetLessonById(int courseId, int id)
     {
+        
+        var lesson = _lessonService.GetLessonById(courseId, id);
+        var lessonContent = new LessonByIdResult()
+        {
+            Id = lesson.Id,
+            Title = lesson.Title,
+            Content = lesson.Content,
+            ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult()
+            {
+                Id = imgUrl.Id,
+                PictureUrl = imgUrl.ImgUrl
+            }).ToList(),
+            VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult()
+            {
+                Id = videoUrl.Id,
+                VideoUrl = videoUrl.VideoUrl
+            }).ToList(),
+            CourseId = lesson.CourseId
+
+        };
         return new ResponseDto()
         {
             MessageToClient = "Successfully found",
-            ResponseData = _lessonService.GetLessonById(id)
+            ResponseData = lessonContent
         };
     }
     
     [HttpPut("lessons/update/{id}")]
-    public ResponseDto UpdateLesson(int id, [FromBody] LessonDto lessonDto)
+    public ResponseDto UpdateLesson(int id, [FromBody] UpdateLessonCommand command)
     {
-        var updatedLesson =  _lessonService.UpdateLesson(
-            id, 
-            lessonDto.Title, 
-            lessonDto.Content, 
-            lessonDto.CourseId, 
-            lessonDto.ImgUrls?.Select(p => p.ImgUrl) ?? Enumerable.Empty<string>(), 
-            lessonDto.VideoUrls?.Select(v => v.VideoUrl) ?? Enumerable.Empty<string>()
-        );
+        var updatedLesson =  _lessonService.UpdateLesson(command);
 
         if (updatedLesson == null)
         {

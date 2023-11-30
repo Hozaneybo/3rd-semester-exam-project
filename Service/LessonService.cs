@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models;
-
+using Service.CQ.Commands;
 
 
 namespace Service
@@ -17,26 +17,24 @@ namespace Service
         //This method will not be used for now
         public IEnumerable<Lesson> GetAllLessons()
         {
-            return _lessonRepository.GetAllLessons().Result;
+            return _lessonRepository.GetAllLessons();
         }
 
-        public Lesson GetLessonById(int id)
+        public Lesson GetLessonById(int courseId, int id)
         {
-            return _lessonRepository.GetLessonById(id).Result;
+            return _lessonRepository.GetLessonById(courseId, id);
         }
         
         
-        public Lesson AddLesson(string title, string content, int courseId,  IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+        public Lesson AddLesson(CreateLessonCommand command)
         {
-            /*var pictureUrls = lesson.ImgUrls?.Select(p => p.ImgUrl) ?? Enumerable.Empty<string>();
-            var videoUrls = lesson.VideoUrls?.Select(v => v.VideoUrl) ?? Enumerable.Empty<string>();*/
 
-            return _lessonRepository.AddLesson(title, content, courseId, pictureUrls, videoUrls).Result;
+            return _lessonRepository.AddLesson(command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
         }
 
-        public Lesson UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+        public Lesson UpdateLesson(UpdateLessonCommand command)
         {
-            return _lessonRepository.UpdateLesson(id, title, content, courseId, pictureUrls, videoUrls).Result;
+            return _lessonRepository.UpdateLesson(command.Id, command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
         }
 
         public void DeleteLesson(int id)

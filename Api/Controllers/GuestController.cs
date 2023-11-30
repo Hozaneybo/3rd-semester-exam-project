@@ -17,11 +17,18 @@ public class GuestController : ControllerBase
     public ResponseDto GetAllCourses()
     {
        
-        var courses =  _courseService.GetAllCourses();
+        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            CourseImgUrl = course.CourseImgUrl
+            
+        }).ToList();
         return new ResponseDto()
         {
             MessageToClient = "Successfully fetched",
-            ResponseData = _courseService.GetAllCourses(),
+            ResponseData = courses,
         };
     }
 }

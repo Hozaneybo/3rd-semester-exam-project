@@ -14,7 +14,7 @@ public class CourseRepository : ICourseRepository
         _dataSource = dataSource;
     }
 
-    public async Task<IEnumerable<Course>> GetAllCourses()
+    public IEnumerable<Course> GetAllCourses()
     {
         const string sql = $@"
 SELECT 
@@ -25,27 +25,34 @@ course_img_url as {nameof(Course.CourseImgUrl)}
 FROM learning_platform.courses;";
         
         using var connection = _dataSource.OpenConnection();
-        return await connection.QueryAsync<Course>(sql);
+        return connection.Query<Course>(sql);
     }
 
-    public async Task<Course> GetCourseById(int id)
+    public Course GetCourseById(int id)
     {
-        const string courseSql = @"
-SELECT * FROM learning_platform.courses
-WHERE id = @Id;
+        const string courseSql = $@"
+SELECT 
+    id as {nameof(Course.Id)},
+    title as {nameof(Course.Title)},
+    description as {nameof(Course.Description)},
+    course_img_url as {nameof(Course.CourseImgUrl)}
+FROM learning_platform.courses WHERE id = @Id;
 ";
 
-        const string lessonsSql = @"
-SELECT * FROM learning_platform.lessons
+        const string lessonsSql = $@"
+SELECT 
+    id as {nameof(Lesson.Id)},
+    title as {nameof(Lesson.Title)}
+    From learning_platform.lessons
 WHERE course_id = @Id;
 ";
 
         using var connection = _dataSource.OpenConnection();
-        var course = await connection.QuerySingleOrDefaultAsync<Course>(courseSql, new { Id = id });
+        var course = connection.QuerySingleOrDefault<Course>(courseSql, new { Id = id });
 
         if (course != null)
         {
-            var lessons = await connection.QueryAsync<Lesson>(lessonsSql, new { Id = id });
+            var lessons = connection.Query<Lesson>(lessonsSql, new { Id = id });
             course.Lessons = lessons.ToList();
         }
 
@@ -53,18 +60,22 @@ WHERE course_id = @Id;
     }
 
 
-    public async Task<Course> AddCourse(string title, string description, string courseImgUrl)
+    public Course AddCourse(string title, string description, string courseImgUrl)
     {
-        const string sql = @"
+        const string sql = $@"
 INSERT INTO learning_platform.courses (title, description, course_img_url)
 VALUES (@Title, @Description, @CourseImgUrl)
-RETURNING *;
+RETURNING 
+    id as {nameof(Course.Id)},
+    title as {nameof(Course.Title)},
+    description as {nameof(Course.Description)},
+    course_img_url as {nameof(Course.CourseImgUrl)};
 ";
         using var connection = _dataSource.OpenConnection();
-        return await connection.QueryFirstAsync<Course>(sql, new { Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        return connection.QueryFirst<Course>(sql, new { Title = title, Description = description, CourseImgUrl = courseImgUrl });
     }
 
-    public async Task<Course> UpdateCourse(int id, string title, string description, string courseImgUrl)
+    public Course UpdateCourse(int id, string title, string description, string courseImgUrl)
     {
         const string sql = @"
 UPDATE learning_platform.courses
@@ -73,17 +84,17 @@ WHERE id = @Id
 RETURNING *;
 ";
         using var connection = _dataSource.OpenConnection();
-        return await connection.QueryFirstOrDefaultAsync<Course>(sql, new { Id = id, Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        return connection.QueryFirstOrDefault<Course>(sql, new { Id = id, Title = title, Description = description, CourseImgUrl = courseImgUrl });
     }
 
 
-    public async Task DeleteCourse(int id)
+    public void DeleteCourse(int id)
     {
         const string sql = @"
 DELETE FROM learning_platform.courses
 WHERE id = @Id;
 ";
         using var connection = _dataSource.OpenConnection();
-        await connection.ExecuteAsync(sql, new { id });
+        connection.Execute(sql, new { id });
     }
 }

@@ -3,6 +3,8 @@ using System.Security.Cryptography;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
+using Service.CQ.Commands;
+using Service.CQ.Queries;
 using Service.PasswordService;
 
 namespace Service;
@@ -21,13 +23,13 @@ public class AccountService
         _passwordHashRepository = passwordHashRepository;
     }
 
-    public User? Authenticate(string email, string password)
+    public User? Authenticate(UserLoginCommand command)
     {
         try
         {
-            var passwordHash = _passwordHashRepository.GetByEmail(email);
+            var passwordHash = _passwordHashRepository.GetByEmail(command.Email);
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
-            var isValid = hashAlgorithm.VerifyHashedPassword(password, passwordHash.Hash, passwordHash.Salt);
+            var isValid = hashAlgorithm.VerifyHashedPassword(command.Password, passwordHash.Hash, passwordHash.Salt);
             if (isValid) return _accountRepository.GetById(passwordHash.UserId);
         }
         catch (Exception e)
@@ -38,14 +40,14 @@ public class AccountService
         throw new InvalidCredentialException("Invalid credential!");
     }
 
-    public User Register(string fullName, string email, string password, string? avatarUrl)
+    public User Register(CreateUserCommand command)
     {
         try
         {
             var hashAlgorithm = PasswordHashAlgorithm.Create();
             var salt = hashAlgorithm.GenerateSalt();
-            var hash = hashAlgorithm.HashPassword(password, salt);
-            var user = _accountRepository.Create(fullName, email, avatarUrl);
+            var hash = hashAlgorithm.HashPassword(command.Password, salt);
+            var user = _accountRepository.Create(command.FullName, command.Email, command.AvatarUrl);
             _passwordHashRepository.Create(user.Id, hash, salt, hashAlgorithm.GetName());
             
             GenerateAndSendEmailVerificationToken(user);
@@ -118,11 +120,11 @@ public class AccountService
         return Convert.ToBase64String(randomBytes);
     }
 
-    public User? GetUserByEmail(string email)
+    public User? GetUserByEmail(UserQuery query)
     {
         try
         {
-            return _accountRepository.GetUserByEmail(email);
+            return _accountRepository.GetUserByEmail(query.Email);
         }
         catch (Exception ex)
         {

@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models;
+using Service.CQ.Commands;
 
 namespace Service;
 
@@ -14,26 +15,26 @@ public class CourseService
 
     public IEnumerable<Course> GetAllCourses()
     {
-        return _courseRepository.GetAllCourses().Result;
+        return _courseRepository.GetAllCourses();
     }
 
     public Course GetCourseById(int id)
     {
-        return _courseRepository.GetCourseById(id).Result;
+        return _courseRepository.GetCourseById(id);
     }
 
-    public Course CreateCourse(string title, string description, string courseImgUrl)
+    public Course CreateCourse(CreateCourseCommand command)
     {
-        return _courseRepository.AddCourse(title, description, courseImgUrl).Result;
+        return _courseRepository.AddCourse(command.Title, command.Description, command.CourseImgUrl);
     }
 
-    public Course UpdateCourse(int id, string title, string description, string courseImgUrl)
+    public Course UpdateCourse(UpdateCourseCommand command)
     {
-        return _courseRepository.UpdateCourse(id, title, description, courseImgUrl).Result;
+        return _courseRepository.UpdateCourse(command.Id, command.Title, command.Description, command.CourseImgUrl);
     }
 
     public void DeleteCourse(int id)
     {
-        _courseRepository.DeleteCourse(id).GetAwaiter().GetResult();
+        _courseRepository.DeleteCourse(id);
     }
 }

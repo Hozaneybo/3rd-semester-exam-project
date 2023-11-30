@@ -1,8 +1,8 @@
 ﻿using Infrastructure.Models;
 
-namespace _3rd_semester_exam_project.DTOs.QueryDTOs.UserDTOs;
+namespace _3rd_semester_exam_project.DTOs;
 
-public class UserDto
+public class UserResult
 {
     public int Id { get; set; }
     public required string Fullname { get; set; }

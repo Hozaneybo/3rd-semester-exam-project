@@ -14,40 +14,53 @@ public class LessonRepository : ILessonRepository
         _dataSource = dataSource;
     }
 
-    public async Task<IEnumerable<Lesson>> GetAllLessons()
+    public IEnumerable<Lesson> GetAllLessons()
     {
         const string sql = @"
 SELECT id, title, content, course_id
 FROM learning_platform.lessons;
 ";
         using var connection = _dataSource.OpenConnection();
-        return await connection.QueryAsync<Lesson>(sql);
+        return connection.Query<Lesson>(sql);
     }
 
-    public async Task<Lesson> GetLessonById(int id)
+    public Lesson GetLessonById(int courseId, int id)
     {
-        const string lessonSql = @"
-SELECT * FROM learning_platform.lessons
-WHERE id = @Id;
+        const string lessonSql = $@"
+SELECT 
+    id as {nameof(Lesson.Id)},
+    title as {nameof(Lesson.Title)},
+    content as {nameof(Lesson.Content)},
+    course_id as {nameof(Lesson.CourseId)}
+    From learning_platform.lessons
+WHERE id = @Id AND course_id = @CourseId;
 ";
 
-        const string picturesSql = @"
-SELECT * FROM learning_platform.lesson_pictures
+        const string picturesSql = $@"
+SELECT
+    id as {nameof(LessonPicture.Id)},
+    img_url as {nameof(LessonPicture.ImgUrl)},
+    lesson_id as {nameof(LessonPicture.LessonId)}
+    FROM learning_platform.lesson_pictures
 WHERE lesson_id = @Id;
 ";
 
-        const string videosSql = @"
-SELECT * FROM learning_platform.lesson_videos
+        const string videosSql = $@"
+SELECT 
+    id as {nameof(LessonVideo.Id)},
+    video_url as {nameof(LessonVideo.VideoUrl)},
+    lesson_id as {nameof(LessonVideo.LessonId)}
+    FROM learning_platform.lesson_videos
 WHERE lesson_id = @Id;
 ";
 
         using var connection = _dataSource.OpenConnection();
-        var lesson = await connection.QuerySingleOrDefaultAsync<Lesson>(lessonSql, new { Id = id });
+        var lesson = connection.QuerySingleOrDefault<Lesson>(lessonSql, new { Id = id, CourseId = courseId });
 
         if (lesson != null)
         {
-            var pictures = await connection.QueryAsync<LessonPicture>(picturesSql, new { Id = id });
-            var videos = await connection.QueryAsync<LessonVideo>(videosSql, new { Id = id });
+            var pictures = connection.Query<LessonPicture>(picturesSql, new { Id = id });
+            var videos = connection.Query<LessonVideo>(videosSql, new { Id = id });
 
             lesson.ImgUrls = pictures.ToList();
             lesson.VideoUrls = videos.ToList();
@@ -57,22 +70,33 @@ WHERE lesson_id = @Id;
     }
 
 
-    public async Task<Lesson> AddLesson(string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+    public Lesson AddLesson(string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
     {
-        const string insertLessonSql = @"
+        const string insertLessonSql = $@"
 INSERT INTO learning_platform.lessons (title, content, course_id)
 VALUES (@Title, @Content, @CourseId)
-RETURNING *;
-";
+RETURNING 
+    id as {nameof(Lesson.Id)},
+    title as {nameof(Lesson.Title)},
+    content as {nameof(Lesson.Content)},
+    course_id as {nameof(Lesson.CourseId)};";
 
-        const string insertPictureSql = @"
+        const string insertPictureSql = $@"
 INSERT INTO learning_platform.lesson_pictures (img_url, lesson_id)
-VALUES (@ImgUrl, @LessonId);
+VALUES (@ImgUrl, @LessonId) 
+RETURNING
+    id as {nameof(LessonPicture.Id)},
+    img_url as {nameof(LessonPicture.ImgUrl)},
+    lesson_id as {nameof(LessonPicture.LessonId)};
 ";
 
-        const string insertVideoSql = @"
+        const string insertVideoSql = $@"
 INSERT INTO learning_platform.lesson_videos (video_url, lesson_id)
-VALUES (@VideoUrl, @LessonId);
+VALUES (@VideoUrl, @LessonId) 
+RETURNING 
+    id as {nameof(LessonVideo.Id)},
+    video_url as {nameof(LessonVideo.VideoUrl)},
+    lesson_id as {nameof(LessonVideo.LessonId)};
 ";
 
         using var connection = _dataSource.OpenConnection();
@@ -80,16 +104,16 @@ VALUES (@VideoUrl, @LessonId);
 
         try
         {
-            var lesson = await connection.QueryFirstAsync<Lesson>(insertLessonSql, new { Title = title, Content = content, CourseId = courseId }, transaction);
+            var lesson = connection.QueryFirst<Lesson>(insertLessonSql, new { Title = title, Content = content, CourseId = courseId }, transaction);
 
             foreach (var imgUrl in pictureUrls)
-            {
-                await connection.ExecuteAsync(insertPictureSql, new { ImgUrl = imgUrl, LessonId = lesson.Id }, transaction);
+            { 
+                connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = lesson.Id }, transaction);
             }
 
             foreach (var videoUrl in videoUrls)
-            {
-                await connection.ExecuteAsync(insertVideoSql, new { VideoUrl = videoUrl, LessonId = lesson.Id }, transaction);
+            { 
+                connection.Execute(insertVideoSql, new { VideoUrl = videoUrl, LessonId = lesson.Id }, transaction);
             }
 
             transaction.Commit();
@@ -103,7 +127,7 @@ VALUES (@VideoUrl, @LessonId);
     }
     
     
-    public async Task<Lesson> UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
+    public Lesson UpdateLesson(int id, string title, string content, int courseId, IEnumerable<string> pictureUrls, IEnumerable<string> videoUrls)
 {
     using var connection = _dataSource.OpenConnection();
     using var transaction = connection.BeginTransaction();
@@ -117,7 +141,7 @@ SET title = @Title, content = @Content, course_id = @CourseId
 WHERE id = @Id
 RETURNING *;";
 
-        var lesson = await connection.QueryFirstOrDefaultAsync<Lesson>(updateLessonSql, new { Id = id, Title = title, Content = content, CourseId = courseId }, transaction);
+        var lesson = connection.QueryFirstOrDefault<Lesson>(updateLessonSql, new { Id = id, Title = title, Content = content, CourseId = courseId }, transaction);
 
         if (lesson == null)
         {
@@ -136,8 +160,8 @@ WHERE lesson_id = @LessonId AND img_url != ALL(@ImgUrls);";
 DELETE FROM learning_platform.lesson_videos
 WHERE lesson_id = @LessonId AND video_url != ALL(@VideoUrls);";
 
-        await connection.ExecuteAsync(deletePicturesSql, new { LessonId = id, ImgUrls = pictureUrlList }, transaction);
-        await connection.ExecuteAsync(deleteVideosSql, new { LessonId = id, VideoUrls = videoUrlList }, transaction);
+         connection.Execute(deletePicturesSql, new { LessonId = id, ImgUrls = pictureUrlList }, transaction);
+         connection.Execute(deleteVideosSql, new { LessonId = id, VideoUrls = videoUrlList }, transaction);
         
         var insertPictureSql = @"
 INSERT INTO learning_platform.lesson_pictures (img_url, lesson_id)
@@ -150,13 +174,13 @@ VALUES (@VideoUrl, @LessonId)
 ON CONFLICT (video_url, lesson_id) DO NOTHING;";
 
         foreach (var imgUrl in pictureUrlList)
-        {
-            await connection.ExecuteAsync(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
+        { 
+            connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
         }
 
         foreach (var videoUrl in videoUrlList)
-        {
-            await connection.ExecuteAsync(insertVideoSql, new { VideoUrl = videoUrl, LessonId = id }, transaction);
+        { 
+            connection.Execute(insertVideoSql, new { VideoUrl = videoUrl, LessonId = id }, transaction);
         }
 
         transaction.Commit();
@@ -171,13 +195,13 @@ ON CONFLICT (video_url, lesson_id) DO NOTHING;";
 
 
 
-    public async Task DeleteLesson(int id)
+    public void DeleteLesson(int id)
     {
         const string sql = @"
 DELETE FROM learning_platform.lessons
 WHERE id = @Id;
 ";
-        using var connection = _dataSource.OpenConnection();
-        await connection.ExecuteAsync(sql, new { Id = id });
+        using var connection = _dataSource.OpenConnection(); 
+        connection.Execute(sql, new { Id = id });
     }
 }
