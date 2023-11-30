@@ -79,7 +79,10 @@ RETURNING
     {
         const string sql = @"
 UPDATE learning_platform.courses
-SET title = @Title, description = @Description, course_img_url = @CourseImgUrl
+SET 
+    title = COALESCE(@Title, title),
+    description = COALESCE(@Description, description),
+    course_img_url = COALESCE(@CourseImgUrl, course_img_url)
 WHERE id = @Id
 RETURNING *;
 ";

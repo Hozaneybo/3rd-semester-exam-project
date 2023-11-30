@@ -2,6 +2,7 @@
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using Service.CQ.Queries;
 
 namespace _3rd_semester_exam_project.Controllers;
 
@@ -11,11 +12,13 @@ public class StudentController : ControllerBase
 {
     private readonly CourseService _courseService;
     private readonly LessonService _lessonService;
+    private readonly SharedService _sharedService;
 
-    public StudentController(CourseService courseService, LessonService lessonService)
+    public StudentController(CourseService courseService, LessonService lessonService, SharedService sharedService)
     {
         _courseService = courseService;
         _lessonService = lessonService;
+        _sharedService = sharedService;
     }
     
     [HttpGet("courses")]
@@ -98,5 +101,42 @@ public class StudentController : ControllerBase
             ResponseData = lessonContent
         };
     }
+    
+    [HttpGet("users/role")]
+    public ResponseDto GetUsersByRole(RoleQueryModel roleQueryModel)
+    {
+
+        var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult()
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            EmailVerified = user.EmailVerified
+        }).ToList();
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully fetched",
+            ResponseData = users
+        };
+    }
+    
+    [HttpGet("search")]
+    public ResponseDto Search([FromQuery] SearchQueryModel queryModel)
+    {
+        var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto
+        {
+            Type = result.Type,
+            Term = result.Term
+        }).ToList();
+
+        return new ResponseDto
+        {
+            MessageToClient = "Search results fetched successfully",
+            ResponseData = searchResults
+        };
+    }
+
     
 }
