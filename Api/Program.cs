@@ -4,7 +4,6 @@ using Infrastructure;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Service;
-using Service.AdminService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDistributedMemoryCache();
@@ -21,17 +20,19 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
-builder.Services.AddSingleton<AccountRepository>();
+builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
 builder.Services.AddSingleton<ILessonRepository, LessonRepository>();
-builder.Services.AddSingleton<LessonService>();
+builder.Services.AddSingleton<ISharedRepository, SharedRepository>();
+builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
+builder.Services.AddSingleton<IAdminRepository, AdminRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
-builder.Services.AddSingleton<AdminRepository>();
+
+builder.Services.AddSingleton<LessonService>();
 builder.Services.AddSingleton<AdminService>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<CourseService>();
-builder.Services.AddSingleton<SharedRepository>();
 builder.Services.AddSingleton<SharedService>();
-builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -134,10 +134,11 @@ RETURNING
 
     try
     {
-        
         var updateLessonSql = @"
 UPDATE learning_platform.lessons
-SET title = @Title, content = @Content, course_id = @CourseId
+SET title = COALESCE(@Title, title), 
+    content = COALESCE(@Content, content), 
+    course_id = COALESCE(@CourseId, course_id)
 WHERE id = @Id
 RETURNING *;";
 
@@ -148,39 +149,47 @@ RETURNING *;";
             transaction.Rollback();
             return null;
         }
-        
-        var pictureUrlList = pictureUrls.ToList();
-        var videoUrlList = videoUrls.ToList();
-        
-        var deletePicturesSql = @"
+
+        // Update pictures only if the list is provided
+        if (pictureUrls != null)
+        {
+            var pictureUrlList = pictureUrls.ToList();
+            var deletePicturesSql = @"
 DELETE FROM learning_platform.lesson_pictures
 WHERE lesson_id = @LessonId AND img_url != ALL(@ImgUrls);";
 
-        var deleteVideosSql = @"
-DELETE FROM learning_platform.lesson_videos
-WHERE lesson_id = @LessonId AND video_url != ALL(@VideoUrls);";
-
-         connection.Execute(deletePicturesSql, new { LessonId = id, ImgUrls = pictureUrlList }, transaction);
-         connection.Execute(deleteVideosSql, new { LessonId = id, VideoUrls = videoUrlList }, transaction);
-        
-        var insertPictureSql = @"
+            var insertPictureSql = @"
 INSERT INTO learning_platform.lesson_pictures (img_url, lesson_id)
 VALUES (@ImgUrl, @LessonId)
 ON CONFLICT (img_url, lesson_id) DO NOTHING;";
 
-        var insertVideoSql = @"
+            connection.Execute(deletePicturesSql, new { LessonId = id, ImgUrls = pictureUrlList }, transaction);
+            
+            foreach (var imgUrl in pictureUrlList)
+            { 
+                connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
+            }
+        }
+
+        // Update videos only if the list is provided
+        if (videoUrls != null)
+        {
+            var videoUrlList = videoUrls.ToList();
+            var deleteVideosSql = @"
+DELETE FROM learning_platform.lesson_videos
+WHERE lesson_id = @LessonId AND video_url != ALL(@VideoUrls);";
+
+            var insertVideoSql = @"
 INSERT INTO learning_platform.lesson_videos (video_url, lesson_id)
 VALUES (@VideoUrl, @LessonId)
 ON CONFLICT (video_url, lesson_id) DO NOTHING;";
 
-        foreach (var imgUrl in pictureUrlList)
-        { 
-            connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
-        }
-
-        foreach (var videoUrl in videoUrlList)
-        { 
-            connection.Execute(insertVideoSql, new { VideoUrl = videoUrl, LessonId = id }, transaction);
+            connection.Execute(deleteVideosSql, new { LessonId = id, VideoUrls = videoUrlList }, transaction);
+            
+            foreach (var videoUrl in videoUrlList)
+            { 
+                connection.Execute(insertVideoSql, new { VideoUrl = videoUrl, LessonId = id }, transaction);
+            }
         }
 
         transaction.Commit();
@@ -192,6 +201,7 @@ ON CONFLICT (video_url, lesson_id) DO NOTHING;";
         throw;
     }
 }
+
 
 
 

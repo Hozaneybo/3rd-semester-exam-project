@@ -43,6 +43,10 @@ namespace Infrastructure
             {
                 throw new Exception("Failed to open Postgres connection with provided connection string.", ex);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred while initializing the Utilities class.", ex);
+            }
         }
     }
 }

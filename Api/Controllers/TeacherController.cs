@@ -112,10 +112,11 @@ public class TeacherController : ControllerBase
     {
 
         var createdLesson = _lessonService.AddLesson(command);
+        
         return new ResponseDto
         {
             MessageToClient = "Successfully created",
-            ResponseData = createdLesson
+            ResponseData = GetLessonById(createdLesson.CourseId, createdLesson.Id)
         };
     }
     
@@ -123,6 +124,7 @@ public class TeacherController : ControllerBase
     [HttpPut("lessons/update/{id}")]
     public ResponseDto UpdateLesson(int id, [FromBody] UpdateLessonCommand command)
     {
+        
         var updatedLesson =  _lessonService.UpdateLesson(command);
 
         if (updatedLesson == null)
@@ -133,7 +135,7 @@ public class TeacherController : ControllerBase
         return new ResponseDto
         {
             MessageToClient = "Lesson successfully updated",
-            ResponseData = updatedLesson
+            ResponseData = GetLessonById(command.CourseId, id)
         };
     }
 
@@ -165,6 +167,21 @@ public class TeacherController : ControllerBase
         {
             MessageToClient = "Successfully fetched",
             ResponseData = users
+        };
+    }
+    [HttpGet("search")]
+    public ResponseDto Search([FromQuery] SearchQueryModel queryModel)
+    {
+        var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto
+        {
+            Type = result.Type,
+            Term = result.Term
+        }).ToList();
+
+        return new ResponseDto
+        {
+            MessageToClient = "Search results fetched successfully",
+            ResponseData = searchResults
         };
     }
 }

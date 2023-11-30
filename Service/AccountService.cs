@@ -1,5 +1,6 @@
 ﻿using System.Security.Authentication;
 using System.Security.Cryptography;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
@@ -13,9 +14,9 @@ public class AccountService
 {
     private readonly ILogger<AccountService> _logger;
     private readonly PasswordHashRepository _passwordHashRepository;
-    private readonly AccountRepository _accountRepository;
+    private readonly IAccountRepository _accountRepository;
 
-    public AccountService(ILogger<AccountService> logger, AccountRepository accountRepository,
+    public AccountService(ILogger<AccountService> logger, IAccountRepository accountRepository,
         PasswordHashRepository passwordHashRepository)
     {
         _logger = logger;

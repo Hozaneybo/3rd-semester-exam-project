@@ -1,10 +1,11 @@
 ﻿using Dapper;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
 
-public class AdminRepository
+public class AdminRepository : IAdminRepository
 {
     
     private readonly NpgsqlDataSource _dataSource;
@@ -39,9 +40,14 @@ FROM learning_platform.users
         }
         
         const string sql = @"
-    UPDATE learning_platform.users
-    SET full_name = @fullname, email = @email, avatar_url = @avatarUrl, role = @role
-    WHERE id = @id RETURNING id, full_name, email, avatar_url, role, email_verified;";
+UPDATE learning_platform.users
+SET 
+    full_name = COALESCE(@fullname, full_name),
+    email = COALESCE(@email, email),
+    avatar_url = COALESCE(@avatarUrl, avatar_url),
+    role = COALESCE(@role::text, role)
+WHERE id = @id 
+RETURNING id, full_name, email, avatar_url, role, email_verified;";
         
         using var connection = _dataSource.OpenConnection();
         return connection.QuerySingle<User>(sql, new { id, fullname, email, avatarUrl, role = role.ToString()});

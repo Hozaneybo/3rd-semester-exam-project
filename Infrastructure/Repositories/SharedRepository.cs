@@ -1,10 +1,11 @@
 ﻿using Dapper;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
 
-public class SharedRepository
+public class SharedRepository : ISharedRepository
 {
     private readonly NpgsqlDataSource _dataSource;
 

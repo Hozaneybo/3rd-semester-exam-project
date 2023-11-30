@@ -2,8 +2,8 @@
 using _3rd_semester_exam_project.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.AdminService;
 using Service.CQ.Commands;
+using Service.CQ.Queries;
 
 namespace _3rd_semester_exam_project.Controllers;
 
@@ -14,12 +14,14 @@ public class AdminController : ControllerBase
     private readonly AdminService _service;
     private readonly CourseService _courseService;
     private readonly LessonService _lessonService;
+    private readonly SharedService _sharedService;
 
-    public AdminController(AdminService service, CourseService courseService, LessonService lessonService)
+    public AdminController(AdminService service, CourseService courseService, LessonService lessonService, SharedService sharedService)
     {
         _service = service;
         _courseService = courseService;
         _lessonService = lessonService;
+        _sharedService = sharedService;
     }
     
     
@@ -145,7 +147,7 @@ public class AdminController : ControllerBase
         return new ResponseDto
         {
             MessageToClient = "Successfully updated",
-            ResponseData = _courseService.UpdateCourse(command)
+            ResponseData = GetCourseById(id)
                 
         };
     }
@@ -227,6 +229,7 @@ public class AdminController : ControllerBase
     [HttpPut("lessons/update/{id}")]
     public ResponseDto UpdateLesson(int id, [FromBody] UpdateLessonCommand command)
     {
+        
         var updatedLesson =  _lessonService.UpdateLesson(command);
 
         if (updatedLesson == null)
@@ -237,7 +240,7 @@ public class AdminController : ControllerBase
         return new ResponseDto
         {
             MessageToClient = "Lesson successfully updated",
-            ResponseData = updatedLesson
+            ResponseData = GetLessonById(command.CourseId, id)
         };
     }
     
@@ -248,6 +251,42 @@ public class AdminController : ControllerBase
         return new ResponseDto
         {
             MessageToClient = "Successfully deleted "
+        };
+    }
+    
+    [HttpGet("users/role")]
+    public ResponseDto GetUsersByRole(RoleQueryModel roleQueryModel)
+    {
+
+        var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult()
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            EmailVerified = user.EmailVerified
+        }).ToList();
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully fetched",
+            ResponseData = users
+        };
+    }
+    
+    [HttpGet("search")]
+    public ResponseDto Search([FromQuery] SearchQueryModel queryModel)
+    {
+        var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto
+        {
+            Type = result.Type,
+            Term = result.Term
+        }).ToList();
+
+        return new ResponseDto
+        {
+            MessageToClient = "Search results fetched successfully",
+            ResponseData = searchResults
         };
     }
     

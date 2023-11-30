@@ -61,6 +61,11 @@ public class GlobalExceptionHandler
             http.Response.StatusCode = StatusCodes.Status501NotImplemented;
             return http.Response.WriteAsJsonAsync(new ResponseDto { MessageToClient = "Unable to process request" });
         }
+        else if (exception is TimeoutException)
+        {
+            http.Response.StatusCode = StatusCodes.Status408RequestTimeout;
+            return http.Response.WriteAsJsonAsync(new ResponseDto { MessageToClient = "Request timed out" });
+        }
         else
         {
             http.Response.StatusCode = StatusCodes.Status500InternalServerError;

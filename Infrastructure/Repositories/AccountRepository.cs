@@ -1,10 +1,11 @@
 ﻿using Dapper;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Npgsql;
 
 namespace Infrastructure.Repositories;
 
-public class AccountRepository
+public class AccountRepository : IAccountRepository
 {
     private readonly NpgsqlDataSource _dataSource;
 
@@ -29,13 +30,18 @@ RETURNING
             using var connection = _dataSource.OpenConnection();
             return connection.QueryFirst<User>(sql, new { fullName, email, avatarUrl });
         }
-        catch (PostgresException ex)
+        catch (PostgresException ex) when (ex.SqlState == "23505")
         {
-            if (ex.SqlState == "23505")
-            {
-                throw new InvalidOperationException("A user with this email address already exists.");
-            }
-            throw;
+            throw new InvalidOperationException("A user with this email address already exists.", ex);
+        }
+        catch (TimeoutException ex)
+        {
+            throw new Exception("The operation timed out.", ex);
+        }
+        catch (Exception ex)
+        {
+            
+            throw new Exception("An unexpected error occurred.", ex);
         }
 
     }
@@ -53,8 +59,19 @@ SELECT
 FROM learning_platform.users
 WHERE id = @id;
 ";
-        using var connection = _dataSource.OpenConnection();
-        return connection.QueryFirstOrDefault<User>(sql, new { id });
+        try
+        {
+            using var connection = _dataSource.OpenConnection();
+            return connection.QueryFirstOrDefault<User>(sql, new { id });
+        }
+        catch (PostgresException ex)
+        {
+            throw new Exception("Database operation failed.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred.", ex);
+        }
     }
 
     public void VerifyEmail(int userId)
@@ -64,8 +81,20 @@ UPDATE learning_platform.users
 SET email_verified = TRUE, email_verification_token = NULL, email_token_expires_at = NULL
 WHERE id = @UserId;
 ";
-        using var connection = _dataSource.OpenConnection();
-        connection.Execute(sql, new { UserId = userId });
+        try
+        {
+            using var connection = _dataSource.OpenConnection();
+            connection.Execute(sql, new { UserId = userId });
+        }
+        catch (PostgresException ex)
+        {
+            throw new Exception("Database operation failed.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred.", ex);
+        }
+        
     }
 
     public void SetPasswordResetToken(int userId, string token, DateTime? expiresAt)
@@ -75,8 +104,20 @@ UPDATE learning_platform.users
 SET password_reset_token = @Token, password_reset_token_expires_at = @ExpiresAt
 WHERE id = @UserId;
 ";
-        using var connection = _dataSource.OpenConnection();
-        connection.Execute(sql, new { UserId = userId, Token = token, ExpiresAt = expiresAt });
+        try
+        {
+            using var connection = _dataSource.OpenConnection();
+            connection.Execute(sql, new { UserId = userId, Token = token, ExpiresAt = expiresAt });
+        }
+        catch (PostgresException ex)
+        {
+            throw new Exception("Database operation failed.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred.", ex);
+        }
+        
     }
 
     public User GetUserByPasswordResetToken(string token)
