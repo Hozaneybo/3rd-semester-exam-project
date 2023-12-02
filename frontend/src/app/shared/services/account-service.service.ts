@@ -10,11 +10,16 @@ import {ResponseDto} from "../Models/LoginModels";
 export class AccountServiceService {
 
 
-  private readonly loginUrl = environment.apiEndpoint + 'api/account/login';
+  private readonly url = environment.apiEndpoint + 'api/account/' ;
 
   constructor(private http: HttpClient) { }
 
   login(credentials: any): Observable<ResponseDto<any>> {
-    return this.http.post<ResponseDto<any>>(this.loginUrl, credentials);
+    return this.http.post<ResponseDto<any>>(this.url + 'login', credentials);
   }
+
+  register(userData: any): Observable<ResponseDto<any>> {
+    return this.http.post<ResponseDto<any>>(this.url + 'register', userData);
+  }
+
 }

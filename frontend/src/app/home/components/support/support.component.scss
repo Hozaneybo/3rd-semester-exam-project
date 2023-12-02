@@ -41,16 +41,16 @@ p {
 
 .form-group input,
 .form-group textarea {
-  width: 100%; /* Full width fields */
-  padding: 10px; /* Padding for input fields */
-  border: 1px solid #ccc; /* Subtle border for the fields */
-  border-radius: 5px; /* Slightly rounded borders for the fields */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .submit-button {
   width: 100%;
   padding: 10px 15px;
-  background-color: #00468b; /* Use a color that matches your theme */
+  background-color: #00468b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -60,5 +60,5 @@ p {
 }
 
 .submit-button:hover {
-  background-color: #003366; /* Darker shade on hover */
+  background-color: #003366;
 }
