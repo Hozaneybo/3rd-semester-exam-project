@@ -1,0 +1,135 @@
+/* Add this CSS to home.page.scss */
+.active-link {
+  --color: var(--ion-color-tertiary); /* Highlight color */
+  border-bottom: 3px solid var(--ion-color-tertiary); /* Bottom border for highlight */
+}
+
+/* Ionic colors */
+:root {
+  --ion-color-primary: #488aff; /* A blue color for the toolbar */
+  --ion-color-secondary: #32db64; /* A green color for the segment buttons */
+  --ion-color-tertiary: #7044ff; /* An attractive purple color for highlights */
+}
+ion-img {
+  height: 40px; /* Adjust the height to fit your design */
+  width: auto; /* Maintain aspect ratio */
+}
+
+
+/* Add this to your courses section CSS file */
+.courses-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap onto the next line if needed */
+  justify-content: space-around; /* Evenly spaces the course items with space around them */
+  padding: 20px;
+}
+
+.course {
+  flex-basis: 20%; /* Adjust this value to change the width of each course component */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin: 10px;
+  text-align: center; /* Centers the text inside each course component */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.course img {
+  width: 100%; /* Makes the image take up the full width of its container */
+  height: auto; /* Keeps the aspect ratio of the image */
+  border-radius: 4px; /* Optional: Rounds the corners of the image */
+}
+
+.course-info {
+  padding: 15px;
+}
+
+.course h3 {
+  margin-top: 10px;
+}
+
+.course p {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.course:hover {
+  transform: translateY(-5px); /* Raises the course component slightly on hover */
+}
+
+@media (max-width: 768px) {
+  .course {
+    flex-basis: 45%; /* Increase the width of each course component on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .course {
+    flex-basis: 90%; /* Full width on very small screens */
+  }
+}
+/* This will make each course component extremely small */
+.course {
+  flex-basis: calc(13% - 20px);
+
+}
+html, body {
+  height: 100%; /* Set the height to take up the full viewport height */
+  margin: 0; /* Remove default margin */
+}
+
+.content {
+  min-height: calc(100% - 75px); /* 100% viewport height minus the footer height */
+  /* Your content styling here */
+  /* Padding bottom equals to footer height to ensure content doesn't get hidden behind it */
+  padding-bottom: 75px;
+}
+
+ion-footer {
+  height: 50px;
+  width: 100%; /* Full width */
+  position: fixed; /* Fixed position */
+  bottom: 0; /* Stick to the bottom */
+  left: 0; /* Align left */
+  background-color: var(--ion-color-primary); /* Footer background color */
+  color: black; /* Text color */
+  /* Your footer styling here */
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  width: 100%; /* Ensure the footer content spans the full width of the footer */
+}
+
+.footer-section {
+  display: flex; /* Display items in a row */
+  align-items: center; /* Align items vertically */
+  /* If there's not enough space, you may need to adjust padding or font sizes */
+}
+
+/* Additional styling for the footer */
+.footer-section h5, .footer-section p, .footer-section a {
+  margin: 0 10px; /* Add horizontal spacing and remove vertical margin */
+  color: #000000; /* Ensure all text is black */
+  white-space: nowrap; /* Prevent wrapping to a new line */
+}
+
+/* Adjust font size as needed to fit the content in the footer */
+.footer-section h5 {
+  font-size: 1em; /* Example size, adjust as needed */
+}
+
+.footer-section p, .footer-section a {
+  font-size: 0.9em; /* Example size, adjust as needed */
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 768px) {
+  .footer-section {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: flex-start; /* Align items to the start of the footer */
+  }
+
+}
+
+
