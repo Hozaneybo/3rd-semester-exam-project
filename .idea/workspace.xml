@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="55a8c64b-0110-49d6-8bde-6bb53ad0441b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Service/MailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Service/MailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password/reset-password.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password-request/reset-password-request.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password/reset-password.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password-request/reset-password-request.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password/reset-password.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password-request/reset-password-request.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password/reset-password.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/reset-password-request/reset-password-request.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/services/account-service.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/services/account-service.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/shared-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/shared-routing.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/shared.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/shared.module.ts" afterDir="false" />
@@ -26,7 +30,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="28-impelement-verify-email-in-frontend" />
+        <entry key="$PROJECT_DIR$" value="30-implement-reset-password-in-frontend" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,7 +54,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "30-implement-reset-password-in-frontend",
+    "git-widget-placeholder": "33-implement-reset-password-in-frontend",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/dilbe/WebstormProjects/3rd-semester-exam-project/frontend/src/assets/icon",
     "node.js.detected.package.eslint": "true",
@@ -58,7 +62,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\dilbe\\WebstormProjects\\3rd-semester-exam-project\\frontend\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

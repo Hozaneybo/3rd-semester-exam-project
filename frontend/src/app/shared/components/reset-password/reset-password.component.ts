@@ -1,43 +1,61 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators} from "@angular/forms";
-import {AccountServiceService} from "../../services/account-service.service";
-import {ToastController} from "@ionic/angular";
+import { AccountServiceService } from "../../services/account-service.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ToastController } from '@ionic/angular';
+import {CustomValidators} from "../../CustomValidators";
 import {ResponseDto} from "../../Models/LoginModels";
+
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })
-export class ResetPasswordComponent  implements OnInit {
+export class ResetPasswordComponent implements OnInit {
 
+  resetPasswordForm: FormGroup;
+  token: string;
 
-  email = new FormControl('',[Validators.required, Validators.email]);
-  constructor( private service: AccountServiceService, private toast : ToastController) { }
+  constructor(
+    private service: AccountServiceService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastController: ToastController // Inject ToastController
+  ) {
+    this.token = this.route.snapshot.queryParams['token'];
+    this.resetPasswordForm = new FormGroup({
+      newPassword: new FormControl('', [Validators.required]),
+      confirmPassword: new FormControl('', [Validators.required, CustomValidators.matchOther('newPassword')])
+    });
+  }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  async requestReset() {
-    if (this.email.valid) {
-      this.service.requestResetPassword(this.email.value).subscribe(
-        async (response: ResponseDto<any>) => {
-          const toast = await this.toast.create({
-            message: response.messageToClient || 'If an account with that email exists, a password reset link has been sent.',
-            color: 'success',
-            duration: 5000
-          });
-          toast.present();
-        },
-        async (error: any) => {
-          const errorMessage = error.error.messageToClient || 'There was an error processing your request.';
-          const toast = await this.toast.create({
-            message: errorMessage,
-            color: 'danger',
-            duration: 5000
-          });
-          toast.present();
-        }
-      );
+  async resetPassword() {
+    if (this.resetPasswordForm.invalid) {
+      await this.showToast("Please fill in the form correctly");
+      return;
     }
+
+    const { newPassword } = this.resetPasswordForm.value;
+
+    this.service.resetPassword(this.token, newPassword).subscribe(
+      async (response: ResponseDto<any>) => {
+        await this.showToast(response.messageToClient || "Password reset successful");
+        this.router.navigate(['/login']);
+      },
+      async (error) => {
+        await this.showToast("Error resetting password");
+      }
+    );
+  }
+
+  private async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
   }
 }

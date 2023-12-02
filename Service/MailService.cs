@@ -51,7 +51,7 @@ public static class MailService
     }
     public static void SendPasswordResetEmail(string email, string token)
     {
-        var resetPasswordLink = $"http://localhost:5000/api/account/reset-password?token={token}";
+        var resetPasswordLink = $"http://localhost:4200/reset-password?token={token}";
         
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Learning Platform", Environment.GetEnvironmentVariable("COMPANY_MAIL")));
