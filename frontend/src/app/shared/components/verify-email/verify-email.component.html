@@ -1,0 +1,11 @@
+<ion-content>
+  <!-- Display the message to the client -->
+  <div *ngIf="message" class="verification-message">
+    {{ message }}
+  </div>
+
+  <!-- Button shown after successful verification -->
+  <ion-text *ngIf="emailVerified">
+    <p style="padding-top: 10px"> Your email has been successfully verified, you can login <a routerLink="/login" routerLinkActive = "active-link">here</a></p>
+  </ion-text>
+</ion-content>

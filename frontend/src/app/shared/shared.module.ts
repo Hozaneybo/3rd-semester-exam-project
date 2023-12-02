@@ -6,13 +6,15 @@ import {LoginComponent} from "./components/login/login.component";
 import {IonicModule} from "@ionic/angular";
 import {ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from "./components/register/register.component";
+import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
 
 
 @NgModule({
   declarations:
     [
       LoginComponent,
-      RegisterComponent
+      RegisterComponent,
+      VerifyEmailComponent
     ],
   imports: [
     CommonModule,
