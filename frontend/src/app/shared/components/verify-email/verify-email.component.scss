@@ -1,0 +1,32 @@
+.verification-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.verification-message p {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: #d1d1d1;
+}
+
+a {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-weight: bold;
+
+  &:hover {
+    color: #29b6f6;
+    text-decoration: underline;
+  }
+}
+
+.active-link {
+  color: #66bb6a;
+}

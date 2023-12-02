@@ -12,6 +12,7 @@ export class AccountServiceService {
 
   private readonly url = environment.apiEndpoint + 'api/account/' ;
 
+
   constructor(private http: HttpClient) { }
 
   login(credentials: any): Observable<ResponseDto<any>> {
@@ -20,6 +21,10 @@ export class AccountServiceService {
 
   register(userData: any): Observable<ResponseDto<any>> {
     return this.http.post<ResponseDto<any>>(this.url + 'register', userData);
+  }
+
+  verifyEmail(token: string) {
+    return this.http.get(`${this.url}verify-email`, { params: { token } });
   }
 
 }

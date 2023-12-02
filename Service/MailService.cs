@@ -27,8 +27,8 @@ public static class MailService
     
     public static void SendVerificationEmail(string email, string token)
     {
-        // Use the localhost address in the link.
-        var verificationLink = $"http://localhost:5000/api/account/verify-email?token={token}";
+
+        var verificationLink = $"http://localhost:4200/verify-email?token={token}";
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Learning Platform", Environment.GetEnvironmentVariable("COMPANY_MAIL")));
