@@ -1,0 +1,45 @@
+/* pricing.component.scss */
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  color: white; /* Assuming you want white text */
+}
+
+.pricing-title {
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+.pricing-subtitle {
+  margin-bottom: 20px;
+}
+
+.pricing-table-container {
+  width: 100%; /* Use the full width of the container */
+  overflow-x: auto; /* Allows table to be scrollable on small screens */
+}
+
+.pricing-table {
+  width: 80%; /* Set a desired width or max-width here */
+  margin: 0 auto; /* Center the table */
+  border-collapse: collapse;
+}
+
+.pricing-table th, .pricing-table td {
+  border: 1px solid #dddddd; /* Light grey border */
+  text-align: left;
+  padding: 8px;
+}
+
+.pricing-table th {
+  background-color: #00468b; /* Darker shade for headers */
+}
+
+@media (min-width: 768px) {
+  .pricing-table {
+    width: 60%; /* Larger tables on wider screens */
+  }
+}
