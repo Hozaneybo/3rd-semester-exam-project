@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ToastController} from "@ionic/angular";
-import {firstValueFrom} from "rxjs";
-import {ResponseDto} from "../../Models/LoginModels";
-import {environment} from "../../../../environments/environment";
+import {firstValueFrom, Observable} from "rxjs";
+import {AccountServiceService} from "../../services/account-service.service";
+
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import {environment} from "../../../../environments/environment";
 })
 export class LoginComponent {
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private toast: ToastController ) { }
+  constructor(private fb: FormBuilder, private service : AccountServiceService, private toast: ToastController ) { }
 
   readonly form = this.fb.group({
     email: [null, [Validators.required, Validators.email]],
@@ -21,11 +21,9 @@ export class LoginComponent {
   });
 
 
-
   async submit() {
-    const url = environment.apiEndpoint + 'api/account/login';
     try {
-      var response = await firstValueFrom(this.http.post<ResponseDto<any>>(url, this.form.value));
+      var response = await firstValueFrom(this.service.login(this.form.value));
 
       (await this.toast.create({
         message: response.messageToClient,
@@ -40,4 +38,5 @@ export class LoginComponent {
       })).present();
     }
   }
+
 }
