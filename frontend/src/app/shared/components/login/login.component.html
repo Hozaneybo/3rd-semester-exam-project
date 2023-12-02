@@ -1,0 +1,30 @@
+<ion-content class="ion-padding platform-login">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+    <ion-list style="width: 600px; height: 400px" lines="none">
+      <ion-list-header>
+        <ion-label style="margin-bottom: 20px; font-size: 26px" position="stacked" class="ion-text-center header-title">Sign in to Learning Platform</ion-label>
+      </ion-list-header>
+
+
+      <ion-item style="margin: 10px; border-radius: 10px">
+        <ion-label style="margin: 10px" position="floating">Username or email address</ion-label>
+        <ion-input formControlName="email" type="email" required></ion-input>
+      </ion-item>
+
+      <ion-item style="margin: 10px; border-radius: 10px">
+        <ion-label style="margin: 10px" position="floating">Password</ion-label>
+        <ion-input formControlName="password" type="password" required></ion-input>
+      </ion-item>
+
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit" [disabled]="form.invalid">Sign in</ion-button>
+        <ion-text color="medium" class="ion-text-center">
+          <p style="padding-top: 10px">New to Learning Platform? <a>Create an account</a></p>
+        </ion-text>
+        <ion-text color="medium" class="ion-text-center">
+          <p style="padding-top: 10px"><a>Forgot Password?</a></p>
+        </ion-text>
+      </div>
+    </ion-list>
+  </form>
+</ion-content>
