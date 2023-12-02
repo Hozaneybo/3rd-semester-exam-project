@@ -23,23 +23,23 @@
 }
 
 .pricing-table {
-  width: 80%; /* Set a desired width or max-width here */
-  margin: 0 auto; /* Center the table */
+  width: 80%;
+  margin: 0 auto;
   border-collapse: collapse;
 }
 
 .pricing-table th, .pricing-table td {
-  border: 1px solid #dddddd; /* Light grey border */
+  border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
 
 .pricing-table th {
-  background-color: #00468b; /* Darker shade for headers */
+  background-color: #00468b;
 }
 
 @media (min-width: 768px) {
   .pricing-table {
-    width: 60%; /* Larger tables on wider screens */
+    width: 60%;
   }
 }

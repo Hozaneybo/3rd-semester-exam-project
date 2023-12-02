@@ -1,12 +1,11 @@
-/* Add this to your CSS file */
 .centered-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Full height of the viewport */
-  text-align: center; /* Center text alignment */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
 }
 
 .centered-container h1 {
-  margin: 0; /* Remove default margin */
+  margin: 0;
 }

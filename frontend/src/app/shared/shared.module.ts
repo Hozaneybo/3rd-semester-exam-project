@@ -5,10 +5,15 @@ import { SharedRoutingModule } from './shared-routing.module';
 import {LoginComponent} from "./components/login/login.component";
 import {IonicModule} from "@ionic/angular";
 import {ReactiveFormsModule} from "@angular/forms";
+import {RegisterComponent} from "./components/register/register.component";
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations:
+    [
+      LoginComponent,
+      RegisterComponent
+    ],
   imports: [
     CommonModule,
     SharedRoutingModule,
