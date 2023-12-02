@@ -27,4 +27,8 @@ export class AccountServiceService {
     return this.http.get(`${this.url}verify-email`, { params: { token } });
   }
 
+  requestResetPassword(email: any){
+    return this.http.post(this.url + 'request-password-reset', {email});
+  }
+
 }
