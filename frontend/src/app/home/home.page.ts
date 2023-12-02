@@ -26,7 +26,6 @@ import { environment } from 'src/environments/environment';
   ngOnInit() {
     this.getCourses().subscribe(
       (response) => {
-        // Assign the array from responseData to the courses property
         this.courses = response.responseData;
       },
       (error) => {
@@ -35,8 +34,8 @@ import { environment } from 'src/environments/environment';
     );
   }
 
-  getCourses(): Observable<any> { // Use 'any' or create a type that reflects the structure of your response
-    return this.http.get<any>(this.url); // This allows you to access the responseData property
+  getCourses(): Observable<any> {
+    return this.http.get<any>(this.url);
   }
 
 }

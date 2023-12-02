@@ -1,43 +1,31 @@
-<!-- home.page.html -->
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-img slot="start" src="assets/icon/logo.png" alt="Learning Platform Logo"></ion-img>
+  <ion-toolbar color="tertiary">
+    <ion-button slot="start" (click)="selectedSection = 'home'">
+      <ion-img src="assets/icon/logo.png" alt="Learning Platform Logo"></ion-img>
+    </ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="selectedSection = 'home'">Home</ion-button>
+      <ion-button (click)="selectedSection = 'features'">Features</ion-button>
+      <ion-button (click)="selectedSection = 'company'">Company</ion-button>
+      <ion-button (click)="selectedSection = 'pricing'">Pricing</ion-button>
+      <ion-button (click)="selectedSection = 'customers'">Customers</ion-button>
+      <ion-button (click)="selectedSection = 'support'">Support</ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-button routerLink="/login" routerLinkActive="active-link">
         Login
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-segment [(ngModel)]="selectedSection" color="secondary">
-
-    <!-- In home.page.html -->
-    <app-features *ngIf="selectedSection === 'features'"></app-features>
-    <app-company *ngIf="selectedSection === 'company'"></app-company>
-    <app-pricing *ngIf="selectedSection === 'pricing'"></app-pricing>
-    <app-customers *ngIf="selectedSection === 'customers'"></app-customers>
-    <app-support *ngIf="selectedSection === 'support'"></app-support>
-
-    <ion-segment-button (click)="selectedSection = 'home'" value="home">
-      Home
-    </ion-segment-button>
-    <ion-segment-button (click)="selectedSection = 'features'" value="features">
-      Features
-    </ion-segment-button>
-    <ion-segment-button (click)="selectedSection = 'company'" value="company">
-      Company
-    </ion-segment-button>
-    <ion-segment-button (click)="selectedSection = 'pricing'" value="pricing">
-      Pricing
-    </ion-segment-button>
-    <ion-segment-button (click)="selectedSection = 'customers'" value="customers">
-      Customers
-    </ion-segment-button>
-    <ion-segment-button (click)="selectedSection = 'support'" value="support">
-      Support
-    </ion-segment-button>
-  </ion-segment>
 </ion-header>
+
 <ion-content>
+  <app-features *ngIf="selectedSection === 'features'"></app-features>
+  <app-company *ngIf="selectedSection === 'company'"></app-company>
+  <app-pricing *ngIf="selectedSection === 'pricing'"></app-pricing>
+  <app-customers *ngIf="selectedSection === 'customers'"></app-customers>
+  <app-support *ngIf="selectedSection === 'support'"></app-support>
+
   <ion-list *ngIf="selectedSection === 'home'">
     <div class="courses-container">
       <div class="course" *ngFor="let course of courses">
@@ -53,12 +41,10 @@
 
 <ion-footer>
   <div class="footer-content">
-    <!-- ... other footer sections ... -->
     <div class="footer-section">
       <h5>Contact</h5>
-      <p>Email: info&#64;example.com</p> <!-- Replace @ with &#64; -->
+      <p>Email: info&#64;example.com</p>
       <p>Phone: 123-456-7890</p>
     </div>
-    <!-- ... other footer sections ... -->
   </div>
 </ion-footer>
