@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { SharedRoutingModule } from './shared-routing.module';
 import {LoginComponent} from "./components/login/login.component";
 import {IonicModule} from "@ionic/angular";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from "./components/register/register.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
+import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 
 
 @NgModule({
@@ -14,13 +15,15 @@ import {VerifyEmailComponent} from "./components/verify-email/verify-email.compo
     [
       LoginComponent,
       RegisterComponent,
-      VerifyEmailComponent
+      VerifyEmailComponent,
+      ResetPasswordComponent
     ],
   imports: [
     CommonModule,
     SharedRoutingModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class SharedModule { }
