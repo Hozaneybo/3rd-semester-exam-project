@@ -31,4 +31,8 @@ export class AccountServiceService {
     return this.http.post(this.url + 'request-password-reset', {email});
   }
 
+  resetPassword(token: string, newPassword: any) {
+    return this.http.post(`${this.url}reset-password`, { token, newPassword });
+  }
+
 }
