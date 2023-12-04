@@ -15,8 +15,8 @@ export class AccountServiceService {
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: any): Observable<ResponseDto<any>> {
-    return this.http.post<ResponseDto<any>>(this.url + 'login', credentials);
+  login(email: string, password: string): Observable<ResponseDto<any>> {
+    return this.http.post<ResponseDto<any>>(this.url + 'login', { email, password });
   }
 
   register(userData: any): Observable<ResponseDto<any>> {
@@ -33,6 +33,10 @@ export class AccountServiceService {
 
   resetPassword(token: string, newPassword: any) {
     return this.http.post(`${this.url}reset-password`, { token, newPassword });
+  }
+
+  whoAmI(): Observable<ResponseDto<any>> {
+    return this.http.get<ResponseDto<any>>(this.url + 'whoami');
   }
 
 }

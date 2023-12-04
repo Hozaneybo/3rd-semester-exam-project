@@ -1,0 +1,62 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  background-color: #161b22; /* Dark background color */
+  color: #c9d1d9; /* Light text color */
+  border-radius: 6px; /* Rounded corners */
+  padding: 20px; /* Padding inside the dashboard */
+  box-shadow: 0 0 12px rgba(0,0,0,.3); /* Shadow for depth */
+}
+
+.admin-dashboard h1 {
+  text-align: center;
+  color: #58a6ff; /* Highlight color for main title */
+}
+
+.dashboard-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Distribute space between widgets */
+  gap: 20px; /* Space between widgets */
+}
+
+.widget {
+  background: #0d1117; /* Slightly lighter background for the widget */
+  border-radius: 6px; /* Rounded corners */
+  padding: 15px; /* Padding inside widgets */
+  box-shadow: 0 4px 8px rgba(0,0,0,.2); /* Shadow for widgets */
+}
+
+.widget h2 {
+  color: #58a6ff; /* Highlight color for widget titles */
+}
+
+.widget p {
+  color: #c9d1d9; /* Text color for content */
+}
+
+.widget button {
+  background-color: #238636; /* Button color to match the form buttons */
+  color: white; /* Button text color for readability */
+  border: none; /* No border */
+  border-radius: 6px; /* Rounded corners for buttons */
+  padding: 10px 20px; /* Padding inside buttons */
+  cursor: pointer; /* Cursor to pointer to indicate button */
+  transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.widget button:hover {
+  background-color: #2ea043; /* Button hover state color */
+}
+
+/* Responsive layout for widgets */
+@media (max-width: 768px) {
+  .dashboard-widgets {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-widgets {
+    padding: 0;
+  }
+}

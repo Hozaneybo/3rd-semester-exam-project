@@ -1,5 +1,5 @@
 <ion-content class="ion-padding platform-login">
-  <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+  <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
     <ion-list style="width: 500px; height: 400px" lines="none">
       <ion-list-header>
         <ion-label style="font-size: 20px" class="ion-text-center header-title">Sign in to Learning Platform</ion-label>
@@ -17,7 +17,7 @@
       </ion-item>
 
       <div class="ion-padding">
-        <ion-button expand="block" type="submit" [disabled]="form.invalid">Sign in</ion-button>
+        <ion-button expand="block" type="submit" [disabled]="loginForm.invalid">Sign in</ion-button>
         <ion-text color="medium" class="ion-text-center">
           <p style="padding-top: 10px">New to Learning Platform? <a routerLink="/register" routerLinkActive = "active-link">Create an account</a></p>
         </ion-text>

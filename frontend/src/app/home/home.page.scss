@@ -1,10 +1,11 @@
-/* Add this CSS to home.page.scss */
+/*
+!* Add this CSS to home.page.scss *!
 .active-link {
-  --color: var(--ion-color-tertiary); /* Highlight color */
-  border-bottom: 3px solid var(--ion-color-tertiary); /* Bottom border for highlight */
+  --color: var(--ion-color-tertiary); !* Highlight color *!
+  border-bottom: 3px solid var(--ion-color-tertiary); !* Bottom border for highlight *!
 }
 
-/* Ionic colors */
+!* Ionic colors *!
 :root {
   --ion-color-primary: #488aff;
   --ion-color-secondary: #32db64;
@@ -14,6 +15,7 @@ ion-img {
   height: 40px;
   width: auto;
 }
+*/
 
 
 .courses-container {

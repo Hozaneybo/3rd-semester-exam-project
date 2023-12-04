@@ -18,15 +18,16 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Route("/api/account/login")]
-    public ResponseDto Login([FromBody] UserLoginCommand command)
-    {
-        var user = _service.Authenticate(command);
-        HttpContext.SetSessionData(SessionData.FromUser(user));
-        return new ResponseDto
+     public ResponseDto Login([FromBody] UserLoginCommand command)
         {
-            MessageToClient = "Successfully authenticated"
-        };
-    }
+            var user = _service.Authenticate(command);
+            HttpContext.SetSessionData(SessionData.FromUser(user)); // Make sure SessionData includes the user's role
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = new { Role = user.Role } // Include the role in the response
+            };
+        }
 
     [HttpPost]
     [Route("/api/account/logout")]
