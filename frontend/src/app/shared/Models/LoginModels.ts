@@ -1,8 +1,10 @@
 export interface User {
   id: number;
-  fullName: string;
+  fullname: string;
   email: string;
   avatarUrl: string;
+  role : string;
+
 }
 
 export class ResponseDto<T> {

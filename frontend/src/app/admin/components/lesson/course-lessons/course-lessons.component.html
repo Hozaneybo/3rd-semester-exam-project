@@ -1,0 +1,10 @@
+<div *ngIf="lessons && lessons.length">
+  <h2>Lessons</h2>
+  <ul>
+    <li *ngFor="let lesson of lessons">
+      <h3>{{ lesson.title }}</h3>
+      <p>{{ lesson.content }}</p>
+      <!-- Add more lesson details if needed -->
+    </li>
+  </ul>
+</div>

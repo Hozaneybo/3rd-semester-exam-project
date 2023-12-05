@@ -1,0 +1,94 @@
+.role-selection-container {
+  margin: 20px;
+  text-align: center;
+
+  .role-selector {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+}
+
+.user-list-container {
+  margin: 20px;
+  .user-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .user-details {
+      display: flex;
+      align-items: center;
+
+      .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
+      .user-info {
+        h3 {
+          margin: 0;
+          color: #333;
+        }
+
+        p {
+          margin: 0;
+          color: #555;
+        }
+      }
+    }
+
+    .user-actions {
+      .action-button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+
+        &.update {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        &.delete {
+          background-color: #f44336;
+          color: white;
+        }
+        &.back-to-list {
+          background-color: #007bff;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.loading-container {
+  text-align: center;
+  p {
+    font-size: 1rem;
+    color: #aaa;
+  }
+}
+
+.btn-back {
+  background-color: #3298ea;
+  color: white;
+  margin-right: 10px;
+
+}
+
+.success-message {
+  color: green;
+  margin-bottom: 10px;
+}

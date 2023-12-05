@@ -6,13 +6,11 @@ import {Router} from "@angular/router";
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
-export class AdminDashboardComponent  implements OnInit {
+export class AdminDashboardComponent  {
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
-    // Here you could load summary data like user count, course count, etc.
-  }
+
 
   navigateToUsers() {
     this.router.navigate(['/admin/users']);
