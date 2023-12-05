@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {FeaturesComponent} from "./home/components/features/features.component";
 import {CompanyComponent} from "./home/components/company/company.component";
-import {HomePage} from "./home/home.page";
 import {CustomersComponent} from "./home/components/customers/customers.component";
 import {PricingComponent} from "./home/components/pricing/pricing.component";
 import {SupportComponent} from "./home/components/support/support.component";
@@ -26,6 +25,10 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
+    path: 'teacher',
+    loadChildren: () => import('./teacher/teacher.module').then(m => m.TeacherModule)
   }
 ];
 
