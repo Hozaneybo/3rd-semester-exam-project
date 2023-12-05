@@ -20,18 +20,18 @@ export interface LessonView{
   courseId: number,
   title: string,
   content: string,
-  images: LessonPictureView[],
-  videos: LessonVideoView[]
+  imgUrls: LessonPictureView[],
+  videoUrls: LessonVideoView[]
 }
 export interface LessonPictureView{
   id: number,
-  picUrl: string,
+  pictureUrl: string,
   lessonId: number,
 }
 
 export interface LessonVideoView{
   id: number,
-  vidUrl: string,
+  videoUrl: string,
   lessonId: number,
 }
 

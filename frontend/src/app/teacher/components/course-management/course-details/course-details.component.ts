@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TeacherService} from "../../../services/teacher.service";
 import {CourseView, LessonView} from "../../../../shared/Models/CourseModel";
@@ -15,7 +15,8 @@ export class CourseDetailsComponent implements OnInit {
   constructor(
       private teacherService: TeacherService,
       private route: ActivatedRoute,
-      private router: Router
+      private router: Router,
+      private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -49,6 +50,7 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   onLessonSelected(event: CustomEvent) {
+    console.log("Accordion changed, event detail:", event.detail);
     const lessonId = event.detail.value; // The value property contains the lesson ID
     if (this.course?.id) {
       this.teacherService.getLessonById(this.course.id, lessonId).subscribe({
@@ -58,6 +60,7 @@ export class CourseDetailsComponent implements OnInit {
           if (lessonIndex >= 0 && response.responseData) {
             // We can also safely assert that lessons is non-null/non-undefined
             this.course!.lessons[lessonIndex] = response.responseData;
+            this.changeDetectorRef.detectChanges();
           }
         },
         error: (error) => {
