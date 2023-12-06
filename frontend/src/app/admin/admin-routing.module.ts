@@ -9,12 +9,16 @@ import {AllCoursesComponent} from "./components/course/all-courses/all-courses.c
 import {CreateCourseComponent} from "./components/course/create-course/create-course.component";
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
 import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
+import {AdminPageComponent} from "./admin-page/admin-page.component";
 
 const routes: Routes = [
+
   {
-    path: '',
-    component : AdminDashboardComponent
+    path:'',
+    component: AdminPageComponent
   },
+  { path: 'dashboard',
+    component: AdminDashboardComponent },
   {
     path: 'users',
     component: AllUsersComponent
@@ -40,11 +44,11 @@ const routes: Routes = [
     component: CreateCourseComponent
   },
   {
-    path:'update-course/:id',
+    path:'course/update/:id',
     component: UpdateCourseComponent
   },
   {
-    path: 'courses/:courseId/lessons',
+    path: 'courses/:courseId',
     component: CourseLessonsComponent
   },
 ];

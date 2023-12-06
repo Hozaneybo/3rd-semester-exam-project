@@ -45,24 +45,12 @@ export class AllCoursesComponent  implements OnInit {
 
   updateCourse(courseId: number, event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/admin/update-course', courseId]);
+    this.router.navigate(['/admin/course/update', courseId]);
   }
 
 
-  loadLessons(courseId: number): void {
-    this.adminService.getLessonsByCourseId(courseId).subscribe({
-      next: (response) => {
-        if (response && response.responseData) {
-          this.lessons = response.responseData;
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching lessons:', error);
-      }
-    });
-  }
   navigateToLessons(courseId: number) {
     // The actual path needs to match your Angular routing configuration
-    this.router.navigate(['/admin/courses', courseId, 'lessons']);
+    this.router.navigate(['/admin/courses', courseId]);
   }
 }

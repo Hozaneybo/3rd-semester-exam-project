@@ -12,6 +12,7 @@ import {AllCoursesComponent} from "./components/course/all-courses/all-courses.c
 import {CreateCourseComponent} from "./components/course/create-course/create-course.component";
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
 import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
+import {AdminPageComponent} from "./admin-page/admin-page.component";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-
     AllCoursesComponent,
     CreateCourseComponent,
     UpdateCourseComponent,
-    CourseLessonsComponent
+    CourseLessonsComponent,
+    AdminPageComponent
 
   ],
   imports: [

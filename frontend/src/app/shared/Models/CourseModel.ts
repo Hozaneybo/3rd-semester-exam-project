@@ -4,12 +4,18 @@ export interface AllCoursesView{
   description: string,
   courseImgUrl: string
 }
-
-export interface CourseView{
+export interface CreateCourse{
 
   title: string,
   description: string,
   courseImgUrl: string,
+}
+export interface CourseView{
+  id: number,
+  title: string,
+  description: string,
+  courseImgUrl: string,
+  lessons: LessonView[]
 }
 
 export interface LessonView{
@@ -17,27 +23,27 @@ export interface LessonView{
   courseId: number,
   title: string,
   content: string,
-  images: LessonPictureView[],
-  videos: LessonVideoView[]
+  imgUrls: LessonPictureView[],
+  videoUrls: LessonVideoView[]
 }
 export interface LessonPictureView{
   id: number,
-  picUrl: string,
+  pictureUrl: string,
   lessonId: number,
 }
 
 export interface LessonVideoView{
   id: number,
-  vidUrl: string,
+  videoUrl: string,
   lessonId: number,
 }
 
 export interface CreateLessonCommand {
   title: string;
   content: string;
-  imgUrls: string[];
-  videoUrls: string[];
   courseId: number;
+  pictureUrls?: string[];
+  videoUrls?: string[];
 }
 
 export interface UpdateLessonCommand {

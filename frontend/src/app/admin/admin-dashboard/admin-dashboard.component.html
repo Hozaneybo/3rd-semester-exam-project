@@ -1,24 +1,31 @@
-<!-- admin-dashboard.component.html -->
-<div class="admin-dashboard">
-  <h1 style="margin-bottom:40px">Admin Dashboard</h1>
-  <div class="dashboard-widgets">
-    <div class="widget users-widget">
-      <h2>Users</h2>
-      <p>Total number of users: <!-- Display user count --></p>
-      <button (click)="navigateToUsers()">Manage Users</button>
+
+<ion-header>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="admin-dashboard">
+    <h1 style="margin-bottom:40px">Admin Dashboard</h1>
+    <div class="dashboard-widgets">
+      <div class="widget users-widget">
+        <h2>Users</h2>
+        <p>Total number of users: <!-- Display user count --></p>
+        <button (click)="navigateToUsers()">Manage Users</button>
+      </div>
+      <div class="widget courses-widget">
+        <h2>Courses</h2>
+        <p>Total number of courses: <!-- Display courses count --></p>
+        <button (click)="navigateToCourses()">Manage Courses</button>
+      </div>
+      <div class="widget lessons-widget">
+        <h2>Lessons</h2>
+        <p>Total number of lessons: <!-- Display lessons count --></p>
+        <button (click)="navigateToLessons()">Manage Lessons</button>
+      </div>
+      <!-- More widgets as needed -->
     </div>
-    <div class="widget courses-widget">
-      <h2>Courses</h2>
-      <p>Total number of courses: <!-- Display courses count --></p>
-      <button (click)="navigateToCourses()">Manage Courses</button>
-    </div>
-    <div class="widget lessons-widget">
-      <h2>Lessons</h2>
-      <p>Total number of lessons: <!-- Display lessons count --></p>
-      <button (click)="navigateToLessons()">Manage Lessons</button>
-    </div>
-    <!-- More widgets as needed -->
   </div>
-</div>
+</ion-content>
 
 

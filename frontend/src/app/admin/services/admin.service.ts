@@ -5,7 +5,7 @@ import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {Observable} from "rxjs";
 import {
   AllCoursesView,
-  CourseView,
+  CourseView, CreateCourse,
   CreateLessonCommand,
   LessonView, UpdateCourseCommand,
   UpdateLessonCommand
@@ -48,12 +48,12 @@ export class AdminService {
     return this.http.get<ResponseDto<AllCoursesView[]>>(this.url + 'courses', {withCredentials: true})
   }
 
-  createCourse(courseData: CourseView): Observable<ResponseDto<CourseView>> {
-    return this.http.post<ResponseDto<CourseView>>(this.url + 'courses/create', courseData, { withCredentials: true });
+  createCourse(courseData: CreateCourse): Observable<ResponseDto<CreateCourse>> {
+    return this.http.post<ResponseDto<CreateCourse>>(this.url + 'courses/create', courseData, { withCredentials: true });
   }
 
   updateCourse(courseId: number, courseData: any): Observable<any> {
-    return this.http.put(`${this.url}courses/update/${courseId}`, courseData, { withCredentials: true });
+    return this.http.put<any>(`${this.url}courses/update/${courseId}`, courseData, { withCredentials: true });
   }
 
 
@@ -63,10 +63,6 @@ export class AdminService {
 
   deleteCourse(courseId: number): Observable<any> {
     return this.http.delete(this.url + `courses/delete/${courseId}`, { withCredentials: true });
-  }
-
-  getLessonsByCourseId(courseId: number): Observable<ResponseDto<LessonView[]>> {
-    return this.http.get<ResponseDto<LessonView[]>>(`${this.url}courses/${courseId}/lessons`, { withCredentials: true });
   }
 
   updateLesson(courseId: number, lessonId: number, lessonData: UpdateLessonCommand): Observable<ResponseDto<LessonView>> {

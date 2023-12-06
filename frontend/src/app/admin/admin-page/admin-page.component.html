@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-toolbar>
+      <ion-img src="assets/icon/logo.png" alt="Learning Platform Logo" slot="start"
+               (click)="navigate('')" style="cursor:pointer; margin-left: 10px;"></ion-img>
+      <ion-button (click)="navigate('')">Home</ion-button>
+      <ion-button (click)="navigate('users')">Users</ion-button>
+      <ion-button (click)="navigate('courses')">Courses</ion-button>
+      <ion-button (click)="navigate('lessons')">Lessons</ion-button>
+      <!-- Add other navigation buttons as needed -->
+      <ion-buttons slot="end">
+        <ion-button routerLink="/logout" routerLinkActive="active-link">Logout</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <router-outlet></router-outlet>
+</ion-content>

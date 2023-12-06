@@ -1,6 +1,9 @@
 <div class="update-course-container">
   <h2>Update Course</h2>
   <form [formGroup]="updateCourseForm" (ngSubmit)="submitUpdate()">
+    <!-- Hidden input for courseId -->
+    <input type="hidden" id="courseId" formControlName="courseId">
+
     <div class="form-group">
       <label for="title">Title</label>
       <input type="text" id="title" formControlName="title">

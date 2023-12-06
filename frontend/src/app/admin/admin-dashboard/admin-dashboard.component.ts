@@ -8,6 +8,8 @@ import {Router} from "@angular/router";
 })
 export class AdminDashboardComponent  {
 
+  selectedSection: string = 'home';
+
   constructor(private router: Router) { }
 
 
@@ -23,5 +25,6 @@ export class AdminDashboardComponent  {
   navigateToLessons() {
     this.router.navigate(['/admin/lessons']);
   }
+
 
 }
