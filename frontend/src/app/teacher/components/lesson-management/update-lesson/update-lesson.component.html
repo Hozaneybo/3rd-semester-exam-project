@@ -1,3 +1,28 @@
-<p>
-  update-lesson works!
-</p>
+<ion-content>
+  <form [formGroup]="updateLessonForm" (ngSubmit)="updateLesson()">
+    <ion-item>
+      <ion-label position="floating">Title</ion-label>
+      <ion-input formControlName="title" type="text" placeholder="Enter lesson title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Content</ion-label>
+      <quill-editor formControlName="content"
+                    placeholder="Enter lesson content"
+                    style="height: 200px;">
+      </quill-editor>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Picture URLs</ion-label>
+      <ion-input formControlName="pictureUrls" type="text" placeholder="Enter picture URLs (comma-separated)"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Video URLs</ion-label>
+      <ion-input formControlName="videoUrls" type="text" placeholder="Enter video URLs (comma-separated)"></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" expand="full" [disabled]="!updateLessonForm.valid">Update Lesson</ion-button>
+  </form>
+</ion-content>

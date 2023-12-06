@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TeacherService} from "../../../services/teacher.service";
 import {LessonView} from "../../../../shared/Models/CourseModel";
-import {Subscription} from "rxjs";
+import {Subscription, take} from "rxjs";
 import {AlertController, ToastController} from "@ionic/angular";
 
 @Component({
@@ -26,11 +26,19 @@ export class LessonDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
-      const courseId = +params.get('courseId')!;
-      const lessonId = +params.get('lessonId')!;
-      this.loadLesson(courseId, lessonId);
+      const courseId = params.get('courseId');
+      const lessonId = params.get('lessonId');
+      console.log(`Course ID: ${courseId}, Lesson ID: ${lessonId}`); // Add logging to debug
+
+      if (courseId && lessonId) {
+        this.loadLesson(+courseId, +lessonId);
+      } else {
+        console.error('Course ID or Lesson ID is missing or invalid.');
+        this.showToast('Invalid course or lesson ID');
+      }
     }));
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -111,9 +119,15 @@ export class LessonDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateLesson() {
-    this.router.navigate([`/teacher/update-lesson/${this.lesson?.id}`])
-
+    this.route.paramMap.pipe(take(1)).subscribe(params => {
+      const courseId = params.get('courseId');
+      const lessonId = params.get('lessonId');
+      if (courseId && lessonId) {
+        this.router.navigate([`/teacher/courses/${courseId}/update-lesson/${lessonId}`]);
+      } else {
+        this.showToast('Lesson ID is not available.');
+      }
+    });
   }
-
 
 }
