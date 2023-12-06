@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import {SharedModule} from "./shared/shared.module";
+import {QuillModule} from "ngx-quill";
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import {SharedModule} from "./shared/shared.module";
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    QuillModule.forRoot()
 
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
