@@ -6,13 +6,13 @@ import {Router} from "@angular/router";
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
-export class AdminDashboardComponent  implements OnInit {
+export class AdminDashboardComponent  {
+
+  selectedSection: string = 'home';
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
-    // Here you could load summary data like user count, course count, etc.
-  }
+
 
   navigateToUsers() {
     this.router.navigate(['/admin/users']);
@@ -25,5 +25,6 @@ export class AdminDashboardComponent  implements OnInit {
   navigateToLessons() {
     this.router.navigate(['/admin/lessons']);
   }
+
 
 }

@@ -4,8 +4,13 @@ export interface AllCoursesView{
   description: string,
   courseImgUrl: string,
 }
+export interface CreateCourse{
 
 
+  title: string,
+  description: string,
+  courseImgUrl: string,
+}
 
 export interface CourseView{
   id: number,
@@ -50,4 +55,12 @@ export interface UpdateLessonCommand {
   courseId: number;
   pictureUrls?: string[];
   videoUrls?: string[];
+
+}
+
+export interface UpdateCourseCommand {
+  id: number;
+  title: string;
+  description: string;
+  courseImgUrl: string;
 }

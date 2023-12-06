@@ -1,0 +1,15 @@
+<div *ngIf="courses">
+  <h1 class="course-title">{{ courses.title }}</h1>
+
+  <div class="card-container" *ngIf="courses.lessons?.length">
+    <h2>Lessons</h2>
+    <div class="card" *ngFor="let lesson of courses.lessons">
+      <div class="card-header">
+        <h3>{{ lesson.title }}</h3>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!courses.lessons?.length">
+    <p>No lessons available.</p>
+  </div>
+</div>

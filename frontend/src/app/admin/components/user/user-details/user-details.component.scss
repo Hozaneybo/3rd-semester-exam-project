@@ -1,0 +1,100 @@
+.user-details-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  background-color: #f4f7f6; // Light background color for the entire container
+
+  .user-details-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+
+    .user-avatar {
+      margin-bottom: 20px;
+      .avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 5px solid #e6e9ed; // Light border for the avatar image
+        object-fit: cover;
+      }
+    }
+
+    .user-info {
+      .user-name {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .user-email, .user-role {
+        font-size: 1rem;
+        color: #555;
+        margin: 5px 0;
+
+        i {
+          margin-right: 8px;
+          color: #4CAF50;
+        }
+      }
+
+      .user-actions {
+        margin-top: 20px;
+        .btn {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: background-color 0.3s;
+
+          &.btn-primary {
+            background-color: #4CAF50;
+            color: white;
+
+            &:hover {
+              background-color: darken(#4CAF50, 10%);
+            }
+          }
+
+          &.btn-danger {
+            background-color: #f44336;
+            color: white;
+            margin-left: 10px;
+
+            &:hover {
+              background-color: darken(#f44336, 10%);
+            }
+          }
+        }
+        .btn-back-to-list {
+          display: block;
+          width: calc(100% - 20px);
+          margin-top: 10px;
+          background-color: #007bff;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  p {
+    font-size: 1.5rem;
+    color: #aaa;
+  }
+}

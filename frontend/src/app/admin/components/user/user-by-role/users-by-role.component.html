@@ -1,0 +1,34 @@
+<div class="role-selection-container">
+  <select class="role-selector" [(ngModel)]="selectedRole" (change)="fetchUsersByRole(selectedRole)">
+    <option value="Admin">Admin</option>
+    <option value="Teacher">Teacher</option>
+    <option value="Student">Student</option>
+  </select>
+</div>
+
+<div *ngIf="users; else loading" class="user-list-container">
+  <h2>Users with Role: {{ selectedRole }}</h2>
+  <div class="user-card" *ngFor="let user of users">
+    <div class="user-details">
+      <img [src]="user.avatarUrl || 'default-avatar.png'" alt="{{ user.fullname }}'s Avatar" class="user-avatar" onerror="this.src='default-avatar.png';">
+      <div class="user-info">
+        <h3>{{ user.fullname }}</h3>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+    <div class="user-actions">
+      <button (click)="updateUser(user.id)" class="action-button update">Update</button>
+      <button (click)="deleteUser(user.id)" class="action-button delete">Delete</button>
+      <button (click)="goBack()" class="action-button back-to-list">Back to User List</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <p>Loading...</p>
+  </div>
+</ng-template>

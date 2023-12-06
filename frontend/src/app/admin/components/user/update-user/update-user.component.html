@@ -1,0 +1,30 @@
+<div class="update-form-container">
+  <form [formGroup]="updateUserForm" (ngSubmit)="submitUpdate()" class="update-form">
+    <div class="form-field">
+      <label for="fullName">Full Name</label>
+      <input formControlName="fullName" id="fullName" type="text" placeholder="Enter full name">
+    </div>
+
+    <div class="form-field">
+      <label for="avatarUrl">Avatar URL</label>
+      <input formControlName="avatarUrl" id="avatarUrl" type="text" placeholder="Enter avatar URL">
+    </div>
+
+    <div class="form-field">
+      <label for="role">Role</label>
+      <select formControlName="role" id="role">
+        <option value="Admin">Admin</option>
+        <option value="Teacher">Teacher</option>
+        <option value="Student">Student</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-back" (click)="goBack()" style="margin-right: 10px">Back to User List</button>
+      <button type="submit" class="btn btn-update" [disabled]="!updateUserForm.valid">Update</button>
+    </div>
+  </form>
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+</div>
