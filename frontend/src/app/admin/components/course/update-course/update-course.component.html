@@ -1,0 +1,26 @@
+<div class="update-course-container">
+  <h2>Update Course</h2>
+  <form [formGroup]="updateCourseForm" (ngSubmit)="submitUpdate()">
+    <!-- Hidden input for courseId -->
+    <input type="hidden" id="courseId" formControlName="courseId">
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" formControlName="title">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="courseImgUrl">Course Image URL</label>
+      <input type="text" id="courseImgUrl" formControlName="courseImgUrl">
+    </div>
+
+    <button type="submit" class="submit-btn">Update Course</button>
+    <button type="button" class="back-btn" >Back to Courses</button>
+  </form>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+</div>
