@@ -1,8 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {TeacherService} from "../../../services/teacher.service";
-import {CourseView, LessonView} from "../../../../shared/Models/CourseModel";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { TeacherService } from "../../../services/teacher.service";
+import { CourseView } from "../../../../shared/Models/CourseModel";
 import {ResponseDto} from "../../../../shared/Models/LoginModels";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-course-details',
@@ -13,10 +14,10 @@ export class CourseDetailsComponent implements OnInit {
   course: CourseView | undefined;
 
   constructor(
-      private teacherService: TeacherService,
-      private route: ActivatedRoute,
-      private router: Router,
-      private changeDetectorRef: ChangeDetectorRef
+    private teacherService: TeacherService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -24,52 +25,33 @@ export class CourseDetailsComponent implements OnInit {
       const courseId = params['id'];
       this.teacherService.getCourseById(courseId).subscribe({
         next: (response: ResponseDto<CourseView>) => {
-          if (response.responseData) {
-            this.course = response.responseData;
-          } else {
-
-          }
+          this.course = response.responseData;
         },
         error: (error) => {
+          this.showToast(error.messageToClient || 'An error occurred while fetching the course details.');
         }
       });
     });
-
   }
 
-  getVideoThumbnail(videoUrl: string): string {
-    return 'path_to_video_thumbnail';
+  navigateToLesson(courseId: number, lessonId: number) {
+    this.router.navigate([`/teacher/courses/${courseId}/lessons/${lessonId}`]);
   }
 
   navigateToCreateLesson() {
     if (this.course && this.course.id) {
       this.router.navigate(['/teacher/create-lesson', this.course.id]);
     } else {
-      // Handle error: course ID is not available
+      this.showToast('Course ID is not available.');
     }
   }
 
-  onLessonSelected(event: CustomEvent) {
-    console.log("Accordion changed, event detail:", event.detail);
-    const lessonId = event.detail.value; // The value property contains the lesson ID
-    if (this.course?.id) {
-      this.teacherService.getLessonById(this.course.id, lessonId).subscribe({
-        next: (response: ResponseDto<LessonView>) => {
-          // Safely assert that this.course is defined, since we checked it above
-          const lessonIndex = this.course!.lessons.findIndex(l => l.id === lessonId);
-          if (lessonIndex >= 0 && response.responseData) {
-            // We can also safely assert that lessons is non-null/non-undefined
-            this.course!.lessons[lessonIndex] = response.responseData;
-            this.changeDetectorRef.detectChanges();
-          }
-        },
-        error: (error) => {
-          // Handle error
-        }
-      });
-    }
+  private async showToast(message: string): Promise<void> {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
   }
-
-
 
 }

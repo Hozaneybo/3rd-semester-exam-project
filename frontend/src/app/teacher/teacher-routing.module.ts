@@ -4,6 +4,7 @@ import {TeacherDashBoardComponent} from "./teacher-dashboard/TeacherDashBoard.co
 import {GetAllCoursesComponent} from "./components/course-management/get-all-courses/get-all-courses.component";
 import {CourseDetailsComponent} from "./components/course-management/course-details/course-details.component";
 import {CreateLessonComponent} from "./components/lesson-management/create-lesson/create-lesson.component";
+import {LessonDetailsComponent} from "./components/lesson-management/lesson-details/lesson-details.component";
 
 const routes: Routes = [
   {
@@ -12,7 +13,9 @@ const routes: Routes = [
   },
   { path: 'all-courses', component: GetAllCoursesComponent },
   { path: 'course-details/:id', component: CourseDetailsComponent },
-  { path: 'create-lesson/:id', component: CreateLessonComponent}
+  { path: 'create-lesson/:id', component: CreateLessonComponent},
+  { path: 'courses/:courseId/lessons/:lessonId', component: LessonDetailsComponent },
+  { path: 'update-lesson/:id', component: LessonDetailsComponent }
 ];
 
 @NgModule({

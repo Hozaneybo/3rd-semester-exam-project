@@ -9,6 +9,8 @@ import {IonicModule} from "@ionic/angular";
 import {CreateLessonComponent} from "./components/lesson-management/create-lesson/create-lesson.component";
 import {QuillModule} from "ngx-quill";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {LessonDetailsComponent} from "./components/lesson-management/lesson-details/lesson-details.component";
+import {UpdateLessonComponent} from "./components/lesson-management/update-lesson/update-lesson.component";
 
 
 @NgModule({
@@ -17,6 +19,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     GetAllCoursesComponent,
     CourseDetailsComponent,
     CreateLessonComponent,
+    LessonDetailsComponent,
+    UpdateLessonComponent
+
   ],
   imports: [
     CommonModule,
@@ -24,7 +29,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     IonicModule,
     QuillModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ]
 })
 export class TeacherModule { }

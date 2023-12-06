@@ -2,7 +2,7 @@ export interface AllCoursesView{
   id: number,
   title: string,
   description: string,
-  courseImgUrl: string
+  courseImgUrl: string,
 }
 
 
@@ -36,6 +36,15 @@ export interface LessonVideoView{
 }
 
 export interface CreateLessonCommand {
+  title: string;
+  content: string;
+  courseId: number;
+  pictureUrls?: string[];
+  videoUrls?: string[];
+}
+
+export interface UpdateLessonCommand {
+  id: number;
   title: string;
   content: string;
   courseId: number;

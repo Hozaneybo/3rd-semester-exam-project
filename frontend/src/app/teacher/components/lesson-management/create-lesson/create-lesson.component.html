@@ -17,10 +17,10 @@
 
     <ion-item>
       <ion-label position="floating">Content</ion-label>
-      <ion-textarea
-              formControlName="content"
-              placeholder="Enter lesson content">
-      </ion-textarea>
+      <quill-editor formControlName="content"
+                    placeholder="Enter lesson content"
+                    style="height: 200px;"> <!-- Adjust height as needed -->
+      </quill-editor>
     </ion-item>
     <ion-note color="danger" *ngIf="lessonForm.controls['content'].invalid && lessonForm.controls['content'].touched">
       Content is required.

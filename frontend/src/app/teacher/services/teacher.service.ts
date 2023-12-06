@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseDto} from "../../shared/Models/LoginModels";
-import {AllCoursesView, CourseView, CreateLessonCommand, LessonView} from "../../shared/Models/CourseModel";
+import {
+  AllCoursesView,
+  CourseView,
+  CreateLessonCommand,
+  LessonView,
+  UpdateLessonCommand
+} from "../../shared/Models/CourseModel";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -30,5 +36,12 @@ export class TeacherService {
     return this.http.get<ResponseDto<LessonView>>(`${this.baseUrl}/courses/${courseId}/lessons/${lessonId}`, { withCredentials: true });
   }
 
+  updateLesson(lessonId: number, lesson: UpdateLessonCommand): Observable<ResponseDto<any>> {
+    return this.http.put<ResponseDto<any>>(`${this.baseUrl}/lessons/update/${lessonId}`, lesson, { withCredentials: true });
+  }
+
+  deleteLesson(lessonId: number): Observable<ResponseDto<any>> {
+    return this.http.delete<ResponseDto<any>>(`${this.baseUrl}/lessons/delete/${lessonId}`, { withCredentials: true });
+  }
 
 }
