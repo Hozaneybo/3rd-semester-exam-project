@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {ResponseDto} from "../Models/LoginModels";
 
 @Injectable({
@@ -40,8 +40,8 @@ export class AccountServiceService {
   }
 
 
-  logout(): Observable<ResponseDto<any>> {
-    return this.http.post<ResponseDto<any>>(this.url + 'logout', {});
+  async logout(): Promise<ResponseDto<any>> {
+    return await firstValueFrom(this.http.post<ResponseDto<any>>(this.url + 'logout', {}));
   }
 
 }

@@ -31,7 +31,7 @@ import {QuillEditorComponent} from "ngx-quill";
     CourseLessonsComponent,
     AdminPageComponent,
     LessonDetailsComponent,
-    UpdateLessonComponent
+    UpdateLessonComponent,
 
   ],
   imports: [

@@ -17,21 +17,13 @@ export class AdminPageComponent {
   }
 
   onLogout() {
-    this.accountService.logout().subscribe({
-      next: (response) => {
-        // Handle successful logout, e.g., navigate to login page
-        console.log(response.messageToClient);
-        this.router.navigate([''])
-      },
-      error: (error) => {
-        // Handle error
-        console.error('Logout failed', error);
-      }
-    });
+
+    this.accountService.logout();
+    this.router.navigate([''])
+
   }
 
   navigateToProfile(){
 
   }
-
 }

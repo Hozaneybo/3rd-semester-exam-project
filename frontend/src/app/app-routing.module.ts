@@ -5,6 +5,10 @@ import {CompanyComponent} from "./home/components/company/company.component";
 import {CustomersComponent} from "./home/components/customers/customers.component";
 import {PricingComponent} from "./home/components/pricing/pricing.component";
 import {SupportComponent} from "./home/components/support/support.component";
+import {LoginComponent} from "./shared/components/login/login.component";
+import {RegisterComponent} from "./shared/components/register/register.component";
+import {VerifyEmailComponent} from "./shared/components/verify-email/verify-email.component";
+import {ResetPasswordComponent} from "./shared/components/reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -16,11 +20,11 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  { path: 'features', component: FeaturesComponent },
-  { path: 'company', component: CompanyComponent },
-  { path: 'customers', component: CustomersComponent },
-  { path: 'pricing', component: PricingComponent },
-  { path: 'support', component: SupportComponent },
+
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'verify-email', component: VerifyEmailComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 
   {
     path: 'admin',

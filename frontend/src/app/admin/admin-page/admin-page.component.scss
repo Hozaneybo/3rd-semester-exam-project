@@ -3,9 +3,15 @@
   --ion-color-primary: #161b22;
   --ion-color-tertiary:  0 0 12px rgba(0,0,0,.3);
 }
-ion-img {
+
+
+#logo-image {
+  cursor: pointer;
+  margin-left: 10px;
   height: 40px;
-  width: auto;
+  width: 50px;
+  opacity: 0.8;
+  --background: transparent;
 }
 
 html, body {
@@ -44,7 +50,7 @@ ion-toolbar {
 
 ion-avatar {
   margin-right: 10px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 

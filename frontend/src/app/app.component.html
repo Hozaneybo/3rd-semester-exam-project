@@ -1,35 +1,6 @@
-<ion-app>
-  <ion-header>
-    <ion-toolbar >
-      <ion-img  src="assets/icon/logo.png" alt="Learning Platform Logo" slot="start"
-               (click)="navigate('home')" style="cursor:pointer; margin-left: 10px"></ion-img>
-
-      <ion-button style="margin-left: 10px" color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('home')">Home</ion-button>
-      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('features')">Features</ion-button>
-      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('company')">Company</ion-button>
-      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('pricing')">Pricing</ion-button>
-      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('customers')">Customers</ion-button>
-      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('support')">Support</ion-button>
-
-      <ion-buttons slot="end">
-        <ion-button routerLink="/login" routerLinkActive="active-link">
-          Login
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
   <ion-content>
     <ion-router-outlet></ion-router-outlet>
   </ion-content>
 
-  <ion-footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h5>Contact</h5>
-        <p>Email: <a href="mailto:flexserve.mailer@gmail.com">flexserve.mailer&#64;gmail.com</a></p>
-        <p>Phone: 123-456-7890</p>
-      </div>
-    </div>
-  </ion-footer>
-</ion-app>
+
