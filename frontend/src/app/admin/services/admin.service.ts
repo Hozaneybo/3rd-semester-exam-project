@@ -6,9 +6,9 @@ import {Observable} from "rxjs";
 import {
   AllCoursesView,
   CourseView, CreateCourse,
-  CreateLessonCommand,
-  LessonView, UpdateCourseCommand,
-  UpdateLessonCommand
+  LessonView,
+  UpdateLessonCommand,
+  UpdateUser
 } from "../../shared/Models/CourseModel";
 
 @Injectable({
@@ -41,7 +41,7 @@ export class AdminService {
     return this.http.get<ResponseDto<User>>(`${this.url}users/${userId}`, { withCredentials: true });
   }
 
-  updateUser(userId: number, userData: any): Observable<any> {
+  updateUser(userId: number, userData: ResponseDto<UpdateUser>): Observable<ResponseDto<UpdateUser>> {
     return this.http.put(`${this.url}users/update/${userId}`, userData, { withCredentials: true });
   }
   getAllCourses():Observable<ResponseDto<AllCoursesView[]>>{
@@ -65,16 +65,16 @@ export class AdminService {
     return this.http.delete(this.url + `courses/delete/${courseId}`, { withCredentials: true });
   }
 
-  updateLesson(courseId: number, lessonId: number, lessonData: UpdateLessonCommand): Observable<ResponseDto<LessonView>> {
-    return this.http.put<ResponseDto<LessonView>>(this.url + `courses/${courseId}/lessons/update/${lessonId}`, lessonData, { withCredentials: true });
+  updateLesson(lessonId: number, lesson: UpdateLessonCommand): Observable<ResponseDto<any>> {
+    return this.http.put<ResponseDto<any>>(`${this.url}lessons/update/${lessonId}`, lesson, { withCredentials: true });
   }
 
   getLessonById(courseId: number, lessonId: number): Observable<ResponseDto<LessonView>> {
     return this.http.get<ResponseDto<LessonView>>(this.url + `courses/${courseId}/lessons/${lessonId}`, { withCredentials: true });
   }
 
-  deleteLesson(courseId: number, lessonId: number): Observable<any> {
-    return this.http.delete(this.url + `courses/${courseId}/lessons/delete/${lessonId}`, { withCredentials: true });
+  deleteLesson(lessonId: number): Observable<ResponseDto<any>> {
+    return this.http.delete<ResponseDto<any>>(`${this.url}lessons/delete/${lessonId}`, { withCredentials: true });
   }
 
 }

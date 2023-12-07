@@ -1,3 +1,38 @@
+:root {
+  --ion-color-primary: #161b22;
+  --ion-color-tertiary: 0 0 12px rgba(0,0,0,.3);
+}
+
+ion-toolbar.custom-toolbar {
+  background: var(--ion-color-primary);
+  box-shadow: var(--ion-color-tertiary);
+}
+
+.toolbar-button {
+  margin-left: 10px;
+  color: white; /* Adjust the color as needed */
+  --ripple-color: transparent; /* To remove the button click effect */
+}
+
+ion-img {
+  height: 40px;
+  width: auto;
+}
+
+#logo-image {
+  cursor: pointer;
+  margin-left: 10px;
+  height: 35px;
+  width: auto;
+  opacity: 0.8;
+  --background: transparent;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--ion-color-primary); /* To apply the background color */
+}
 
 .courses-container {
   display: flex;
@@ -69,9 +104,10 @@ ion-footer {
   position: fixed;
   bottom: 0;
   left: 0;
-  background-color: var(--ion-color-primary);
-  color: black;
+  background-color: #131313;
 }
+
+
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -87,7 +123,7 @@ ion-footer {
 
 .footer-section h5, .footer-section p, .footer-section a {
   margin: 0 10px;
-  color: #000000;
+  color: #ffffff;
   white-space: nowrap;
 }
 
@@ -99,10 +135,19 @@ ion-footer {
   font-size: 0.9em;
 }
 
+/* Define a breakpoint for smaller screens */
 @media (max-width: 768px) {
-  .footer-section {
-    flex-direction: column;
-    align-items: flex-start;
+  ion-toolbar {
+    padding: 0 10px; /* Reduce padding */
+  }
+
+  ion-button {
+    font-size: 0.8rem; /* Reduce font size */
+    padding: 5px 10px; /* Reduce padding */
+  }
+
+  ion-img {
+    margin: 10px 5px; /* Adjust logo margin */
   }
 
 }

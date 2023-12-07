@@ -1,6 +1,9 @@
 <div *ngIf="user; else loading" class="user-details-container">
   <div class="user-details-card">
     <div class="user-avatar">
+      <ion-avatar>
+        <img class="avatar-img" [src]="user.avatarUrl || 'default-avatar.png'"   *ngIf="user.avatarUrl"  />
+      </ion-avatar>
       <!--<img [src]="user.avatarUrl || 'default-avatar.png'"  class="avatar-img" onerror="this.src='default-avatar.png';">-->
     </div>
     <div class="user-info">

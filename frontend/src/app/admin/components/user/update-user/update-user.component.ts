@@ -23,7 +23,7 @@ export class UpdateUserComponent implements OnInit {
   ) {
     this.updateUserForm = this.fb.group({
       fullName: ['', [Validators.required]],
-      avatarUrl: [''],
+      email: [''],
       role: ['', [Validators.required]]
     });
   }
@@ -46,7 +46,7 @@ export class UpdateUserComponent implements OnInit {
         if (user) {
           this.updateUserForm.patchValue({
             fullName: user.fullname,
-            avatarUrl: user.avatarUrl,
+            email: user.email,
             role: user.role
           });
         }

@@ -1,85 +1,56 @@
-
-.active-link {
-  --color: var(--ion-color-tertiary); /* Highlight color */
-  border-bottom: 3px solid var(--ion-color-tertiary); /* Bottom border for highlight */
-}
-
 /* Ionic colors */
 :root {
-  --ion-color-primary: #488aff; /* A blue color for the toolbar */
-  --ion-color-secondary: #32db64; /* A green color for the segment buttons */
-  --ion-color-tertiary: #7044ff; /* An attractive purple color for highlights */
-}
-ion-img {
-  height: 40px; /* Adjust the height to fit your design */
-  width: auto; /* Maintain aspect ratio */
+  --ion-color-primary: #161b22;
+  --ion-color-tertiary:  0 0 12px rgba(0,0,0,.3);
 }
 
 
-/* Add this to your courses section CSS file */
-.courses-container {
-  display: flex;
-  flex-wrap: wrap; /* Allows items to wrap onto the next line if needed */
-  justify-content: space-around; /* Evenly spaces the course items with space around them */
-  padding: 20px;
+#logo-image {
+  cursor: pointer;
+  margin-left: 10px;
+  height: 40px;
+  width: 50px;
+  opacity: 0.8;
+  --background: transparent;
 }
 
-.course {
-  flex-basis: 20%; /* Adjust this value to change the width of each course component */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  margin: 10px;
-  text-align: center; /* Centers the text inside each course component */
-  transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
-}
-
-.course img {
-  width: 100%; /* Makes the image take up the full width of its container */
-  height: auto; /* Keeps the aspect ratio of the image */
-  border-radius: 4px; /* Optional: Rounds the corners of the image */
-}
-
-.course-info {
-  padding: 15px;
-}
-
-.course h3 {
-  margin-top: 10px;
-}
-
-.course p {
-  font-size: 0.9em;
-  color: #666;
-}
-
-.course:hover {
-  transform: translateY(-5px); /* Raises the course component slightly on hover */
-}
-
-@media (max-width: 768px) {
-  .course {
-    flex-basis: 45%; /* Increase the width of each course component on smaller screens */
-  }
-}
-
-@media (max-width: 480px) {
-  .course {
-    flex-basis: 90%; /* Full width on very small screens */
-  }
-}
-/* This will make each course component extremely small */
-.course {
-  flex-basis: calc(13% - 20px);
-
-}
 html, body {
-  height: 100%; /* Set the height to take up the full viewport height */
-  margin: 0; /* Remove default margin */
+  height: 100%;
+  margin: 0;
 }
 
-.content {
-  min-height: calc(100% - 75px); /* 100% viewport height minus the footer height */
-  /* Your content styling here */
-  /* Padding bottom equals to footer height to ensure content doesn't get hidden behind it */
-  padding-bottom: 75px;
+ion-footer {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #131313;
+}
+
+ion-searchbar {
+  --background: #ffffff; /* Choose a color that fits your theme */
+  --placeholder-color: #999999;
+  --icon-color: #000000;
+  border-radius: 15px; /* Rounded corners for the search bar */
+  margin-left: 10px; /* Adjust spacing as needed */
+  margin-right: 60px; /* Adjust spacing as needed */
+}
+
+ion-avatar {
+  --ion-color-primary: #488aff; /* This is just an example, set your own color */
+}
+
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+ion-avatar {
+  margin-right: 10px;
+  width: 35px;
+  height: 35px;
 }
 

@@ -13,6 +13,9 @@ import {CreateCourseComponent} from "./components/course/create-course/create-co
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
 import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
+import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
+import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
+import {QuillEditorComponent} from "ngx-quill";
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
     CreateCourseComponent,
     UpdateCourseComponent,
     CourseLessonsComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    LessonDetailsComponent,
+    UpdateLessonComponent,
 
   ],
   imports: [
@@ -34,7 +39,8 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
     AdminRoutingModule,
     ReactiveFormsModule,
     IonicModule,
-    FormsModule
+    FormsModule,
+    QuillEditorComponent
   ]
 })
 export class AdminModule { }
