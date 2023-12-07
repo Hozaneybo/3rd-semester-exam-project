@@ -10,7 +10,7 @@ import {AllCoursesView, CourseView, LessonView} from "../../shared/Models/Course
 })
 export class StudentService {
 
-  private baseUrl = environment.apiEndpoint + 'api/student';
+  private baseUrl = '/api/student';
 
   constructor(private http: HttpClient) {
   }
