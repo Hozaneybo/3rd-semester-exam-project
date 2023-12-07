@@ -50,7 +50,7 @@ export class AllCoursesComponent  implements OnInit {
 
 
   navigateToLessons(courseId: number) {
-    // The actual path needs to match your Angular routing configuration
+
     this.router.navigate(['/admin/courses', courseId]);
   }
 }

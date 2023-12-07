@@ -2,55 +2,54 @@
 
 
 .admin-dashboard {
-  background-color: #161b22; /* Dark background color */
-  color: #c9d1d9; /* Light text color */
-  border-radius: 6px; /* Rounded corners */
-  padding: 20px; /* Padding inside the dashboard */
-  box-shadow: 0 0 12px rgba(0,0,0,.3); /* Shadow for depth */
+  background-color: #161b22;
+  color: #c9d1d9;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(0,0,0,.3);
 }
 
 .admin-dashboard h1 {
   text-align: center;
-  color: #58a6ff; /* Highlight color for main title */
+  color: #58a6ff;
 }
 
 .dashboard-widgets {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; /* Distribute space between widgets */
-  gap: 20px; /* Space between widgets */
+  justify-content: space-around;
+  gap: 20px;
 }
 
 .widget {
-  background: #0d1117; /* Slightly lighter background for the widget */
-  border-radius: 6px; /* Rounded corners */
-  padding: 15px; /* Padding inside widgets */
-  box-shadow: 0 4px 8px rgba(0,0,0,.2); /* Shadow for widgets */
+  background: #0d1117;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.2);
 }
 
 .widget h2 {
-  color: #58a6ff; /* Highlight color for widget titles */
+  color: #58a6ff;
 }
 
 .widget p {
-  color: #c9d1d9; /* Text color for content */
+  color: #c9d1d9;
 }
 
 .widget button {
-  background-color: #238636; /* Button color to match the form buttons */
-  color: white; /* Button text color for readability */
-  border: none; /* No border */
-  border-radius: 6px; /* Rounded corners for buttons */
-  padding: 10px 20px; /* Padding inside buttons */
-  cursor: pointer; /* Cursor to pointer to indicate button */
-  transition: background-color 0.3s; /* Transition for hover effect */
+  background-color: #238636;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .widget button:hover {
-  background-color: #2ea043; /* Button hover state color */
+  background-color: #2ea043;
 }
 
-/* Responsive layout for widgets */
 @media (max-width: 768px) {
   .dashboard-widgets {
     flex-direction: column;

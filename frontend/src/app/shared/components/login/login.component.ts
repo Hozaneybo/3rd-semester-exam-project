@@ -49,13 +49,13 @@ export class LoginComponent {
   private redirectUser(role: string) {
     switch(role) {
       case 'Admin':
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/dashboard']);
         break;
       case 'Teacher':
-        this.router.navigate(['/teacher']);
+        this.router.navigate(['/teacher/dashboard']);
         break;
       case 'Student':
-        this.router.navigate(['/student']);
+        this.router.navigate(['/student/dashboard']);
         break;
       default:
         this.showToast('Unknown user role');

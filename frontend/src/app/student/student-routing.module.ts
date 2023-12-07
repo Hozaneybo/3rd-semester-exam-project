@@ -8,7 +8,7 @@ import {LessonViewComponent} from "./components/lesson-view/lesson-view.componen
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     component : StudentDashboardComponent
   },
   { path: 'all-courses', component: GetAllCoursesComponent },

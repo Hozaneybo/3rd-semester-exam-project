@@ -9,7 +9,7 @@ import {UpdateLessonComponent} from "./components/lesson-management/update-lesso
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     component : TeacherDashBoardComponent
   },
   { path: 'all-courses', component: GetAllCoursesComponent },

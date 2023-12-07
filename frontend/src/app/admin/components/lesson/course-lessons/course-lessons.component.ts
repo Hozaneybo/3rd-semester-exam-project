@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AdminService} from "../../../services/admin.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CourseView} from "../../../../shared/Models/CourseModel";
 
 @Component({
@@ -12,9 +12,11 @@ export class CourseLessonsComponent implements OnInit {
   courseId!: number;
   courses: CourseView | undefined;
 
+
   constructor(
     private route: ActivatedRoute,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -35,5 +37,9 @@ export class CourseLessonsComponent implements OnInit {
         console.error('Error fetching lessons:', error);
       }
     });
+  }
+
+  navigateToLesson(courseId: number, lessonId: number) {
+    this.router.navigate([`/admin/courses/${courseId}/lessons/${lessonId}`]);
   }
 }

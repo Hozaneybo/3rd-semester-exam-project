@@ -64,3 +64,9 @@ export interface UpdateCourseCommand {
   description: string;
   courseImgUrl: string;
 }
+export interface UpdateUser{
+  Id: number,
+  FullName: string,
+  Email:string,
+  Role: string
+}
