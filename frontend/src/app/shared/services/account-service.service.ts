@@ -10,7 +10,7 @@ import {ResponseDto} from "../Models/LoginModels";
 export class AccountServiceService {
 
 
-  private readonly url = environment.apiEndpoint + 'api/account/' ;
+  private readonly url = '/api/account/' ;
 
 
   constructor(private http: HttpClient) { }

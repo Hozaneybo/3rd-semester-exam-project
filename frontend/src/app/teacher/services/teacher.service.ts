@@ -9,13 +9,12 @@ import {
   LessonView,
   UpdateLessonCommand
 } from "../../shared/Models/CourseModel";
-import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherService {
-  private baseUrl = environment.apiEndpoint + 'api/teacher';
+  private baseUrl = '/api/teacher';
 
   constructor(private http: HttpClient) {}
 

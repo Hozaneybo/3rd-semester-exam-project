@@ -17,7 +17,7 @@ import {
 export class AdminService {
 
 
-  private readonly url = environment.apiEndpoint + 'api/admin/' ;
+  private readonly url = '/api/admin/' ;
 
 
   constructor(private http: HttpClient) { }
