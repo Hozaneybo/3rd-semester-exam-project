@@ -10,47 +10,60 @@ import {CreateCourseComponent} from "./components/course/create-course/create-co
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
 import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
+import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
+import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 
 const routes: Routes = [
 
   {
     path:'',
-    component: AdminPageComponent
+    component: AdminPageComponent,
+
+    children: [
+      { path: 'dashboard',
+        component: AdminDashboardComponent },
+      {
+        path: 'users',
+        component: AllUsersComponent
+      },
+      {
+        path: 'update-user/:id',
+        component:UpdateUserComponent
+      },
+      {
+        path:'user-details/:id',
+        component: UserDetailsComponent
+      },
+      {
+        path:'users-by-role/:role',
+        component: UsersByRoleComponent
+      },
+      {
+        path: 'courses',
+        component : AllCoursesComponent
+      },
+      {
+        path: 'create-course',
+        component: CreateCourseComponent
+      },
+      {
+        path:'course/update/:id',
+        component: UpdateCourseComponent
+      },
+      {
+        path: 'courses/:courseId',
+        component: CourseLessonsComponent
+      },
+      { path: 'courses/:courseId/lessons/:lessonId',
+        component: LessonDetailsComponent
+      },
+      {
+        path: 'courses/:courseId/update-lesson/:id',
+        component: UpdateLessonComponent
+      }
+    ]
   },
-  { path: 'dashboard',
-    component: AdminDashboardComponent },
-  {
-    path: 'users',
-    component: AllUsersComponent
-  },
-  {
-    path: 'update-user/:id',
-    component:UpdateUserComponent
-  },
-  {
-    path:'user-details/:id',
-    component: UserDetailsComponent
-  },
-  {
-    path:'users-by-role/:role',
-    component: UsersByRoleComponent
-  },
-  {
-    path: 'courses',
-    component : AllCoursesComponent
-  },
-  {
-    path: 'create-course',
-    component: CreateCourseComponent
-  },
-  {
-    path:'course/update/:id',
-    component: UpdateCourseComponent
-  },
-  {
-    path: 'courses/:courseId',
-    component: CourseLessonsComponent
-  },
+
 ];
 
 @NgModule({

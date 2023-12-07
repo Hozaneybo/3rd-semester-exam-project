@@ -39,4 +39,9 @@ export class AccountServiceService {
     return this.http.get<ResponseDto<any>>(this.url + 'whoami');
   }
 
+
+  logout(): Observable<ResponseDto<any>> {
+    return this.http.post<ResponseDto<any>>(this.url + 'logout', {});
+  }
+
 }

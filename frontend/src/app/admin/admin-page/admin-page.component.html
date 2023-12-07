@@ -2,14 +2,19 @@
   <ion-toolbar>
     <ion-toolbar>
       <ion-img src="assets/icon/logo.png" alt="Learning Platform Logo" slot="start"
-               (click)="navigate('')" style="cursor:pointer; margin-left: 10px;"></ion-img>
-      <ion-button (click)="navigate('')">Home</ion-button>
-      <ion-button (click)="navigate('users')">Users</ion-button>
-      <ion-button (click)="navigate('courses')">Courses</ion-button>
-      <ion-button (click)="navigate('lessons')">Lessons</ion-button>
-      <!-- Add other navigation buttons as needed -->
+               (click)="navigate('dashboard')" style="cursor:pointer; margin-left: 10px;"></ion-img>
+
+      <ion-button style="margin-left: 10px" color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('dashboard')">Home</ion-button>
+      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('users')">Users</ion-button>
+      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('courses')">Courses</ion-button>
+      <ion-button color="0 0 12px rgba(0,0,0,.3)" (click)="navigate('users-by-role/:role')">Role</ion-button>
       <ion-buttons slot="end">
-        <ion-button routerLink="/logout" routerLinkActive="active-link">Logout</ion-button>
+
+        <ion-avatar slot="end" (click)="navigateToProfile()">
+          <img src="assets/icon/profile.png">
+        </ion-avatar>
+
+        <ion-button (click)="onLogout()" >Logout</ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-toolbar>
