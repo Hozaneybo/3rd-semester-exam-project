@@ -32,7 +32,7 @@ export class AdminService {
 
   getUsersByRole(role: string): Observable<ResponseDto<User[]>> {
     return this.http.get<ResponseDto<User[]>>(`${this.url}users/role`, {
-      params: { role }, // Make sure the backend expects this param
+      params: { role },
       withCredentials: true
     });
   }

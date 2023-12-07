@@ -44,6 +44,28 @@ public class AdminController : ControllerBase
             ResponseData = users
         };
     }
+    
+    [HttpGet("users/{id}")]
+    public ResponseDto GetUserById(int id)
+    {
+        var user = _service.GetUserById(id);
+        var userResult = new UserResult()
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            EmailVerified = user.EmailVerified
+
+        };
+
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully fetched",
+            ResponseData = userResult
+        };
+    }
 
 
     [HttpPut("users/update/{id}")]
@@ -183,6 +205,26 @@ public class AdminController : ControllerBase
                 
         };
     }
+    
+    [HttpGet("users/role")]
+    public ResponseDto GetUsersByRole(RoleQueryModel roleQueryModel)
+    {
+
+        var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult()
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Role = user.Role,
+            EmailVerified = user.EmailVerified
+        }).ToList();
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully fetched",
+            ResponseData = users
+        };
+    }
 
     [HttpDelete("courses/delete/{id}")]
     public ResponseDto DeleteCourse(int id)
@@ -254,25 +296,6 @@ public class AdminController : ControllerBase
         };
     }
     
-    [HttpGet("users/role")]
-    public ResponseDto GetUsersByRole(RoleQueryModel roleQueryModel)
-    {
-
-        var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult()
-        {
-            Id = user.Id,
-            Fullname = user.Fullname,
-            Email = user.Email,
-            AvatarUrl = user.AvatarUrl,
-            Role = user.Role,
-            EmailVerified = user.EmailVerified
-        }).ToList();
-        return new ResponseDto
-        {
-            MessageToClient = "Successfully fetched",
-            ResponseData = users
-        };
-    }
     
     [HttpGet("search")]
     public ResponseDto Search([FromQuery] SearchQueryModel queryModel)
