@@ -13,6 +13,7 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
 import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {RoleGuard} from "../shared/guards/role.guard";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 const routes: Routes = [
 
@@ -23,6 +24,8 @@ const routes: Routes = [
     data: { expectedRole: 'Admin' },
 
     children: [
+      { path: 'my-profile',
+        component: MyProfileComponent },
       { path: 'dashboard',
         component: AdminDashboardComponent },
 
@@ -39,7 +42,7 @@ const routes: Routes = [
         component: UserDetailsComponent
       },
       {
-        path:'users-by-role/:role',
+        path:'users/role/:role',
         component: UsersByRoleComponent
       },
       {

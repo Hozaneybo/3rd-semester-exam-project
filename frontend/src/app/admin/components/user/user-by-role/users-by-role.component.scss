@@ -1,94 +1,93 @@
 .role-selection-container {
-  margin: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
 
-  .role-selector {
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 1rem;
+.custom-select {
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+
+  ion-select {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --border-radius: 15px;
+    --background: #2c3e50;
+    --placeholder-color: #95a5a6;
+    --placeholder-font-style: normal;
+    --color: #ecf0f1;
+    --border: 1px solid #34495e;
+    --border-color: #34495e;
+    --min-height: 40px;
+    --transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  ion-select:hover {
+    --background: #34495e;
+    --border-color: #2c3e50;
   }
 }
 
-.user-list-container {
-  margin: 20px;
-  .user-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+ion-card {
+  width: 300px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #34495e;
+  color: #ecf0f1;
 
-    .user-details {
-      display: flex;
-      align-items: center;
-
-      .user-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 15px;
-      }
-
-      .user-info {
-        h3 {
-          margin: 0;
-          color: #333;
-        }
-
-        p {
-          margin: 0;
-          color: #555;
-        }
-      }
-    }
-
-    .user-actions {
-      .action-button {
-        padding: 8px 15px;
-        margin-left: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s;
-
-        &.update {
-          background-color: #4CAF50;
-          color: white;
-        }
-
-        &.delete {
-          background-color: #f44336;
-          color: white;
-        }
-        &.back-to-list {
-          background-color: #007bff;
-          color: white;
-        }
-      }
-    }
+  ion-card-header {
+    background-color: #2c3e50;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
+
+  ion-card-content {
+    padding: 10px;
+  }
+}
+
+.user-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.message-container, .loading-container {
+  text-align: center;
+  padding: 20px;
+  color: #bdc3c7;
 }
 
 .loading-container {
-  text-align: center;
-  p {
-    font-size: 1rem;
-    color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+ion-spinner {
+  --color: #ecf0f1;
+}
+
+ion-button {
+  transition: transform 0.3s;
+
+  &:hover, &:focus {
+    transform: scale(1.1);
   }
 }
 
-.btn-back {
-  background-color: #3298ea;
-  color: white;
-  margin-right: 10px;
+@media (max-width: 768px) {
+  .user-card-container {
+    flex-direction: column;
+    align-items: center;
+  }
 
+  ion-card {
+    width: 90%;
+  }
 }
 
-.success-message {
-  color: green;
-  margin-bottom: 10px;
-}

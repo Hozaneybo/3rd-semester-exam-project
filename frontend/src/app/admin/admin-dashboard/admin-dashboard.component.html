@@ -1,31 +1,29 @@
-
-<ion-header>
-
-</ion-header>
-
-
 <ion-content>
-  <div class="admin-dashboard">
-    <h1 style="margin-bottom:40px">Admin Dashboard</h1>
-    <div class="dashboard-widgets">
-      <div class="widget users-widget">
-        <h2>Users</h2>
-        <p>Total number of users: <!-- Display user count --></p>
-        <button (click)="navigateToUsers()">Manage Users</button>
-      </div>
-      <div class="widget courses-widget">
-        <h2>Courses</h2>
-        <p>Total number of courses: <!-- Display courses count --></p>
-        <button (click)="navigateToCourses()">Manage Courses</button>
-      </div>
-      <div class="widget lessons-widget">
-        <h2>Lessons</h2>
-        <p>Total number of lessons: <!-- Display lessons count --></p>
-        <button (click)="navigateToLessons()">Manage Lessons</button>
-      </div>
-      <!-- More widgets as needed -->
-    </div>
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Welcome Back, [Admin's Name]</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Ready for another day of inspiring and learning!
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="clock">
+          <div class="clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+            <div class="learning-platform">Learning Platform</div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
-
-

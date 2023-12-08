@@ -16,6 +16,7 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
 import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {QuillEditorComponent} from "ngx-quill";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {QuillEditorComponent} from "ngx-quill";
     AdminPageComponent,
     LessonDetailsComponent,
     UpdateLessonComponent,
+    MyProfileComponent
 
   ],
   imports: [
