@@ -25,7 +25,7 @@ public class AccountController : ControllerBase
             return new ResponseDto
             {
                 MessageToClient = "Successfully authenticated",
-                ResponseData = new { Role = user.Role }cd
+                ResponseData = new { Role = user.Role }
             };
         }
 
