@@ -6,6 +6,7 @@ import {CourseViewComponent} from "./components/course-view/course-view.componen
 import {LessonViewComponent} from "./components/lesson-view/lesson-view.component";
 import {StudentLayoutComponent} from "./student-layout/student-layout.component";
 import {RoleGuard} from "../shared/guards/role.guard";
+import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     data: { expectedRole: 'Student' },
     children:
       [
+        { path: 'users/role/:role', component: ShowUsersByRoleComponent},
         { path: 'dashboard',component : StudentDashboardComponent },
         { path: 'all-courses', component: GetAllCoursesComponent },
         { path: 'course-details/:id', component: CourseViewComponent },

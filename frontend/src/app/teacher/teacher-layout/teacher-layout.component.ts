@@ -22,5 +22,8 @@ export class TeacherLayoutComponent implements OnInit {
     // Logic to navigate to the profile page
     this.router.navigate(['/teacher/profile']);
   }
+  navigateToUsersByRole(role: string) {
+    this.router.navigate([`/teacher/users/role/${role}`]);
+  }
 
 }

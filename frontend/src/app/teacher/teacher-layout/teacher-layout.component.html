@@ -5,7 +5,7 @@
     <ion-img src="assets/icon/logo.png" alt="Learning Platform Logo" slot="start" class="logo-image"
              id="logo-image" routerLink="/teacher/dashboard"></ion-img>
     <ion-button routerLink="/teacher/all-courses">All Courses</ion-button>
-    <ion-button routerLink="/teacher/users">Users</ion-button>
+    <ion-button (click)="navigateToUsersByRole(' ')">Users</ion-button>
   </ion-buttons>
 
   <ion-title>Teacher Dashboard</ion-title>

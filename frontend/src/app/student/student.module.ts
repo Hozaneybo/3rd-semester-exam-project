@@ -9,6 +9,7 @@ import {LessonViewComponent} from "./components/lesson-view/lesson-view.componen
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
 import {IonicModule} from "@ionic/angular";
 import {StudentLayoutComponent} from "./student-layout/student-layout.component";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {StudentLayoutComponent} from "./student-layout/student-layout.component"
   imports: [
     CommonModule,
     StudentRoutingModule,
-    IonicModule
+    IonicModule,
+    FormsModule
   ]
 })
 export class StudentModule { }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ResponseDto} from "../../shared/Models/LoginModels";
+import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {
   AllCoursesView,
   CourseView,
@@ -41,6 +41,13 @@ export class TeacherService {
 
   deleteLesson(lessonId: number): Observable<ResponseDto<any>> {
     return this.http.delete<ResponseDto<any>>(`${this.baseUrl}/lessons/delete/${lessonId}`, { withCredentials: true });
+  }
+
+  getUsersByRole(role: string): Observable<ResponseDto<User[]>> {
+    return this.http.get<ResponseDto<User[]>>(`${this.baseUrl}/users/role`, {
+      params: { role },
+      withCredentials: true
+    });
   }
 
 }

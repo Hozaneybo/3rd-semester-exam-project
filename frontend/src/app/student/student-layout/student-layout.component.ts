@@ -23,4 +23,8 @@ export class StudentLayoutComponent  implements OnInit {
     this.router.navigate(['/student/profile']);
   }
 
+  navigateToUsersByRole(role: string) {
+    this.router.navigate([`/student/users/role/${role}`]);
+  }
+
 }
