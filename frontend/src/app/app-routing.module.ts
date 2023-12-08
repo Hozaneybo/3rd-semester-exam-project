@@ -21,11 +21,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
 
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'verify-email', component: VerifyEmailComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
-
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)

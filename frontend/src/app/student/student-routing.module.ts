@@ -4,16 +4,24 @@ import {StudentDashboardComponent} from "./student-dashboard/student-dashboard.c
 import {GetAllCoursesComponent} from "./components/get-all-courses/get-all-courses.component";
 import {CourseViewComponent} from "./components/course-view/course-view.component";
 import {LessonViewComponent} from "./components/lesson-view/lesson-view.component";
+import {StudentLayoutComponent} from "./student-layout/student-layout.component";
+import {RoleGuard} from "../shared/guards/role.guard";
 
 
 const routes: Routes = [
   {
-    path: 'dashboard',
-    component : StudentDashboardComponent
-  },
-  { path: 'all-courses', component: GetAllCoursesComponent },
-  { path: 'course-details/:id', component: CourseViewComponent },
-  { path: 'courses/:courseId/lessons/:lessonId', component: LessonViewComponent },
+    path: '',
+    component : StudentLayoutComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'Student' },
+    children:
+      [
+        { path: 'dashboard',component : StudentDashboardComponent },
+        { path: 'all-courses', component: GetAllCoursesComponent },
+        { path: 'course-details/:id', component: CourseViewComponent },
+        { path: 'courses/:courseId/lessons/:lessonId', component: LessonViewComponent },
+      ]
+  }
 
 ];
 

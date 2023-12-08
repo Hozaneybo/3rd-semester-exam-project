@@ -11,6 +11,7 @@ import {QuillModule} from "ngx-quill";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LessonDetailsComponent} from "./components/lesson-management/lesson-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson-management/update-lesson/update-lesson.component";
+import {TeacherLayoutComponent} from "./teacher-layout/teacher-layout.component";
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {UpdateLessonComponent} from "./components/lesson-management/update-lesso
     CourseDetailsComponent,
     CreateLessonComponent,
     LessonDetailsComponent,
-    UpdateLessonComponent
+    UpdateLessonComponent,
+    TeacherLayoutComponent
 
   ],
   imports: [
