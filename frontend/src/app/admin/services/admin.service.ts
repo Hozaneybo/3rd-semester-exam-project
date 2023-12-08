@@ -10,6 +10,7 @@ import {
   UpdateLessonCommand,
   UpdateUser
 } from "../../shared/Models/CourseModel";
+import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,13 @@ export class AdminService {
 
   deleteLesson(lessonId: number): Observable<ResponseDto<any>> {
     return this.http.delete<ResponseDto<any>>(`${this.url}lessons/delete/${lessonId}`, { withCredentials: true });
+  }
+
+  search(searchTerm: string): Observable<ResponseDto<SearchResultDto[]>> {
+    return this.http.get<ResponseDto<SearchResultDto[]>>(`${this.url}search`, {
+      params: { searchTerm },
+      withCredentials: true
+    });
   }
 
 }

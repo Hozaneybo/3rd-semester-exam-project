@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {AllCoursesView, CourseView, LessonView} from "../../shared/Models/CourseModel";
+import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +35,12 @@ export class StudentService {
       withCredentials: true
     });
   }
+
+  search(searchTerm: string): Observable<ResponseDto<SearchResultDto[]>> {
+    return this.http.get<ResponseDto<SearchResultDto[]>>(`${this.baseUrl}/search`, {
+      params: { searchTerm },
+      withCredentials: true
+    });
+  }
+
 }

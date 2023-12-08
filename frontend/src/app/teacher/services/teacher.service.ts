@@ -9,6 +9,7 @@ import {
   LessonView,
   UpdateLessonCommand
 } from "../../shared/Models/CourseModel";
+import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,10 @@ export class TeacherService {
     });
   }
 
+  search(searchTerm: string): Observable<ResponseDto<SearchResultDto[]>> {
+    return this.http.get<ResponseDto<SearchResultDto[]>>(`${this.baseUrl}/search`, {
+      params: { searchTerm },
+      withCredentials: true
+    });
+  }
 }

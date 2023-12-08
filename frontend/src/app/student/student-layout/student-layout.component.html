@@ -11,7 +11,8 @@
   <ion-title>Student Dashboard</ion-title>
 
   <ion-buttons slot="end">
-    <ion-searchbar placeholder="Search..."></ion-searchbar>
+    <ion-searchbar placeholder="Search..." (ionInput)="onSearchChange($event.target?.value || '')"></ion-searchbar>
+
     <ion-button (click)="openProfile()">Profile</ion-button>
     <ion-button (click)="logout()">Logout</ion-button>
   </ion-buttons>
@@ -22,5 +23,10 @@
 
 
 <ion-content>
+  <ion-list *ngIf="searchResults && searchResults.length">
+    <ion-item *ngFor="let result of searchResults">
+      <ion-label>{{ result.type }}: {{ result.term }}</ion-label>
+    </ion-item>
+  </ion-list>
   <router-outlet></router-outlet>
 </ion-content>
