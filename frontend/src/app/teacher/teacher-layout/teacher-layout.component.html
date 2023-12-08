@@ -11,7 +11,7 @@
   <ion-title>Teacher Dashboard</ion-title>
 
   <ion-buttons slot="end">
-    <ion-searchbar placeholder="Search..." (ionInput)="onSearchChange($event.target?.value || '')"></ion-searchbar>
+    <ion-searchbar placeholder="Search..." (ionInput)="onSearchChange($event.target.value || '')"></ion-searchbar>
     <ion-button (click)="openProfile()">Profile</ion-button>
     <ion-button (click)="logout()">Logout</ion-button>
   </ion-buttons>

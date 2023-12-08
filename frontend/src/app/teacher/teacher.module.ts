@@ -13,6 +13,7 @@ import {LessonDetailsComponent} from "./components/lesson-management/lesson-deta
 import {UpdateLessonComponent} from "./components/lesson-management/update-lesson/update-lesson.component";
 import {TeacherLayoutComponent} from "./teacher-layout/teacher-layout.component";
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-use
     LessonDetailsComponent,
     UpdateLessonComponent,
     ShowUsersByRoleComponent,
-    TeacherLayoutComponent
+    TeacherLayoutComponent,
+    MyProfileComponent
 
   ],
   imports: [

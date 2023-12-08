@@ -10,6 +10,7 @@ import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-use
 import {IonicModule} from "@ionic/angular";
 import {StudentLayoutComponent} from "./student-layout/student-layout.component";
 import {FormsModule} from "@angular/forms";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {FormsModule} from "@angular/forms";
     CourseViewComponent,
     LessonViewComponent,
     ShowUsersByRoleComponent,
-    StudentLayoutComponent
+    StudentLayoutComponent,
+    MyProfileComponent
 
   ],
   imports: [

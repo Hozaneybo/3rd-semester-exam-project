@@ -38,8 +38,7 @@ export class StudentLayoutComponent  implements OnInit {
   }
 
   openProfile() {
-    // Logic to navigate to the profile page
-    this.router.navigate(['/student/profile']);
+    this.router.navigate(['/student/my-profile']);
   }
 
   navigateToUsersByRole(role: string) {

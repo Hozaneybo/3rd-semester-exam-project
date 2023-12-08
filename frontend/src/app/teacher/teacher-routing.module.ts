@@ -9,6 +9,7 @@ import {UpdateLessonComponent} from "./components/lesson-management/update-lesso
 import {TeacherLayoutComponent} from "./teacher-layout/teacher-layout.component";
 import {RoleGuard} from "../shared/guards/role.guard";
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { expectedRole: 'Teacher' },
     children: [
+      { path: 'my-profile', component: MyProfileComponent},
       { path: 'users/role/:role', component: ShowUsersByRoleComponent},
       { path: 'dashboard', component: TeacherDashBoardComponent},
       { path: 'all-courses', component: GetAllCoursesComponent },
