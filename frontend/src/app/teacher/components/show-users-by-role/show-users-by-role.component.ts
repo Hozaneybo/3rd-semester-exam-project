@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {TeacherService} from "../../services/teacher.service";
 import {User} from "../../../shared/Models/LoginModels";
 import {ActivatedRoute} from "@angular/router";
 import {ToastController} from "@ionic/angular";
-import {StudentService} from "../../services/student.service";
 
 @Component({
   selector: 'app-show-users-by-role',
@@ -14,7 +14,7 @@ export class ShowUsersByRoleComponent implements OnInit {
   selectedRole: string = 'Student';
 
   constructor(
-    private studentService: StudentService,
+    private teacherService: TeacherService,
     private route: ActivatedRoute,
     private toastController: ToastController
   ) { }
@@ -40,7 +40,7 @@ export class ShowUsersByRoleComponent implements OnInit {
 
 
   fetchUsersByRole(role: string): void {
-    this.studentService.getUsersByRole(role).subscribe({
+    this.teacherService.getUsersByRole(role).subscribe({
       next: (response) => {
         this.users = response.responseData;
         this.presentToast(response.messageToClient || `${role} users fetched successfully.`, 'success');

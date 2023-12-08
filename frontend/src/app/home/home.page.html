@@ -27,13 +27,14 @@
 
   <ion-list *ngIf="selectedSection === 'home'">
     <div class="courses-container">
-      <div class="course" *ngFor="let course of courses">
+      <div class="course" *ngFor="let course of courses" (click)="onCourseClick()">
         <img [src]="course.courseImgUrl" alt="{{ course.title }}">
         <div class="course-info">
           <h3>{{ course.title }}</h3>
           <p>{{ course.description }}</p>
         </div>
       </div>
+
     </div>
   </ion-list>
 </ion-content>

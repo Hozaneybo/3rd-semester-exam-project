@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ResponseDto} from "../../shared/Models/LoginModels";
+import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {
   AllCoursesView,
   CourseView,
@@ -9,6 +9,7 @@ import {
   LessonView,
   UpdateLessonCommand
 } from "../../shared/Models/CourseModel";
+import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Injectable({
   providedIn: 'root'
@@ -43,4 +44,17 @@ export class TeacherService {
     return this.http.delete<ResponseDto<any>>(`${this.baseUrl}/lessons/delete/${lessonId}`, { withCredentials: true });
   }
 
+  getUsersByRole(role: string): Observable<ResponseDto<User[]>> {
+    return this.http.get<ResponseDto<User[]>>(`${this.baseUrl}/users/role`, {
+      params: { role },
+      withCredentials: true
+    });
+  }
+
+  search(searchTerm: string): Observable<ResponseDto<SearchResultDto[]>> {
+    return this.http.get<ResponseDto<SearchResultDto[]>>(`${this.baseUrl}/search`, {
+      params: { searchTerm },
+      withCredentials: true
+    });
+  }
 }

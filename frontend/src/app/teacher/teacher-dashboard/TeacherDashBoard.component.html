@@ -1,25 +1,28 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Teacher Dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-grid>
-    <ion-row class="ion-justify-content-center ion-padding-top">
-      <ion-col size-md="6" size-lg="4" size-xs="12">
+    <ion-row>
+      <ion-col>
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Welcome to Your Dashboard</ion-card-title>
+            <ion-card-title>Welcome Back, [Teacher's Name]</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-list lines="none">
-              <ion-item>
-                <ion-button expand="block" color="secondary" (click)="showCourses()">Show Courses</ion-button>
-              </ion-item>
-            </ion-list>
+            Ready for another day of inspiring and learning!
           </ion-card-content>
         </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="clock">
+          <div class="clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+            <div class="learning-platform">Learning Platform</div>
+          </div>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

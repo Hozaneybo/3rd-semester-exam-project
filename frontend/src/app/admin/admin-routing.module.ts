@@ -12,16 +12,20 @@ import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-
 import {AdminPageComponent} from "./admin-page/admin-page.component";
 import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
+import {RoleGuard} from "../shared/guards/role.guard";
 
 const routes: Routes = [
 
   {
     path:'',
     component: AdminPageComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'Admin' },
 
     children: [
       { path: 'dashboard',
         component: AdminDashboardComponent },
+
       {
         path: 'users',
         component: AllUsersComponent

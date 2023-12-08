@@ -7,6 +7,16 @@ export interface User {
 
 }
 
+export interface UserProfile {
+  id: number;
+  fullname: string;
+  email: string;
+  avatarUrl: string;
+  role : string;
+  emailVerified: boolean;
+
+}
+
 export class ResponseDto<T> {
   responseData?: T;
   messageToClient?: string;

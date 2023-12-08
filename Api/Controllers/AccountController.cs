@@ -21,11 +21,11 @@ public class AccountController : ControllerBase
      public ResponseDto Login([FromBody] UserLoginCommand command)
         {
             var user = _service.Authenticate(command);
-            HttpContext.SetSessionData(SessionData.FromUser(user)); // Make sure SessionData includes the user's role
+            HttpContext.SetSessionData(SessionData.FromUser(user));
             return new ResponseDto
             {
                 MessageToClient = "Successfully authenticated",
-                ResponseData = new { Role = user.Role } // Include the role in the response
+                ResponseData = new { Role = user.Role }
             };
         }
 
@@ -137,7 +137,7 @@ public class AccountController : ControllerBase
         var user = _service.Get(data);
         return new ResponseDto
         {
-            ResponseData = new { user.Id, user.Fullname, user.AvatarUrl, user.Role, user.EmailVerified }
+            ResponseData = new { user.Id, user.Fullname, user.Email, user.AvatarUrl, user.Role, user.EmailVerified }
         };
     }
 }
