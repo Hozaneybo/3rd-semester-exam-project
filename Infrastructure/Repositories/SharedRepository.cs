@@ -23,8 +23,20 @@ public class SharedRepository : ISharedRepository
     UNION
     SELECT 'Course' as Type, title as Term FROM learning_platform.courses WHERE LOWER(title) LIKE LOWER(@SearchTerm);";
 
-        using var connection = _dataSource.OpenConnection();
-        return connection.Query<SearchResult>(sql, new { SearchTerm = $"%{searchTerm}%" });
+        try
+        {
+            using var connection = _dataSource.OpenConnection();
+            return connection.Query<SearchResult>(sql, new { SearchTerm = $"%{searchTerm}%" });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("Database operation failed. Please try again later.");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while searching. Please try again later.");
+        }
+        
     }
 
 

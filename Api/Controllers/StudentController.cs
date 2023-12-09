@@ -123,20 +123,30 @@ public class StudentController : ControllerBase
     }
     
     [HttpGet("search")]
-    public ResponseDto Search([FromQuery] SearchQueryModel queryModel)
-    {
-        var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto
+    public IActionResult Search([FromQuery] SearchQueryModel queryModel)
+    { 
+        try 
+        { 
+            var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto 
+            { 
+                Type = result.Type, 
+                Term = result.Term 
+            }).ToList();
+            
+            return Ok(new ResponseDto { MessageToClient = "Search results fetched successfully", ResponseData = searchResults }); 
+        }
+        catch (ArgumentException ex)
         {
-            Type = result.Type,
-            Term = result.Term
-        }).ToList();
-
-        return new ResponseDto
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Search results fetched successfully",
-            ResponseData = searchResults
-        };
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
-
     
 }

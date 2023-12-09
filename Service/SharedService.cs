@@ -14,8 +14,24 @@ public class SharedService
     }
 
     public IEnumerable<SearchResult> Search(SearchQueryModel queryModel)
-    {
-        return _sharedRepository.Search(queryModel.SearchTerm);
+    { 
+        try 
+        { 
+            if (string.IsNullOrWhiteSpace(queryModel.SearchTerm)) 
+                throw new ArgumentException("Search term cannot be empty."); 
+            return _sharedRepository.Search(queryModel.SearchTerm);
+
+        }
+        catch (InvalidOperationException ex)
+        {
+            
+            throw new InvalidOperationException("Search service is currently unavailable. Please try again later.");
+        }
+        catch (Exception ex)
+        {
+            
+            throw new Exception("An unexpected error occurred in the search service. Please try again.");
+        }
     }
 
 
