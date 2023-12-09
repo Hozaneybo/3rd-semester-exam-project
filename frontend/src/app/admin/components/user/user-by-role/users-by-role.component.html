@@ -15,18 +15,9 @@
     <ion-card *ngFor="let user of users">
       <ion-card-header>
         <ion-card-title>{{ user.fullname }}</ion-card-title>
-
         <ion-card-content>
           Email: {{ user.email }}
         </ion-card-content>
-        <ion-buttons>
-          <ion-button color="danger" (click)="deleteUser(user.id)" fill="clear">
-            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-          </ion-button>
-          <ion-button color="secondary" (click)="updateUser(user.id)" fill="clear">
-            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
       </ion-card-header>
 
     </ion-card>

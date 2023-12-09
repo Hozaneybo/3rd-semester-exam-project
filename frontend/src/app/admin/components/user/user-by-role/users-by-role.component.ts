@@ -47,28 +47,6 @@ export class UsersByRoleComponent implements OnInit {
     });
   }
 
-  deleteUser(userId: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.adminService.deleteUser(userId).subscribe({
-        next: () => {
-          this.users = this.users?.filter(user => user.id !== userId);
-          // Display a success message here
-        },
-        error: (err) => {
-          console.error('Failed to delete user', err);
-          // Display an error message here
-        }
-      });
-    }
-  }
-
-  updateUser(userId: number): void {
-    this.router.navigate(['/admin/update-user', userId]);
-  }
-  goBack(): void {
-    this.router.navigate(['/admin/users']);
-  }
-
   private async presentToast(message: string, color: 'success' | 'danger') {
     const toast = await this.toastController.create({
       message: message,
