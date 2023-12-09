@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {ResponseDto, User} from "../../shared/Models/LoginModels";
+import {ResponseDto, User} from "../components/LoginModels";
 import {Observable} from "rxjs";
 import {
   AllCoursesView,
@@ -84,5 +84,25 @@ export class AdminService {
       withCredentials: true
     });
   }
+
+  updateUserProfile(user: any, formData: FormData): Observable<any> {
+    let endpoint: string;
+    switch (user.role) {
+      case 'Admin':
+        endpoint = 'admin';
+        break;
+      case 'Teacher':
+        endpoint = 'teacher';
+        break;
+      case 'Student':
+        endpoint = 'student';
+        break;
+      default:
+        throw new Error('User role not recognized');
+    }
+
+    return this.http.put<any>(`/api/${endpoint}/users/update/${user.id}`, user, { withCredentials: true });
+  }
+
 
 }

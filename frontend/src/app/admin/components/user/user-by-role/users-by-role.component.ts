@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import { AdminService } from "../../../services/admin.service";
-import { User } from "../../../../shared/Models/LoginModels";
+import { User } from "../../LoginModels";
 import {ToastController} from "@ionic/angular";
 
 @Component({

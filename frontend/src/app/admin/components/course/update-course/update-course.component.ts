@@ -62,6 +62,7 @@ export class UpdateCourseComponent implements OnInit {
 
   submitUpdate(): void {
     if (this.updateCourseForm.valid && this.courseId) {
+      console.log(this.courseId)
       const currentFormValues = this.updateCourseForm.value;
       console.log(currentFormValues)
       if (this.courseId === currentFormValues.courseId) {

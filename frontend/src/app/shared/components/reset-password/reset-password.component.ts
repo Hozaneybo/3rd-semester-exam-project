@@ -7,7 +7,7 @@ import { firstValueFrom } from "rxjs";
 
 import { CustomValidators } from "../../CustomValidators";
 import { AccountServiceService } from "../../services/account-service.service";
-import { ResponseDto } from "../../Models/LoginModels";
+import { ResponseDto } from "../../../admin/components/LoginModels";
 
 @Component({
   selector: 'app-reset-password',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from "../../../shared/Models/LoginModels";
+import {User} from "../../../admin/components/LoginModels";
 import {ActivatedRoute} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {StudentService} from "../../services/student.service";

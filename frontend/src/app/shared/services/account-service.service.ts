@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom, Observable} from "rxjs";
-import {ResponseDto} from "../Models/LoginModels";
+import {ResponseDto, User} from "../../admin/components/LoginModels";
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +38,28 @@ export class AccountServiceService {
     return this.http.get<ResponseDto<any>>(this.url + 'whoami');
   }
 
-
-  async logout(): Promise<ResponseDto<any>> {
-    return await firstValueFrom(this.http.post<ResponseDto<any>>(this.url + 'logout', {}));
+  async logout(): Promise<ResponseDto<User>> {
+    return await firstValueFrom(this.http.post<ResponseDto<User>>(this.url + 'logout', {}));
   }
+
+  updateUser(user: any, role: string | undefined, formData: FormData): Observable<any> {
+    let endpoint: string;
+    switch (role) {
+      case 'Admin':
+        endpoint = 'admin';
+        break;
+      case 'Teacher':
+        endpoint = 'teacher';
+        break;
+      case 'Student':
+        endpoint = 'student';
+        break;
+      default:
+        throw new Error('User role not recognized');
+    }
+
+    return this.http.put<any>(`http://localhost:5000/api/${endpoint}/users/update/${user.id}`, formData, { withCredentials: true });
+  }
+
 
 }

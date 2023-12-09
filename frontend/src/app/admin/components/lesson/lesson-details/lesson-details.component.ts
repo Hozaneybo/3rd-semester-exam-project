@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {CourseView} from "../../../shared/Models/CourseModel";
+import {CourseView} from "../../../../shared/Models/CourseModel";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
-import {ResponseDto} from "../../../admin/components/LoginModels";
-import {StudentService} from "../../services/student.service";
+import {ResponseDto} from "../../LoginModels";
+import {AdminService} from "../../../services/admin.service";
 
 @Component({
-  selector: 'app-course-view',
-  templateUrl: './course-view.component.html',
-  styleUrls: ['./course-view.component.scss'],
+  selector: 'app-lesson-details',
+  templateUrl: './lesson-details.component.html',
+  styleUrls: ['./lesson-details.component.scss'],
 })
-export class CourseViewComponent  implements OnInit {
+export class LessonDetailsComponent  implements OnInit {
+
   course: CourseView | undefined;
 
   constructor(
-    private studentService: StudentService,
+    private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
     private toastController: ToastController
@@ -23,7 +24,7 @@ export class CourseViewComponent  implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const courseId = params['id'];
-      this.studentService.getCourseById(courseId).subscribe({
+      this.adminService.getCourseById(courseId).subscribe({
         next: (response: ResponseDto<CourseView>) => {
           this.course = response.responseData;
         },
@@ -35,9 +36,8 @@ export class CourseViewComponent  implements OnInit {
   }
 
   navigateToLesson(courseId: number, lessonId: number) {
-    this.router.navigate([`/student/courses/${courseId}/lessons/${lessonId}`]);
+    this.router.navigate([`/admin/courses/${courseId}/lessons/${lessonId}`]);
   }
-
 
   private async showToast(message: string): Promise<void> {
     const toast = await this.toastController.create({

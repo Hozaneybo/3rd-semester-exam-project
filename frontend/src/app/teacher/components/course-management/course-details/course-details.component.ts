@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { TeacherService } from "../../../services/teacher.service";
 import { CourseView } from "../../../../shared/Models/CourseModel";
-import {ResponseDto} from "../../../../shared/Models/LoginModels";
+import {ResponseDto} from "../../../../admin/components/LoginModels";
 import {ToastController} from "@ionic/angular";
 
 @Component({
