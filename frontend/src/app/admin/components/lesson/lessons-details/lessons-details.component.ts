@@ -7,12 +7,12 @@ import {AdminService} from "../../../services/admin.service";
 
 @Component({
   selector: 'app-lesson-details',
-  templateUrl: './lesson-details.component.html',
-  styleUrls: ['./lesson-details.component.scss'],
+  templateUrl: './lessons-details.component.html',
+  styleUrls: ['./lessons-details.component.scss'],
 })
 
 
-export class LessonDetailsComponent implements OnInit, OnDestroy {
+export class LessonsDetailsComponent implements OnInit, OnDestroy {
   lesson: LessonView | null = null;
   private subscriptions: Subscription = new Subscription();
 

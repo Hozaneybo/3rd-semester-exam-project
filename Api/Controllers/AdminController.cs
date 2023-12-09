@@ -154,23 +154,38 @@ public class AdminController : ControllerBase
     [HttpPut("courses/update/{id}")]
     public ResponseDto UpdateCourse(int id, [FromBody] UpdateCourseCommand command)
     {
-        
 
-        var updatedCourse =  _courseService.UpdateCourse(command);
-        if (updatedCourse == null)
+        try
         {
-            return new ResponseDto
+            var existingCourse = GetCourseById(id);
+            if (existingCourse == null)
             {
-                MessageToClient = "This Course's id not founded",
-                
-            };
+                HttpContext.Response.StatusCode = 404;
+                return new ResponseDto() { MessageToClient = "Course with given id not found", ResponseData = null };
+            }
+            command.Id = id;
+            var updatedCourse =  _courseService.UpdateCourse(command);
+            if (updatedCourse != null)
+            {
+                return new ResponseDto
+                {
+                    MessageToClient = "Successfully updated",
+                    ResponseData = command
+                };
+            }
         }
-        
+
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
         return new ResponseDto
         {
             MessageToClient = "Successfully updated",
-            ResponseData = GetCourseById(id)
-                
+            ResponseData = command
+
         };
     }
     

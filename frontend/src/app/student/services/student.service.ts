@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ResponseDto, User} from "../../shared/Models/LoginModels";
+import {ResponseDto, User} from "../../admin/components/LoginModels";
 import {AllCoursesView, CourseView, LessonView} from "../../shared/Models/CourseModel";
 import {SearchResultDto} from "../../shared/Models/SearchTerm";
 

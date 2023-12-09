@@ -1,4 +1,4 @@
-/* Ionic colors */
+
 :root {
   --ion-color-primary: #161b22;
   --ion-color-tertiary:  0 0 12px rgba(0,0,0,.3);
@@ -29,28 +29,53 @@ ion-footer {
 }
 
 ion-searchbar {
-  --background: #ffffff; /* Choose a color that fits your theme */
+  --background: #ffffff;
+  --color: #000000;
   --placeholder-color: #999999;
   --icon-color: #000000;
-  border-radius: 15px; /* Rounded corners for the search bar */
-  margin-left: 10px; /* Adjust spacing as needed */
-  margin-right: 60px; /* Adjust spacing as needed */
+  --border-radius: 30px;
+  margin-left: 10px;
+  margin-right: 60px;
+  text-align: left;
 }
+
+
 
 ion-avatar {
-  --ion-color-primary: #488aff; /* This is just an example, set your own color */
+  --ion-color-primary: #488aff;
 }
 
+
+.flex-spacer {
+  flex: 1;
+}
 
 ion-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: center;
 }
+
 
 ion-avatar {
   margin-right: 10px;
   width: 35px;
   height: 35px;
+}
+
+ion-list {
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  z-index: 10;
+  background-color: var(--ion-background-color, #fff);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
 }
 

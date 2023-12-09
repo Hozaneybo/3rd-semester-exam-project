@@ -8,11 +8,14 @@ import {UsersByRoleComponent} from "./components/user/user-by-role/users-by-role
 import {AllCoursesComponent} from "./components/course/all-courses/all-courses.component";
 import {CreateCourseComponent} from "./components/course/create-course/create-course.component";
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
-import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
-import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {RoleGuard} from "../shared/guards/role.guard";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {CourseForLessonComponent} from "./components/lesson/course-for-lesson/course-for-lesson.component";
+import {LessonDetailsComponent} from "./components/lesson/lesson-details/lesson-details.component";
+import {LessonsDetailsComponent} from "./components/lesson/lessons-details/lessons-details.component";
 
 const routes: Routes = [
 
@@ -23,6 +26,12 @@ const routes: Routes = [
     data: { expectedRole: 'Admin' },
 
     children: [
+      {path: 'edit-profile',
+      component: EditProfileComponent},
+
+      { path: 'my-profile',
+        component: MyProfileComponent },
+
       { path: 'dashboard',
         component: AdminDashboardComponent },
 
@@ -39,7 +48,7 @@ const routes: Routes = [
         component: UserDetailsComponent
       },
       {
-        path:'users-by-role/:role',
+        path:'users/role/:role',
         component: UsersByRoleComponent
       },
       {
@@ -54,17 +63,20 @@ const routes: Routes = [
         path:'course/update/:id',
         component: UpdateCourseComponent
       },
-      {
-        path: 'courses/:courseId',
-        component: CourseLessonsComponent
-      },
+
       { path: 'courses/:courseId/lessons/:lessonId',
-        component: LessonDetailsComponent
+        component: LessonsDetailsComponent
       },
       {
         path: 'courses/:courseId/update-lesson/:id',
         component: UpdateLessonComponent
-      }
+      },
+      {
+        path: 'course-lessons',
+      component: CourseForLessonComponent
+      },
+      {path:'course-details/:id',
+      component: LessonDetailsComponent}
     ]
   },
 

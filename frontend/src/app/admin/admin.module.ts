@@ -11,11 +11,14 @@ import {IonicModule} from "@ionic/angular";
 import {AllCoursesComponent} from "./components/course/all-courses/all-courses.component";
 import {CreateCourseComponent} from "./components/course/create-course/create-course.component";
 import {UpdateCourseComponent} from "./components/course/update-course/update-course.component";
-import {CourseLessonsComponent} from "./components/lesson/course-lessons/course-lessons.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
-import {LessonDetailsComponent} from "./components/lesson/lessons-details/lesson-details.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {QuillEditorComponent} from "ngx-quill";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {CourseForLessonComponent} from "./components/lesson/course-for-lesson/course-for-lesson.component";
+import {LessonDetailsComponent} from "./components/lesson/lesson-details/lesson-details.component";
+import {LessonsDetailsComponent} from "./components/lesson/lessons-details/lessons-details.component";
 
 
 @NgModule({
@@ -28,10 +31,13 @@ import {QuillEditorComponent} from "ngx-quill";
     AllCoursesComponent,
     CreateCourseComponent,
     UpdateCourseComponent,
-    CourseLessonsComponent,
     AdminPageComponent,
-    LessonDetailsComponent,
     UpdateLessonComponent,
+    MyProfileComponent,
+    EditProfileComponent,
+    CourseForLessonComponent,
+    LessonDetailsComponent,
+    LessonsDetailsComponent
 
   ],
   imports: [

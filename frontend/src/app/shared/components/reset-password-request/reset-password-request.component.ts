@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators} from "@angular/forms";
 import {AccountServiceService} from "../../services/account-service.service";
 import {ToastController} from "@ionic/angular";
-import {ResponseDto} from "../../Models/LoginModels";
+import {ResponseDto} from "../../../admin/components/LoginModels";
 
 @Component({
   selector: 'app-reset-password',
