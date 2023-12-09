@@ -37,6 +37,17 @@ public class SharedService
 
     public IEnumerable<User> GetUsersByRole(RoleQueryModel roleQueryModel)
     {
-        return _sharedRepository.GetUsersByRole(roleQueryModel.Role);
+        try
+        {
+            return _sharedRepository.GetUsersByRole(roleQueryModel.Role);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new InvalidOperationException("GetUsersByRole service is currently unavailable. Please try again later.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred in the GetUsersByRole service. Please try again later.", ex);
+        }
     }
 }

@@ -121,54 +121,89 @@ WHERE id = @UserId;
     }
 
     public User GetUserByPasswordResetToken(string token)
-    {
-        const string sql = @"
+{
+    const string sql = @"
 SELECT * FROM learning_platform.users
-WHERE password_reset_token = @Token AND password_reset_token_expires_at > CURRENT_TIMESTAMP;
-";
+WHERE password_reset_token = @Token AND password_reset_token_expires_at > CURRENT_TIMESTAMP;";
+
+    try
+    {
         using var connection = _dataSource.OpenConnection();
         return connection.QuerySingleOrDefault<User>(sql, new { Token = token });
     }
-    
-    
-    public void SetEmailVerificationToken(int userId, string token, DateTime expiresAt)
+    catch (PostgresException ex)
     {
+        throw new Exception("Database operation failed.", ex);
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An unexpected error occurred while retrieving user by password reset token.", ex);
+    }
+}
 
-        const string sql = @"
+public void SetEmailVerificationToken(int userId, string token, DateTime expiresAt)
+{
+    const string sql = @"
 UPDATE learning_platform.users
 SET email_verification_token = @Token, email_token_expires_at = @ExpiresAt
-WHERE id = @UserId;
-";
+WHERE id = @UserId;";
+
+    try
+    {
         using var connection = _dataSource.OpenConnection();
         connection.Execute(sql, new { UserId = userId, Token = token, ExpiresAt = expiresAt });
     }
-
-
-    public User GetUserByVerificationToken(string token)
+    catch (PostgresException ex)
     {
-        const string sql = @"
+        throw new Exception("Database operation failed.", ex);
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An unexpected error occurred while setting email verification token.", ex);
+    }
+}
+
+public User GetUserByVerificationToken(string token)
+{
+    const string sql = @"
 SELECT * FROM learning_platform.users
-WHERE email_verification_token = @Token AND email_token_expires_at > CURRENT_TIMESTAMP;
-";
+WHERE email_verification_token = @Token AND email_token_expires_at > CURRENT_TIMESTAMP;";
+
+    try
+    {
         using var connection = _dataSource.OpenConnection();
         return connection.QuerySingleOrDefault<User>(sql, new { Token = token });
     }
-    
-    public User? GetUserByEmail(string email)
+    catch (PostgresException ex)
     {
-        const string sql = $@"
-SELECT
-    id as {nameof(User.Id)},
-    full_name as {nameof(User.Fullname)},
-    email as {nameof(User.Email)},
-    avatar_url as {nameof(User.AvatarUrl)},
-    role as {nameof(User.Role)}
-FROM learning_platform.users
-WHERE email = @Email;
-";
-        using var connection = _dataSource.OpenConnection();
-        return connection.QueryFirstOrDefault<User>(sql, new { Email = email }); 
+        throw new Exception("Database operation failed.", ex);
     }
-    
+    catch (Exception ex)
+    {
+        throw new Exception("An unexpected error occurred while retrieving user by email verification token.", ex);
+    }
+}
+
+public User? GetUserByEmail(string email)
+{
+    const string sql = @"
+SELECT id, full_name, email, avatar_url, role
+FROM learning_platform.users
+WHERE email = @Email;";
+
+    try
+    {
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirstOrDefault<User>(sql, new { Email = email });
+    }
+    catch (PostgresException ex)
+    {
+        throw new Exception("Database operation failed.", ex);
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An unexpected error occurred while retrieving user by email.", ex);
+    }
+}
   
 }

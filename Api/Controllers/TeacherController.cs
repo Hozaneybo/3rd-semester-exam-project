@@ -151,24 +151,37 @@ public class TeacherController : ControllerBase
     }
     
     [HttpGet("users/role")]
-    public ResponseDto GetUsersByRole(RoleQueryModel roleQueryModel)
+    public IActionResult GetUsersByRole(RoleQueryModel roleQueryModel)
     {
+        try
+        {
+            var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult
+            {
+                Id = user.Id,
+                Fullname = user.Fullname,
+                Email = user.Email,
+                AvatarUrl = user.AvatarUrl,
+                Role = user.Role,
+                EmailVerified = user.EmailVerified
+            }).ToList();
 
-        var users = _sharedService.GetUsersByRole(roleQueryModel).Select(user => new UserResult()
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully fetched users by role",
+                ResponseData = users
+            });
+        }
+        catch (InvalidOperationException ex)
         {
-            Id = user.Id,
-            Fullname = user.Fullname,
-            Email = user.Email,
-            AvatarUrl = user.AvatarUrl,
-            Role = user.Role,
-            EmailVerified = user.EmailVerified
-        }).ToList();
-        return new ResponseDto
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
         {
-            MessageToClient = "Successfully fetched",
-            ResponseData = users
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
+    
+    
     [HttpGet("search")]
     public IActionResult Search([FromQuery] SearchQueryModel queryModel)
     { 
