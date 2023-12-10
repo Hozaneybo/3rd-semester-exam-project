@@ -8,11 +8,14 @@ namespace Service
     public class LessonService
     {
         private readonly ILessonRepository _lessonRepository;
+        private readonly ISharedRepository _sharedRepository; 
 
-        public LessonService(ILessonRepository lessonRepository)
+        public LessonService(ILessonRepository lessonRepository, ISharedRepository sharedRepository)
         {
             _lessonRepository = lessonRepository;
+            _sharedRepository = sharedRepository;
         }
+
 
         //This method will not be used for now
         public IEnumerable<Lesson> GetAllLessons()
@@ -29,7 +32,18 @@ namespace Service
         public Lesson AddLesson(CreateLessonCommand command)
         {
 
-            return _lessonRepository.AddLesson(command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
+            var lesson = _lessonRepository.AddLesson(command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
+
+            
+            var studentEmails = GetStudentEmails();
+            MailService.SendEmailToMultipleRecipients(studentEmails, $"New Lesson Created", $"A new lesson ('{command.Title}') has been added to the course.");
+
+            return lesson;
+        }
+        private List<string> GetStudentEmails()
+        {
+            var students = _sharedRepository.GetUsersByRole(Role.Student);
+            return students.Select(s => s.Email).ToList();
         }
 
         public Lesson UpdateLesson(UpdateLessonCommand command)

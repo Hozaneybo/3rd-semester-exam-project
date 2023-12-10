@@ -73,4 +73,26 @@ public static class MailService
         }
     }
     
+    public static void SendEmailToMultipleRecipients(List<string> receiverEmails, string subject, string body)
+    {
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Learning Platform", Environment.GetEnvironmentVariable("COMPANY_MAIL")));
+        message.Subject = subject;
+
+        foreach (var email in receiverEmails)
+        {
+            message.To.Add(new MailboxAddress("", email));
+        }
+
+        message.Body = new TextPart("plain") { Text = body };
+
+        using (var client = new MailKit.Net.Smtp.SmtpClient())
+        {
+            client.Connect("smtp.gmail.com", 465, true);
+            client.Authenticate(Environment.GetEnvironmentVariable("COMPANY_MAIL"), Environment.GetEnvironmentVariable("G_PASS"));
+            client.Send(message);
+            client.Disconnect(true);
+        }
+    }
+    
 }
