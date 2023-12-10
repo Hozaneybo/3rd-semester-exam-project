@@ -1,4 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ResponseDto, User, UserProfile} from "../../admin/components/LoginModels";
+import {AccountServiceService} from "../../shared/services/account-service.service";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs";
+import {ToastController} from "@ionic/angular";
 @Component({
   selector: 'app-teacher-dashboard',
   templateUrl: './TeacherDashBoard.component.html',
@@ -6,15 +11,34 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 })
 export class TeacherDashBoardComponent implements OnInit, OnDestroy {
   private intervalId: any;
+  user!: UserProfile;
 
-  constructor() {}
+  constructor(private accountService: AccountServiceService, private toastController: ToastController) {}
 
   ngOnInit(): void {
+    this.loadUserProfile();
     this.setupClock();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
+  }
+
+  loadUserProfile() {
+    this.accountService.whoAmI().pipe(
+      catchError(err => {
+        this.presentToast('An error occurred while loading your profile.');
+        return of({} as ResponseDto<User>);
+      })
+    ).subscribe(response => {
+      if (response && response.responseData) {
+        this.user = response.responseData;
+      } else {
+        this.presentToast(response.messageToClient || 'No profile data available.');
+      }
+    }, error => {
+      this.presentToast(error.error.messageToClient || 'An unexpected error occurred.');
+    });
   }
 
   private setupClock(): void {
@@ -42,6 +66,14 @@ export class TeacherDashBoardComponent implements OnInit, OnDestroy {
 
     this.intervalId = setInterval(updateClock, 1000);
     updateClock();
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+    });
+    toast.present();
   }
 
 }

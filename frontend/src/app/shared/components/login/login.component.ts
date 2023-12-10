@@ -17,7 +17,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private accountService: AccountServiceService,
     private toastController: ToastController,
-    private router: Router // Inject the Angular Router
+    private router: Router
   ) {}
 
   readonly loginForm = this.fb.group({
@@ -37,12 +37,12 @@ export class LoginComponent {
         this.redirectUser(response.responseData.role);
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
-          const errorMsg = error.error?.message || 'Login failed';
-          this.showToast(errorMsg);
+          const errorMsg = error.error?.message || 'username or password is incorrect';
+          this.showToast(errorMsg, 'danger');
         }
       }
     } else {
-      this.showToast('Please fill in all required fields correctly.');
+      this.showToast('Please fill in all required fields correctly.', 'danger');
     }
   }
 
@@ -58,16 +58,16 @@ export class LoginComponent {
         this.router.navigate(['/student/dashboard']);
         break;
       default:
-        this.showToast('Unknown user role');
+        this.showToast('Unknown user role', 'danger');
         break;
     }
   }
 
-  private async showToast(message: string) {
+  private async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
-      cssClass: 'success-toast'
+      color: color
     });
     toast.present();
   }

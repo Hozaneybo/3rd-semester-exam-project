@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs";
+import {ResponseDto, User, UserProfile} from "../components/LoginModels";
+import {AccountServiceService} from "../../shared/services/account-service.service";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -9,10 +14,12 @@ import {Router} from "@angular/router";
 export class AdminDashboardComponent  {
 
   private intervalId: any;
+  user!: UserProfile;
 
-  constructor() {}
+  constructor(private accountService: AccountServiceService, private toastController: ToastController) {}
 
   ngOnInit(): void {
+    this.loadUserProfile();
     this.setupClock();
   }
 
@@ -45,6 +52,30 @@ export class AdminDashboardComponent  {
 
     this.intervalId = setInterval(updateClock, 1000);
     updateClock();
+  }
+  loadUserProfile() {
+    this.accountService.whoAmI().pipe(
+      catchError(err => {
+        this.presentToast('An error occurred while loading your profile.');
+        return of({} as ResponseDto<User>);
+      })
+    ).subscribe(response => {
+      if (response && response.responseData) {
+        this.user = response.responseData;
+      } else {
+        this.presentToast(response.messageToClient || 'No profile data available.');
+      }
+    }, error => {
+      this.presentToast(error.error.messageToClient || 'An unexpected error occurred.');
+    });
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+    });
+    toast.present();
   }
 
 }
