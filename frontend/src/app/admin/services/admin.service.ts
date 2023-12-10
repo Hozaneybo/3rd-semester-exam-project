@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ResponseDto, User} from "../components/LoginModels";
 import {Observable} from "rxjs";
@@ -10,7 +9,6 @@ import {
   UpdateLessonCommand,
   UpdateUser
 } from "../../shared/Models/CourseModel";
-import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Injectable({
   providedIn: 'root'

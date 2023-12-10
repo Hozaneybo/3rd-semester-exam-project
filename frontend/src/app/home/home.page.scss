@@ -10,8 +10,8 @@ ion-toolbar.custom-toolbar {
 
 .toolbar-button {
   margin-left: 10px;
-  color: white; /* Adjust the color as needed */
-  --ripple-color: transparent; /* To remove the button click effect */
+  color: white;
+  --ripple-color: transparent;
 }
 
 ion-img {
@@ -136,19 +136,18 @@ ion-footer {
   font-size: 0.9em;
 }
 
-/* Define a breakpoint for smaller screens */
 @media (max-width: 768px) {
   ion-toolbar {
-    padding: 0 10px; /* Reduce padding */
+    padding: 0 10px;
   }
 
   ion-button {
-    font-size: 0.8rem; /* Reduce font size */
-    padding: 5px 10px; /* Reduce padding */
+    font-size: 0.8rem;
+    padding: 5px 10px;
   }
 
   ion-img {
-    margin: 10px 5px; /* Adjust logo margin */
+    margin: 10px 5px;
   }
 
 }
