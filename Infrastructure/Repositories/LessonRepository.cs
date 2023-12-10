@@ -149,8 +149,7 @@ RETURNING *;";
             transaction.Rollback();
             return null;
         }
-
-        // Update pictures only if the list is provided
+        
         if (pictureUrls != null)
         {
             var pictureUrlList = pictureUrls.ToList();
@@ -170,8 +169,7 @@ ON CONFLICT (img_url, lesson_id) DO NOTHING;";
                 connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = id }, transaction);
             }
         }
-
-        // Update videos only if the list is provided
+        
         if (videoUrls != null)
         {
             var videoUrlList = videoUrls.ToList();
