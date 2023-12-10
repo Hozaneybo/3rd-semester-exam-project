@@ -93,9 +93,9 @@ public class AccountService
         try
         {
             var token = GenerateToken();
-            var expiresAt = DateTime.UtcNow.AddHours(24);
+            var expiresAt = DateTime.UtcNow.AddHours(72);
             _accountRepository.SetEmailVerificationToken(user.Id, token, expiresAt);
-            // MailService.SendVerificationEmail(user.Email, token); // Assume this is implemented
+            MailService.SendVerificationEmail(user.Email, token);
         }
         catch (Exception ex)
         {
@@ -128,9 +128,9 @@ public class AccountService
         try
         {
             var token = GenerateToken();
-            var expiresAt = DateTime.UtcNow.AddHours(2);
+            var expiresAt = DateTime.UtcNow.AddHours(4);
             _accountRepository.SetPasswordResetToken(user.Id, token, expiresAt);
-            // MailService.SendPasswordResetEmail(user.Email, token); // Assume this is implemented
+             MailService.SendPasswordResetEmail(user.Email, token);
         }
         catch (Exception ex)
         {
@@ -178,7 +178,7 @@ public class AccountService
     private string GenerateToken()
     {
         using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-        var randomBytes = new byte[32]; // 256 bits
+        var randomBytes = new byte[32];
         rngCryptoServiceProvider.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
     }
