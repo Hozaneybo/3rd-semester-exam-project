@@ -4,7 +4,6 @@ import {AccountServiceService} from "../../shared/services/account-service.servi
 import {catchError} from "rxjs/operators";
 import {TeacherService} from "../services/teacher.service";
 import {ToastController} from "@ionic/angular";
-import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {SearchResultDto} from "../../shared/Models/SearchTerm";
 
 @Component({
@@ -12,9 +11,9 @@ import {SearchResultDto} from "../../shared/Models/SearchTerm";
   templateUrl: './teacher-layout.component.html',
   styleUrls: ['./teacher-layout.component.scss'],
 })
-export class TeacherLayoutComponent implements OnInit {
+export class TeacherLayoutComponent{
+
   searchResults: SearchResultDto[] = [];
-  private searchSubject = new Subject<string>();
 
   constructor(
     private router: Router,
@@ -22,15 +21,6 @@ export class TeacherLayoutComponent implements OnInit {
     private teacherService: TeacherService,
     private toastController: ToastController) { }
 
-  ngOnInit() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(searchTerm => {
-      this.performSearch(searchTerm);
-    });
-
-  }
 
   logout() {
     this.accountService.logout();
@@ -62,9 +52,6 @@ export class TeacherLayoutComponent implements OnInit {
     }
   }
 
-  onSearchChange(searchTerm: string) {
-    this.searchSubject.next(searchTerm);
-  }
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -72,6 +59,10 @@ export class TeacherLayoutComponent implements OnInit {
       duration: 2000,
     });
     toast.present();
+  }
+
+  handleSearchResults(results: SearchResultDto[]) {
+    this.searchResults = results;
   }
 
 }

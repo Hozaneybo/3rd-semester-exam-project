@@ -14,6 +14,7 @@ import {UpdateLessonComponent} from "./components/lesson-management/update-lesso
 import {TeacherLayoutComponent} from "./teacher-layout/teacher-layout.component";
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -29,14 +30,15 @@ import {MyProfileComponent} from "./components/my-profile/my-profile.component";
     MyProfileComponent
 
   ],
-  imports: [
-    CommonModule,
-    TeacherRoutingModule,
-    IonicModule,
-    QuillModule.forRoot(),
-    FormsModule,
-    ReactiveFormsModule,
+    imports: [
+        CommonModule,
+        TeacherRoutingModule,
+        IonicModule,
+        QuillModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
 
-  ]
+    ]
 })
 export class TeacherModule { }

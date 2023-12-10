@@ -78,12 +78,6 @@ export class AdminService {
     return this.http.delete<ResponseDto<any>>(`${this.url}lessons/delete/${lessonId}`, { withCredentials: true });
   }
 
-  search(searchTerm: string): Observable<ResponseDto<SearchResultDto[]>> {
-    return this.http.get<ResponseDto<SearchResultDto[]>>(`${this.url}search`, {
-      params: { searchTerm },
-      withCredentials: true
-    });
-  }
 
   updateUserProfile(user: any, formData: FormData): Observable<any> {
     let endpoint: string;

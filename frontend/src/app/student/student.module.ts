@@ -11,6 +11,7 @@ import {IonicModule} from "@ionic/angular";
 import {StudentLayoutComponent} from "./student-layout/student-layout.component";
 import {FormsModule} from "@angular/forms";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -24,11 +25,12 @@ import {MyProfileComponent} from "./components/my-profile/my-profile.component";
     MyProfileComponent
 
   ],
-  imports: [
-    CommonModule,
-    StudentRoutingModule,
-    IonicModule,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        StudentRoutingModule,
+        IonicModule,
+        FormsModule,
+        SharedModule
+    ]
 })
 export class StudentModule { }

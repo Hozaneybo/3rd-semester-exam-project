@@ -13,10 +13,12 @@ namespace _3rd_semester_exam_project.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
+    private readonly SharedService _sharedService;
 
-    public AccountController(AccountService service)
+    public AccountController(AccountService service, SharedService sharedService)
     {
         _service = service;
+        _sharedService = sharedService;
     }
 
     [HttpPost("login")]
@@ -141,6 +143,34 @@ public class AccountController : ControllerBase
         catch (Exception ex)
         {
             return BadRequest(new ResponseDto { MessageToClient = "An error occurred." });
+        }
+    }
+    
+    [RequireAuthentication]
+    [HttpGet("search")]
+    public IActionResult Search([FromQuery] SearchQueryModel queryModel)
+    { 
+        try 
+        { 
+            var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto 
+            { 
+                Type = result.Type, 
+                Term = result.Term 
+            }).ToList();
+            
+            return Ok(new ResponseDto { MessageToClient = "Search results fetched successfully", ResponseData = searchResults }); 
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
 }

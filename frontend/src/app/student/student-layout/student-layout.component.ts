@@ -12,25 +12,15 @@ import { ToastController } from "@ionic/angular";
   templateUrl: './student-layout.component.html',
   styleUrls: ['./student-layout.component.scss'],
 })
-export class StudentLayoutComponent  implements OnInit {
+export class StudentLayoutComponent  {
 
   searchResults: SearchResultDto[] = [];
-  private searchSubject = new Subject<string>();
 
   constructor(
     private router: Router,
     private accountService: AccountServiceService,
-    private studentService: StudentService,
-    private toastController: ToastController) { }
+    ) { }
 
-  ngOnInit() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(searchTerm => {
-      this.performSearch(searchTerm);
-    });
-  }
 
   logout() {
     this.accountService.logout();
@@ -45,34 +35,8 @@ export class StudentLayoutComponent  implements OnInit {
     this.router.navigate([`/student/users/role/${role}`]);
   }
 
-  performSearch(searchTerm: string) {
-    searchTerm = searchTerm.trim();
-    if (searchTerm) {
-      this.studentService.search(searchTerm).pipe(
-        catchError(err => {
-          this.presentToast('An error occurred while searching.');
-          return [];
-        })
-      ).subscribe(response => {
-        this.searchResults = response.responseData || [];
-      }, err => {
-        this.presentToast(err.error.messageToClient || 'Error fetching search results.');
-      });
-    } else {
-      this.searchResults = [];
-    }
-  }
-
-  onSearchChange(searchTerm: string) {
-    this.searchSubject.next(searchTerm);
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-    });
-    toast.present();
+  handleSearchResults(results: SearchResultDto[]) {
+    this.searchResults = results;
   }
 
 }
