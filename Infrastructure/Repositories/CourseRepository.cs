@@ -31,7 +31,7 @@ FROM learning_platform.courses;";
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while retrieving courses.", ex);
+            throw new InvalidOperationException("An error occurred while retrieving courses.", ex);
         }
         catch (Exception ex)
         {
@@ -73,7 +73,7 @@ WHERE course_id = @Id;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while retrieving the course by ID.", ex);
+            throw new InvalidOperationException("An error occurred while retrieving the course by ID.", ex);
         }
         catch (Exception ex)
         {
@@ -101,7 +101,7 @@ RETURNING
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while adding a new course.", ex);
+            throw new InvalidOperationException("An error occurred while adding a new course.", ex);
         }
         catch (Exception ex)
         {
@@ -128,7 +128,7 @@ RETURNING *;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while updating the course.", ex);
+            throw new InvalidOperationException("An error occurred while updating the course.", ex);
         }
         catch (Exception ex)
         {
@@ -150,7 +150,7 @@ WHERE id = @Id;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while deleting the course.", ex);
+            throw new InvalidOperationException("An error occurred while deleting course.", ex);
         }
         catch (Exception ex)
         {

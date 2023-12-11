@@ -22,6 +22,10 @@ public class CourseService
         {
             return _courseRepository.GetAllCourses();
         }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error retrieving all courses: {Message}", ex.Message);
@@ -34,6 +38,10 @@ public class CourseService
         try
         {
             return _courseRepository.GetCourseById(id);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -48,6 +56,10 @@ public class CourseService
         {
             return _courseRepository.AddCourse(command.Title, command.Description, command.CourseImgUrl);
         }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error creating course: {Message}", ex.Message);
@@ -61,6 +73,10 @@ public class CourseService
         {
             return _courseRepository.UpdateCourse(command.Id, command.Title, command.Description, command.CourseImgUrl);
         }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error updating course: {Message}", ex.Message);
@@ -73,6 +89,10 @@ public class CourseService
         try
         {
             _courseRepository.DeleteCourse(id);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
         }
         catch (Exception ex)
         {

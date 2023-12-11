@@ -5,6 +5,8 @@ using Service;
 using Service.CQ.Commands;
 using Service.CQ.Queries;
 using System;
+using MailKit.Security;
+using Npgsql;
 
 namespace _3rd_semester_exam_project.Controllers;
 
@@ -36,7 +38,12 @@ public class AccountController : ControllerBase
                     ResponseData = new { Role = user.Role }
                 });
             }
+
             return Unauthorized(new ResponseDto { MessageToClient = "Invalid credentials." });
+        }
+        catch (AuthenticationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
         }
         catch (Exception ex)
         {
@@ -62,10 +69,19 @@ public class AccountController : ControllerBase
                 MessageToClient = "Registration successful. Please check your email to verify your account."
             });
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (NpgsqlException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
         catch (Exception ex)
         {
-            return BadRequest(new ResponseDto { MessageToClient = "Registration failed." });
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = ex.Message });
         }
+        
     }
     
     [HttpGet("verify-email")]

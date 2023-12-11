@@ -39,7 +39,7 @@ public class AccountService
             }
             return _accountRepository.GetById(passwordHash.UserId);
         }
-        catch (InvalidCredentialException)
+        catch (InvalidCredentialException ex)
         {
             throw; 
         }
@@ -71,18 +71,18 @@ public class AccountService
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogError("Registration failed due to invalid operation: {Message}", ex.Message);
-            throw new InvalidOperationException("Registration failed: Invalid data provided.");
+            _logger.LogError("Registration failed: {Message}", ex.Message);
+            throw;
         }
         catch (NpgsqlException ex)
         {
             _logger.LogError("Database error during registration: {Message}", ex.Message);
-            throw new InvalidOperationException("A database error occurred during registration. Please try again later.");
+            throw;
         }
         catch (Exception ex)
         {
             _logger.LogError("Unexpected error during registration: {Message}", ex.Message);
-            throw new Exception("An unexpected error occurred during registration. Please try again later.");
+            throw;
         }
     }
 

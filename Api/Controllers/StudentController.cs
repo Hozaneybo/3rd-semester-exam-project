@@ -32,17 +32,21 @@ public class StudentController : ControllerBase
                 Title = course.Title,
                 Description = course.Description,
                 CourseImgUrl = course.CourseImgUrl
+            
             }).ToList();
-
             return Ok(new ResponseDto
             {
                 MessageToClient = "Successfully fetched",
-                ResponseData = courses,
+                ResponseData = courses
             });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An error occurred while retrieving courses." });
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
 
@@ -52,6 +56,7 @@ public class StudentController : ControllerBase
         try
         {
             var course = _courseService.GetCourseById(id);
+
             if (course == null)
             {
                 return NotFound(new ResponseDto
@@ -79,12 +84,13 @@ public class StudentController : ControllerBase
                 ResponseData = courseResult
             });
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto
-            {
-                MessageToClient = "An error occurred while retrieving the course."
-            });
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
     
@@ -94,12 +100,10 @@ public class StudentController : ControllerBase
         try
         {
             var lesson = _lessonService.GetLessonById(courseId, id);
+
             if (lesson == null)
             {
-                return NotFound(new ResponseDto
-                {
-                    MessageToClient = "Lesson not found"
-                });
+                return NotFound(new ResponseDto { MessageToClient = "Lesson not found" });
             }
 
             var lessonContent = new LessonByIdResult()
@@ -126,13 +130,13 @@ public class StudentController : ControllerBase
                 ResponseData = lessonContent
             });
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
         catch (Exception ex)
         {
-            // Log the exception if necessary
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto
-            {
-                MessageToClient = "An error occurred while retrieving the lesson."
-            });
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
     

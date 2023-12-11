@@ -26,6 +26,10 @@ public class AdminService
         {
             return _adminRepository.GetAll();
         }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error retrieving all users: {Message}", ex.Message);
@@ -38,6 +42,10 @@ public class AdminService
         try
         {
             return _adminRepository.UpdateUser(command.Id, command.FullName, command.Email, command.AvatarUrl, command.Role);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -52,6 +60,10 @@ public class AdminService
         {
             return _accountRepository.GetById(id);
         }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Error retrieving user by ID: {Message}", ex.Message);
@@ -64,6 +76,10 @@ public class AdminService
         try
         {
             _adminRepository.DeleteUser(id);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
         }
         catch (Exception ex)
         {
