@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AlertController} from "@ionic/angular";
+import {ToastService} from "../shared/services/toast.service";
 
 
 @Component({
@@ -21,7 +22,10 @@ import {AlertController} from "@ionic/angular";
   readonly url = environment.apiEndpoint + 'api/Guest/courses';
   courses: AllCoursesView[] = [];
 
-  constructor(private http: HttpClient, private alertController: AlertController) {
+  constructor(private http: HttpClient,
+              private alertController: AlertController,
+              private toastService : ToastService
+  ) {
   }
 
   ngOnInit() {
@@ -30,7 +34,7 @@ import {AlertController} from "@ionic/angular";
         this.courses = response.responseData;
       },
       (error) => {
-        console.error('Error fetching courses', error);
+        this.toastService.showError(error.messageToClient || 'Error fetching courses')
       }
     );
   }

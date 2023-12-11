@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router } from "@angular/router";
 import { AccountServiceService } from "../../shared/services/account-service.service";
 import { SearchResultDto } from "../../shared/Models/SearchTerm";
-import { StudentService } from "../services/student.service";
-import { debounceTime, distinctUntilChanged, Subject } from "rxjs";
-import { catchError } from 'rxjs/operators';
-import { ToastController } from "@ionic/angular";
+
 
 @Component({
   selector: 'app-student-layout',

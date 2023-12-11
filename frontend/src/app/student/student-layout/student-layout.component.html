@@ -12,7 +12,7 @@
 
   <ion-buttons slot="end">
     <app-shared-search (searchResultsEmitter)="handleSearchResults($event)"></app-shared-search>
-    <ion-button (click)="openProfile()">Profile</ion-button>
+    <ion-img id = "prof-image" (click)="openProfile()" src="assets/icon/profile.png">Profile</ion-img>
     <ion-button (click)="logout()">Logout</ion-button>
   </ion-buttons>
 

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AccountServiceService } from "../../shared/services/account-service.service";
 import { AdminService } from "../services/admin.service";
 import {UserProfile} from "../components/LoginModels";
+import {ToastService} from "../../shared/services/toast.service";
 
 @Component({
   selector: 'app-edit-profile',
@@ -18,13 +19,14 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private accountService: AccountServiceService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private toastService : ToastService
   ) {
     this.editForm = this.fb.group({
       fullname: ['', [Validators.required]],
       role: ['', [Validators.required]],
-      email: [{value: '', disabled: true}], // Email is not editable
-      avatar: [null] // For now, we will not set validators for the avatar
+      email: [{value: '', disabled: true}],
+      avatar: [null]
     });
   }
 
@@ -33,7 +35,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   loadUserProfile(): void {
-    // Call the API to get the user details
     this.accountService.whoAmI().subscribe({
       next: (response) => {
         const userInfo = response.responseData;
@@ -46,7 +47,7 @@ export class EditProfileComponent implements OnInit {
         });
       },
       error: (error) => {
-        console.error('Error fetching user data:', error);
+        this.toastService.showError(error.messageToClient || 'Error fetching user data.')
       }
     });
   }
@@ -60,7 +61,7 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.user?.id ) {
-      console.error('User ID or role is not set');
+      this.toastService.showError('User ID or role is not set')
       return;
     }
 
@@ -72,12 +73,10 @@ export class EditProfileComponent implements OnInit {
 
     this.accountService.updateUser(this.user, this.user.role, formData).subscribe({
       next: (response) => {
-        console.log('User updated successfully:', response);
-        // Handle successful update here
+        this.toastService.showSuccess(response.messageToClient || 'User updated successfully')
       },
       error: (error) => {
-        console.error('Error updating user:', error);
-        // Handle error here
+       this.toastService.showError(error.messageToClient || 'Error updating user')
       }
     });
   }

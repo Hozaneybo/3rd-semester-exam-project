@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import { AdminService } from "../../../services/admin.service";
 import { User } from "../../LoginModels";
-import {ToastController} from "@ionic/angular";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-user-by-role',
@@ -12,13 +12,12 @@ import {ToastController} from "@ionic/angular";
 export class UsersByRoleComponent implements OnInit {
   users!: User[] | undefined;
   selectedRole: string = 'Student';
-  message: string | undefined;
+  message : Promise<void> | undefined;
 
   constructor(
     private adminService: AdminService,
     private route: ActivatedRoute,
-    private router: Router,
-    private toastController: ToastController) {}
+    private toastService : ToastService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -28,7 +27,7 @@ export class UsersByRoleComponent implements OnInit {
         this.fetchUsersByRole(this.selectedRole);
       } else {
         this.selectedRole = 'Select';
-        this.message = 'Please select the group of users you are looking for.';
+        this.message = this.toastService.showInfo('Form is invalid. Please select user role')
         this.users = [];
       }
     });
@@ -38,21 +37,12 @@ export class UsersByRoleComponent implements OnInit {
     this.adminService.getUsersByRole(role).subscribe({
       next: (response) => {
         this.users = response.responseData;
-        this.presentToast(response.messageToClient || `${role} users fetched successfully.`, 'success');
+        this.toastService.showSuccess(response.messageToClient || `${role} users fetched successfully.`);
       },
       error: (error) => {
-        const errorMessage = error.error?.messageToClient || `Failed to fetch ${role} users. Please try again later.`;
-        this.presentToast(errorMessage, 'danger');
+        this.toastService.showError(error.messageToClient || `Failed to fetch ${role} users. Please try again later.`)
       }
     });
   }
 
-  private async presentToast(message: string, color: 'success' | 'danger') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      color: color
-    });
-    await toast.present();
-  }
 }

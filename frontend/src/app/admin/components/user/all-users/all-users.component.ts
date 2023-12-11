@@ -33,7 +33,7 @@ export class AllUsersComponent implements OnInit {
     if(confirm('Are you sure you want to delete this user?')) {
       this.adminService.deleteUser(userId).subscribe({
         next: (response) => {
-          //this.users = this.users?.filter(user => user.id !== userId);
+          this.users = this.users?.filter(user => user.id !== userId);
           this.toastService.showSuccess(response.messageToClient || ' User successfully deleted')
         },
         error: (error) => {

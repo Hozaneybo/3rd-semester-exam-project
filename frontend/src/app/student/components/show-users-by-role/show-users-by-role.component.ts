@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../../admin/components/LoginModels";
 import {ActivatedRoute} from "@angular/router";
-import {ToastController} from "@ionic/angular";
 import {StudentService} from "../../services/student.service";
+import {ToastService} from "../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-show-users-by-role',
@@ -16,13 +16,13 @@ export class ShowUsersByRoleComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private route: ActivatedRoute,
-    private toastController: ToastController
+    private toastService : ToastService
   ) { }
 
 
-  message: string | undefined;
+  message: Promise<void> | undefined;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       const roleFromUrl = params['role'];
       if (['Admin', 'Teacher', 'Student'].includes(roleFromUrl)) {
@@ -30,34 +30,22 @@ export class ShowUsersByRoleComponent implements OnInit {
         this.fetchUsersByRole(this.selectedRole);
       } else {
         this.selectedRole = 'Select';
-        this.message = 'Please select the group of users you are looking for.';
+        this.message = this.toastService.showInfo('Form is invalid. Please select user role')
         this.users = [];
       }
     });
   }
 
-
-
-
   fetchUsersByRole(role: string): void {
     this.studentService.getUsersByRole(role).subscribe({
       next: (response) => {
         this.users = response.responseData;
-        this.presentToast(response.messageToClient || `${role} users fetched successfully.`, 'success');
+        this.toastService.showSuccess(response.messageToClient || `${role} users fetched successfully.`);
       },
       error: (error) => {
-        const errorMessage = error.error?.messageToClient || `Failed to fetch ${role} users. Please try again later.`;
-        this.presentToast(errorMessage, 'danger');
+        this.toastService.showError(error.messageToClient || `Failed to fetch ${role} users. Please try again later.`)
       }
     });
   }
 
-  private async presentToast(message: string, color: 'success' | 'danger') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      color: color
-    });
-    await toast.present();
-  }
 }

@@ -8,13 +8,14 @@ import { firstValueFrom } from "rxjs";
 import { CustomValidators } from "../../CustomValidators";
 import { AccountServiceService } from "../../services/account-service.service";
 import { ResponseDto } from "../../../admin/components/LoginModels";
+import {ToastService} from "../../services/toast.service";
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent  {
 
   resetPasswordForm = this.fb.group({
     newPassword: ['', Validators.required],
@@ -28,35 +29,27 @@ export class ResetPasswordComponent implements OnInit {
     private service: AccountServiceService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastController: ToastController
+    private toastService : ToastService
   ) {
     this.token = this.route.snapshot.queryParams['token'];
   }
 
-  ngOnInit() {}
+
 
   async resetPassword() {
     if (this.resetPasswordForm.invalid) {
-      await this.presentToast("Please fill in the form correctly", "danger");
+      await this.toastService.showError("Please fill in the form correctly");
       return;
     }
 
     try {
       const response: ResponseDto<any> = await firstValueFrom(this.service.resetPassword(this.token, this.resetPasswordForm.value.newPassword));
-      await this.presentToast(response.messageToClient || "Password reset successful", "success");
+      await this.toastService.showSuccess(response.messageToClient || "Password reset successful");
       this.router.navigate(['/login']);
     } catch (error) {
       const errorMessage = (error as HttpErrorResponse).error.messageToClient || "Error resetting password";
-      await this.presentToast(errorMessage, "danger");
+      await this.toastService.showError(errorMessage);
     }
   }
 
-  private async presentToast(message: string, color: "success" | "danger") {
-    const toast = await this.toastController.create({
-      message: message,
-      color: color,
-      duration: 5000
-    });
-    toast.present();
-  }
 }

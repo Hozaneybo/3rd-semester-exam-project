@@ -4,6 +4,7 @@ import { AdminService } from "../../../services/admin.service";
 import { ResponseDto, User } from "../../LoginModels";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-user-details',
@@ -18,7 +19,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private toastServicec: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -27,10 +29,14 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
       if (userId) {
         this.adminService.getUserById(userId).subscribe({
           next: (response: ResponseDto<User>) => {
-            this.user = response.responseData;
+            if(response) {
+              this.user = response.responseData;
+              this.toastServicec.showSuccess(response.messageToClient || 'User details fetched successfully')
+            }
           },
           error: (error) => {
-            console.error('Error fetching user details:', error);
+            this.toastServicec.showError(error.messageToClient || 'Error fetching user details:')
+            console.error();
           }
         });
       }

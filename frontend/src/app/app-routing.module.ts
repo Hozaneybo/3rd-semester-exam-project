@@ -1,14 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {FeaturesComponent} from "./home/components/features/features.component";
-import {CompanyComponent} from "./home/components/company/company.component";
-import {CustomersComponent} from "./home/components/customers/customers.component";
-import {PricingComponent} from "./home/components/pricing/pricing.component";
-import {SupportComponent} from "./home/components/support/support.component";
-import {LoginComponent} from "./shared/components/login/login.component";
-import {RegisterComponent} from "./shared/components/register/register.component";
-import {VerifyEmailComponent} from "./shared/components/verify-email/verify-email.component";
-import {ResetPasswordComponent} from "./shared/components/reset-password/reset-password.component";
+
 
 const routes: Routes = [
   {

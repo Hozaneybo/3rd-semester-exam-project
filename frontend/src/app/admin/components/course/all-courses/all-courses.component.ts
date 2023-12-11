@@ -43,7 +43,7 @@ export class AllCoursesComponent implements OnInit {
         next: (response) => {
           if(response) {
             this.toastService.showSuccess(response.messageToClient || 'Course deleted successfully');
-            //this.courses = this.courses.filter(course => course.id !== courseId);
+            this.courses = this.courses.filter(course => course.id !== courseId);
           }
 
         },

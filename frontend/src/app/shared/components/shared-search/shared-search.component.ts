@@ -3,7 +3,7 @@ import { catchError } from "rxjs/operators";
 import { SearchResultDto } from "../../Models/SearchTerm";
 import { debounceTime, distinctUntilChanged, Subject } from "rxjs";
 import { AccountServiceService } from "../../services/account-service.service";
-import { ToastController } from "@ionic/angular";
+import {ToastService} from "../../services/toast.service";
 
 @Component({
   selector: 'app-shared-search',
@@ -16,7 +16,8 @@ export class SharedSearchComponent implements OnInit {
 
   @Output() searchResultsEmitter = new EventEmitter<SearchResultDto[]>();
 
-  constructor(private service: AccountServiceService, private toastController: ToastController) { }
+  constructor(private service: AccountServiceService,
+              private toastService : ToastService) { }
 
   ngOnInit() {
     this.searchSubject.pipe(
@@ -32,14 +33,14 @@ export class SharedSearchComponent implements OnInit {
     if (searchTerm) {
       this.service.search(searchTerm).pipe(
         catchError(err => {
-          this.service.presentToast('An error occurred while searching.', 'warning');
+          this.toastService.showWarning('An error occurred while searching.')
           return [];
         })
       ).subscribe(response => {
         this.searchResults = response.responseData || [];
         this.searchResultsEmitter.emit(this.searchResults);
       }, err => {
-        this.service.presentToast(err.error.messageToClient || 'Error fetching search results.', 'warning');
+        this.toastService.showError(err.error.messageToClient || 'Error fetching search results.')
       });
     } else {
       this.searchResults = [];

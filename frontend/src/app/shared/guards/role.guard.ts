@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
 import {firstValueFrom} from 'rxjs';
 import {AccountServiceService} from "../services/account-service.service";
+import {ToastService} from "../services/toast.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,12 @@ import {AccountServiceService} from "../services/account-service.service";
 export class RoleGuard implements CanActivate {
   constructor(
     private accountService: AccountServiceService,
-    private router: Router
+    private router: Router,
+    private toastService : ToastService
   ) {}
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
-    const expectedRole = route.data['expectedRole']; // Use index access here
+    const expectedRole = route.data['expectedRole'];
 
     try {
       const userInfo = await firstValueFrom(this.accountService.whoAmI());
@@ -23,7 +25,7 @@ export class RoleGuard implements CanActivate {
         return true;
       }
     } catch (error) {
-      // Handle any errors, like not being logged in
+      this.toastService.showError('Not being logged in')
     }
 
     this.router.navigate(['login']);

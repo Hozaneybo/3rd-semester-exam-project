@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AccountServiceService} from "../../services/account-service.service";
 import {ActivatedRoute} from "@angular/router";
 import {ToastController} from "@ionic/angular";
-import {firstValueFrom} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
+import {ToastService} from "../../services/toast.service";
+
 
 @Component({
   selector: 'app-verify-email',
@@ -14,34 +14,25 @@ export class VerifyEmailComponent  implements OnInit {
   emailVerified = false;
   message = '';
 
-  constructor(private service: AccountServiceService, private route: ActivatedRoute, private toast: ToastController) {
+  constructor(private service: AccountServiceService,
+              private route: ActivatedRoute,
+              private toastService : ToastService) {
   }
 
   ngOnInit() {
     const token = this.route.snapshot.queryParamMap.get('token');
     if (token) {
-      this.service.verifyEmail(token).subscribe(
-        async response => {
-          const successToast = await this.toast.create({
-            message: 'Email verification successful!',
-            color: "success",
-            duration: 5000
-          });
-          successToast.present();
+      this.service.verifyEmail(token).subscribe({
+        next: (response) => {
+          this.toastService.showSuccess('Email verification successful!');
           this.emailVerified = true;
           this.message = 'Your email has been successfully verified!';
         },
-        async error => {
-          const errorToast = await this.toast.create({
-            message: error.error.messageToClient || 'Email verification failed!',
-            color: "danger",
-            duration: 5000
-          });
-          errorToast.present();
-          this.message = 'Failed to verify email. Please try again.'; // Update message on failure
+        error: (error) => {
+          this.toastService.showError(error.error.messageToClient || 'Email verification failed!');
+          this.message = 'Failed to verify email. Please try again.';
         }
-      );
+      });
     }
   }
-
 }

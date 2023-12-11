@@ -54,7 +54,7 @@ export class UpdateUserComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error fetching user details:', error);
+        this.toastService.showError(error.messageToClient || 'Error fetching user')
       }
     });
   }
@@ -63,17 +63,17 @@ export class UpdateUserComponent implements OnInit {
     if (this.updateUserForm.valid && this.userId) {
       this.adminService.updateUser(this.userId, this.updateUserForm.value).subscribe({
         next: (response) => {
-          console.log('User updated successfully:', response);
-          this.successMessage = 'User updated successfully.';
-          this.router.navigate(['/admin/users']);
+          if(response) {
+            this.toastService.showSuccess(response.messageToClient ||'User updated successfully.');
+            this.router.navigate(['/admin/users']);
+          }
         },
         error: (error) => {
-          console.error('Error updating user:', error);
-          this.successMessage = undefined;
+         this.toastService.showError(error.messageToClient || 'Error occurs under updating')
         }
       });
     } else {
-      console.error('Form is invalid or userId is missing');
+      this.toastService.showError('Form is invalid or userId is missing')
     }
   }
 
