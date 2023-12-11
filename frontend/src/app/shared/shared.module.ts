@@ -19,7 +19,8 @@ import {SharedSearchComponent} from "./components/shared-search/shared-search.co
       VerifyEmailComponent,
       ResetPasswordRequestComponent,
       ResetPasswordComponent,
-      SharedSearchComponent
+      SharedSearchComponent,
+
     ],
   imports: [
     CommonModule,

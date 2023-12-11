@@ -25,23 +25,23 @@ export class AccountServiceService {
     return this.http.post<ResponseDto<any>>(this.url + 'register', userData);
   }
 
-  verifyEmail(token: string) {
-    return this.http.get(`${this.url}verify-email`, { params: { token } });
+  verifyEmail(token: string) : Observable<ResponseDto<any>> {
+    return this.http.get<ResponseDto<any>>(`${this.url}verify-email`, { params: { token } });
   }
 
-  requestResetPassword(email: any){
-    return this.http.post(this.url + 'request-password-reset', {email});
+  requestResetPassword(email: any): Observable<ResponseDto<any>>{
+    return this.http.post<ResponseDto<any>>(this.url + 'request-password-reset', {email});
   }
 
-  resetPassword(token: string, newPassword: any) {
-    return this.http.post(`${this.url}reset-password`, { token, newPassword });
+  resetPassword(token: string, newPassword: any): Observable<ResponseDto<any>> {
+    return this.http.post<ResponseDto<any>>(`${this.url}reset-password`, { token, newPassword });
   }
 
   whoAmI(): Observable<ResponseDto<any>> {
     return this.http.get<ResponseDto<any>>(this.url + 'whoami');
   }
 
-  async logout(): Promise<ResponseDto<User>> {
+  async logout(): Promise<ResponseDto<any>> {
     return await firstValueFrom(this.http.post<ResponseDto<User>>(this.url + 'logout', {}));
   }
 
@@ -52,7 +52,7 @@ export class AccountServiceService {
     });
   }
 
-  updateUser(user: any, role: string | undefined, formData: FormData): Observable<any> {
+  updateUser(user: any, role: string | undefined, formData: FormData): Observable<ResponseDto<any>> {
     let endpoint: string;
     switch (role) {
       case 'Admin':
@@ -68,7 +68,7 @@ export class AccountServiceService {
         throw new Error('User role not recognized');
     }
 
-    return this.http.put<any>(`http://localhost:5000/api/${endpoint}/users/update/${user.id}`, formData, { withCredentials: true });
+    return this.http.put<ResponseDto<any>>(`http://localhost:5000/api/${endpoint}/users/update/${user.id}`, formData, { withCredentials: true });
   }
 
    setupClock(): void {

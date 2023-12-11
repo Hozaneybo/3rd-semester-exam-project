@@ -5,6 +5,7 @@ import {ToastController} from "@ionic/angular";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {Router} from "@angular/router";
+import {ToastService} from "../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-my-profile',
@@ -17,7 +18,7 @@ export class MyProfileComponent  implements OnInit {
 
   constructor(
     private accountService: AccountServiceService,
-    private toastController: ToastController,
+    private toastService : ToastService,
     private router : Router) {
   }
 
@@ -27,27 +28,19 @@ export class MyProfileComponent  implements OnInit {
 
   loadUserProfile() {
     this.accountService.whoAmI().pipe(
-      catchError(err => {
-        this.presentToast('An error occurred while loading your profile.');
+      catchError(error => {
+        this.toastService.showError( error.messageToClient ||'An error occurred while loading your profile.');
         return of({} as ResponseDto<User>);
       })
     ).subscribe(response => {
       if (response && response.responseData) {
         this.userProfile = response.responseData;
       } else {
-        this.presentToast(response.messageToClient || 'No profile data available.');
+        this.toastService.showError(response.messageToClient || 'No profile data available.');
       }
     }, error => {
-      this.presentToast(error.error.messageToClient || 'An unexpected error occurred.');
+      this.toastService.showError(error.error.messageToClient || 'An unexpected error occurred.');
     });
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-    });
-    toast.present();
   }
 
   editProfile(){}

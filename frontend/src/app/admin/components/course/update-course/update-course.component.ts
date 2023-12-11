@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AdminService } from "../../../services/admin.service";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 
 @Component({
@@ -19,7 +20,8 @@ export class UpdateCourseComponent implements OnInit {
     private route: ActivatedRoute,
     private adminService: AdminService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.updateCourseForm = this.fb.group({
       courseId: [this.courseId],
@@ -33,11 +35,10 @@ export class UpdateCourseComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.courseId = parseInt(id, 10);
-      this.loadCourseData(this.courseId)
-
+      this.loadCourseData(this.courseId);
     } else {
-      this.router.navigate(['/admin/courses']).then(() => {
-      });
+      this.toastService.showError('Invalid course ID');
+      this.router.navigate(['/admin/courses']);
     }
   }
 
@@ -55,35 +56,27 @@ export class UpdateCourseComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error fetching course details:', error);
+        this.toastService.showError('Error fetching course details: ' + (error.error?.messageToClient || 'Unknown error'));
       }
     });
   }
 
   submitUpdate(): void {
     if (this.updateCourseForm.valid && this.courseId) {
-      console.log(this.courseId)
       const currentFormValues = this.updateCourseForm.value;
-      console.log(currentFormValues)
       if (this.courseId === currentFormValues.courseId) {
         this.adminService.updateCourse(this.courseId, currentFormValues).subscribe({
           next: (response) => {
-            console.log('Course updated successfully:', response);
-            this.successMessage = 'Course updated successfully.';
+            this.toastService.showSuccess(response.messageToClient || 'Course updated successfully');
             this.router.navigate(['/admin/courses']);
           },
           error: (error) => {
-            console.error('Error updating course:', error);
-            this.successMessage = undefined;
-            alert(error.message);
+            this.toastService.showError('Error updating course: ' + (error.error?.messageToClient || 'Unknown error'));
           }
         });
       } else {
-        console.error('Course ID in the form does not match the expected course ID.');
+        this.toastService.showWarning('Invalid form or missing course ID');
       }
-    } else {
-      console.error('Form is invalid or courseId is missing');
     }
   }
-
 }

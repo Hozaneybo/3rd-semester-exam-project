@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AllCoursesView} from "../../../../shared/Models/CourseModel";
-import {TeacherService} from "../../../../teacher/services/teacher.service";
-import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
 import {AdminService} from "../../../services/admin.service";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-course-for-lesson',
@@ -16,8 +15,8 @@ export class CourseForLessonComponent  implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private toast : ToastService
   ) {}
 
   ngOnInit() {
@@ -26,6 +25,7 @@ export class CourseForLessonComponent  implements OnInit {
         this.courses = response.responseData;
       },
       error: (error) => {
+        this.toast.showError('Error updating course: ' + (error.error?.messageToClient || 'Unknown error'));
       }
     });
   }
