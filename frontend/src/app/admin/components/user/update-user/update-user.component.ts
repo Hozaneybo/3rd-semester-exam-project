@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AdminService } from "../../../services/admin.service";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-update-user',
@@ -19,6 +20,7 @@ export class UpdateUserComponent implements OnInit {
     private adminService: AdminService,
     private fb: FormBuilder,
     private router: Router,
+    private toastService : ToastService
 
   ) {
     this.updateUserForm = this.fb.group({

@@ -1,26 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import {AllCoursesView, LessonView} from "../../../../shared/Models/CourseModel";
-import {AdminService} from "../../../services/admin.service";
-import {Router} from "@angular/router";
+import { AllCoursesView, LessonView } from "../../../../shared/Models/CourseModel";
+import { AdminService } from "../../../services/admin.service";
+import { Router } from "@angular/router";
+import { ToastService } from "../../../../shared/services/toast.service"; // Import ToastService
 
 @Component({
   selector: 'app-all-courses',
   templateUrl: './all-courses.component.html',
   styleUrls: ['./all-courses.component.scss'],
 })
-export class AllCoursesComponent  implements OnInit {
+export class AllCoursesComponent implements OnInit {
 
-  courses : AllCoursesView[] = [];
+  courses: AllCoursesView[] = [];
   lessons: LessonView[] = [];
 
-  constructor(private adminService : AdminService, private router : Router) {}
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+    private toastService: ToastService // Inject ToastService
+  ) {}
 
   ngOnInit() {
-    return this.adminService.getAllCourses().subscribe( response => {
-      if (response && response.responseData) {
-        this.courses = response.responseData
+    this.adminService.getAllCourses().subscribe({
+      next: (response) => {
+        if (response && response.responseData) {
+          this.courses = response.responseData;
+        } else {
+          this.toastService.showError(response.messageToClient || 'No courses found.');
+        }
+      },
+      error: (error) => {
+        this.toastService.showError(error.messageToClient || 'Error fetching courses')
       }
-    })
+    });
   }
 
   deleteCourse(courseId: number, event: Event): void {
@@ -29,17 +41,21 @@ export class AllCoursesComponent  implements OnInit {
     if (confirm('Are you sure you want to delete this course?')) {
       this.adminService.deleteCourse(courseId).subscribe({
         next: (response) => {
-          console.log('Course deleted successfully:', response);
-          this.courses = this.courses.filter(course => course.id !== courseId);
+          if(response) {
+            this.toastService.showSuccess(response.messageToClient || 'Course deleted successfully');
+            //this.courses = this.courses.filter(course => course.id !== courseId);
+          }
+
         },
         error: (error) => {
-          console.error('Error deleting course:', error);
+          this.toastService.showError(error.messageToClient || 'Error deleting courses')
+
         }
       });
     }
   }
 
-  createCourse(){
+  createCourse() {
     this.router.navigate(['/admin/create-course']);
   }
 
@@ -48,9 +64,4 @@ export class AllCoursesComponent  implements OnInit {
     this.router.navigate(['/admin/course/update', courseId]);
   }
 
-
-  navigateToLessons(courseId: number) {
-
-    this.router.navigate(['/admin/courses', courseId]);
-  }
 }
