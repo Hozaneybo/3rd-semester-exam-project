@@ -14,21 +14,31 @@ public class GuestController : ControllerBase
         _courseService = courseService;
     }
     [HttpGet("courses")]
-    public ResponseDto GetAllCourses()
+    public IActionResult GetAllCourses()
     {
-       
-        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl
-            
-        }).ToList();
-        return new ResponseDto()
-        {
-            MessageToClient = "Successfully fetched",
-            ResponseData = courses,
-        };
+            var courses = _courseService.GetAllCourses().Select(course => new AllCoursesResult
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl
+            }).ToList();
+
+            return Ok(new ResponseDto()
+            {
+                MessageToClient = "Successfully fetched",
+                ResponseData = courses,
+            });
+        }
+        catch (Exception ex)
+        { 
+            return StatusCode(500, new ResponseDto() 
+            { 
+                MessageToClient = "An error occurred while processing your request.",
+                ResponseData = null
+            });
+        }
     }
 }

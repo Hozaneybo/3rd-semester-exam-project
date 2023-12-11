@@ -29,10 +29,19 @@ public static class MailService
             client.Authenticate(Environment.GetEnvironmentVariable("COMPANY_MAIL"), Environment.GetEnvironmentVariable("G_PASS"));
             client.Send(message);
         }
+        catch (SmtpCommandException ex)
+        {
+            
+            throw new InvalidOperationException($"Error sending email: SMTP command failed - {ex.Message}");
+        }
+        catch (SmtpProtocolException ex)
+        {
+            
+            throw new InvalidOperationException($"Error sending email: SMTP protocol error - {ex.Message}");
+        }
         catch (Exception ex)
         {
-            // Add logging or error handling
-            throw;
+            throw new InvalidOperationException($"Error sending email: {ex.Message}");
         }
         finally
         {

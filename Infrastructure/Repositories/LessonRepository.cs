@@ -15,18 +15,31 @@ public class LessonRepository : ILessonRepository
     }
 
     public IEnumerable<Lesson> GetAllLessons()
-    {
-        const string sql = @"
+    { 
+        try
+        {
+            const string sql = @"
 SELECT id, title, content, course_id
 FROM learning_platform.lessons;
 ";
-        using var connection = _dataSource.OpenConnection();
-        return connection.Query<Lesson>(sql);
+            using var connection = _dataSource.OpenConnection();
+            return connection.Query<Lesson>(sql);
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new Exception("An error occurred while retrieving lessons.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while retrieving lessons.", ex);
+        }
     }
 
     public Lesson GetLessonById(int courseId, int id)
     {
-        const string lessonSql = $@"
+        try
+        {
+            const string lessonSql = $@"
 SELECT 
     id as {nameof(Lesson.Id)},
     title as {nameof(Lesson.Title)},
@@ -36,7 +49,7 @@ SELECT
 WHERE id = @Id AND course_id = @CourseId;
 ";
 
-        const string picturesSql = $@"
+            const string picturesSql = $@"
 SELECT
     id as {nameof(LessonPicture.Id)},
     img_url as {nameof(LessonPicture.ImgUrl)},
@@ -45,7 +58,7 @@ SELECT
 WHERE lesson_id = @Id;
 ";
 
-        const string videosSql = $@"
+            const string videosSql = $@"
 SELECT 
     id as {nameof(LessonVideo.Id)},
     video_url as {nameof(LessonVideo.VideoUrl)},
@@ -54,19 +67,30 @@ SELECT
 WHERE lesson_id = @Id;
 ";
 
-        using var connection = _dataSource.OpenConnection();
-        var lesson = connection.QuerySingleOrDefault<Lesson>(lessonSql, new { Id = id, CourseId = courseId });
+            using var connection = _dataSource.OpenConnection();
+            var lesson = connection.QuerySingleOrDefault<Lesson>(lessonSql, new { Id = id, CourseId = courseId });
 
-        if (lesson != null)
-        {
-            var pictures = connection.Query<LessonPicture>(picturesSql, new { Id = id });
-            var videos = connection.Query<LessonVideo>(videosSql, new { Id = id });
+            if (lesson != null)
+            {
+                var pictures = connection.Query<LessonPicture>(picturesSql, new { Id = id });
+                var videos = connection.Query<LessonVideo>(videosSql, new { Id = id });
 
-            lesson.ImgUrls = pictures.ToList();
-            lesson.VideoUrls = videos.ToList();
+                lesson.ImgUrls = pictures.ToList();
+                lesson.VideoUrls = videos.ToList();
+            }
+
+            return lesson;
+
         }
-
-        return lesson;
+        catch (NpgsqlException ex)
+        {
+            throw new Exception("An error occurred while retrieving the lesson by ID.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while retrieving the lesson by ID.", ex);
+        }
+        
     }
 
 
@@ -107,22 +131,27 @@ RETURNING
             var lesson = connection.QueryFirst<Lesson>(insertLessonSql, new { Title = title, Content = content, CourseId = courseId }, transaction);
 
             foreach (var imgUrl in pictureUrls)
-            { 
+            {
                 connection.Execute(insertPictureSql, new { ImgUrl = imgUrl, LessonId = lesson.Id }, transaction);
             }
 
             foreach (var videoUrl in videoUrls)
-            { 
+            {
                 connection.Execute(insertVideoSql, new { VideoUrl = videoUrl, LessonId = lesson.Id }, transaction);
             }
 
             transaction.Commit();
             return lesson;
         }
-        catch
+        catch (NpgsqlException ex)
         {
             transaction.Rollback();
-            throw;
+            throw new Exception("An error occurred while adding a new lesson.", ex);
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            throw new Exception("An unexpected error occurred while adding a new lesson.", ex);
         }
     }
     
@@ -193,16 +222,20 @@ ON CONFLICT (video_url, lesson_id) DO NOTHING;";
         transaction.Commit();
         return lesson;
     }
-    catch
+    catch (NpgsqlException ex)
     {
         transaction.Rollback();
-        throw;
+        throw new Exception("An error occurred while updating the lesson.", ex);
+    }
+    catch (Exception ex)
+    {
+        transaction.Rollback();
+        throw new Exception("An unexpected error occurred while updating the lesson.", ex);
     }
 }
 
 
-
-
+    
     public void DeleteLesson(int id)
     {
         const string sql = @"
@@ -210,6 +243,17 @@ DELETE FROM learning_platform.lessons
 WHERE id = @Id;
 ";
         using var connection = _dataSource.OpenConnection(); 
-        connection.Execute(sql, new { Id = id });
+        try
+        {
+            connection.Execute(sql, new { Id = id });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new Exception("An error occurred while deleting the lesson.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while deleting the lesson.", ex);
+        }
     }
 }

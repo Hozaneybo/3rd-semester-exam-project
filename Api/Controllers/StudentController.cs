@@ -22,84 +22,118 @@ public class StudentController : ControllerBase
     }
     
     [HttpGet("courses")]
-    public ResponseDto GetAllCourses()
+    public IActionResult GetAllCourses()
     {
-       
-        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl
-            
-        }).ToList();
-        return new ResponseDto()
+            var courses = _courseService.GetAllCourses().Select(course => new AllCoursesResult
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl
+            }).ToList();
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully fetched",
+                ResponseData = courses,
+            });
+        }
+        catch (Exception ex)
         {
-            MessageToClient = "Successfully fetched",
-            ResponseData = courses,
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An error occurred while retrieving courses." });
+        }
     }
 
     [HttpGet("courses/{id}")]
-    public ResponseDto GetCourseById(int id)
+    public IActionResult GetCourseById(int id)
     {
-        var course =  _courseService.GetCourseById(id);
-        var courseResult = new CourseContentById()
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl,
-            Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+            var course = _courseService.GetCourseById(id);
+            if (course == null)
             {
-                Id = lesson.Id,
-                Title = lesson.Title
-            }).ToList()
-        };
-        if (course == null)
-        {
-            return new ResponseDto
+                return NotFound(new ResponseDto
+                {
+                    MessageToClient = "Course not found"
+                });
+            }
+
+            var courseResult = new CourseContentById()
             {
-                MessageToClient = "Course not found",
-                
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl,
+                Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title
+                }).ToList()
             };
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully found",
+                ResponseData = courseResult
+            });
         }
-        return new ResponseDto
+        catch (Exception ex)
         {
-            MessageToClient = "Successfully found ",
-            ResponseData = courseResult,
-                
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto
+            {
+                MessageToClient = "An error occurred while retrieving the course."
+            });
+        }
     }
     
     [HttpGet("courses/{courseId}/lessons/{id}")] 
-    public ResponseDto GetLessonById(int courseId, int id)
+    public IActionResult GetLessonById(int courseId, int id)
     {
-        
-        var lesson = _lessonService.GetLessonById(courseId, id);
-        var lessonContent = new LessonByIdResult()
+        try
         {
-            Id = lesson.Id,
-            Title = lesson.Title,
-            Content = lesson.Content,
-            ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult()
+            var lesson = _lessonService.GetLessonById(courseId, id);
+            if (lesson == null)
             {
-                Id = imgUrl.Id,
-                PictureUrl = imgUrl.ImgUrl
-            }).ToList(),
-            VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult()
-            {
-                Id = videoUrl.Id,
-                VideoUrl = videoUrl.VideoUrl
-            }).ToList(),
-            CourseId = lesson.CourseId
+                return NotFound(new ResponseDto
+                {
+                    MessageToClient = "Lesson not found"
+                });
+            }
 
-        };
-        return new ResponseDto()
+            var lessonContent = new LessonByIdResult()
+            {
+                Id = lesson.Id,
+                Title = lesson.Title,
+                Content = lesson.Content,
+                ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult
+                {
+                    Id = imgUrl.Id,
+                    PictureUrl = imgUrl.ImgUrl
+                }).ToList(),
+                VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult
+                {
+                    Id = videoUrl.Id,
+                    VideoUrl = videoUrl.VideoUrl
+                }).ToList(),
+                CourseId = lesson.CourseId
+            };
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully found",
+                ResponseData = lessonContent
+            });
+        }
+        catch (Exception ex)
         {
-            MessageToClient = "Successfully found",
-            ResponseData = lessonContent
-        };
+            // Log the exception if necessary
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto
+            {
+                MessageToClient = "An error occurred while retrieving the lesson."
+            });
+        }
     }
     
     

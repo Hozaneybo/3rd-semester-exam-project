@@ -4,6 +4,7 @@ using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using Service.CQ.Commands;
 using Service.CQ.Queries;
 using Service.PasswordService;
@@ -33,19 +34,24 @@ public class AccountService
             var isValid = hashAlgorithm.VerifyHashedPassword(command.Password, passwordHash.Hash, passwordHash.Salt);
             if (!isValid)
             {
-                throw new InvalidCredentialException("Invalid credentials provided.");
+                _logger.LogWarning("Invalid credentials attempt for email: {Email}", command.Email);
+                throw new InvalidCredentialException("Invalid credentials provided. Please check your email and password.");
             }
             return _accountRepository.GetById(passwordHash.UserId);
         }
-        catch (InvalidCredentialException ex)
+        catch (InvalidCredentialException)
         {
-            _logger.LogError("Authentication failed: {Message}", ex.Message);
-            throw;
+            throw; 
+        }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError(ex, "Database error during authentication for email: {Email}", command.Email);
+            throw new AuthenticationException("A database error occurred during authentication. Please try again later.");
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error during authentication: {Message}", ex.Message);
-            throw new AuthenticationException("An error occurred during authentication.");
+            _logger.LogError(ex, "Unexpected error during authentication for email: {Email}", command.Email);
+            throw new AuthenticationException("An unexpected error occurred during authentication. Please try again later.");
         }
     }
 
@@ -66,12 +72,17 @@ public class AccountService
         catch (InvalidOperationException ex)
         {
             _logger.LogError("Registration failed due to invalid operation: {Message}", ex.Message);
-            throw;
+            throw new InvalidOperationException("Registration failed: Invalid data provided.");
+        }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError("Database error during registration: {Message}", ex.Message);
+            throw new InvalidOperationException("A database error occurred during registration. Please try again later.");
         }
         catch (Exception ex)
         {
             _logger.LogError("Unexpected error during registration: {Message}", ex.Message);
-            throw new Exception("An error occurred during user registration.");
+            throw new Exception("An unexpected error occurred during registration. Please try again later.");
         }
     }
 
@@ -97,10 +108,15 @@ public class AccountService
             _accountRepository.SetEmailVerificationToken(user.Id, token, expiresAt);
             MailService.SendVerificationEmail(user.Email, token);
         }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError("Database error retrieving user: {Message}", ex.Message);
+            throw new InvalidOperationException("A database error occurred while retrieving user information. Please try again later.");
+        }
         catch (Exception ex)
         {
-            _logger.LogError("Error generating or sending email verification token: {Message}", ex.Message);
-            throw new Exception("An error occurred while processing email verification.");
+            _logger.LogError("Unexpected error retrieving user: {Message}", ex.Message);
+            throw new Exception("An unexpected error occurred while retrieving user information. Please try again later.");
         }
     }
 
@@ -132,10 +148,15 @@ public class AccountService
             _accountRepository.SetPasswordResetToken(user.Id, token, expiresAt);
              MailService.SendPasswordResetEmail(user.Email, token);
         }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError("Database error verifying email token: {Message}", ex.Message);
+            throw new InvalidOperationException("A database error occurred while verifying the email token. Please try again later.");
+        }
         catch (Exception ex)
         {
-            _logger.LogError("Error generating or sending password reset token: {Message}", ex.Message);
-            throw new Exception("An error occurred while processing password reset.");
+            _logger.LogError("Unexpected error verifying email token: {Message}", ex.Message);
+            throw new Exception("An unexpected error occurred while verifying the email token. Please try again later.");
         }
     }
 
@@ -155,10 +176,15 @@ public class AccountService
             }
             return false;
         }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError("Database error resetting password with token: {Message}", ex.Message);
+            throw new InvalidOperationException("A database error occurred while resetting the password. Please try again later.");
+        }
         catch (Exception ex)
         {
-            _logger.LogError("Error resetting password with token: {Message}", ex.Message);
-            throw new Exception("An error occurred while resetting the password.");
+            _logger.LogError("Unexpected error resetting password with token: {Message}", ex.Message);
+            throw new Exception("An unexpected error occurred while resetting the password. Please try again later.");
         }
     }
 
@@ -168,18 +194,37 @@ public class AccountService
         {
             return _accountRepository.GetUserByEmail(query.Email);
         }
+        catch (NpgsqlException ex)
+        {
+            _logger.LogError("Database error retrieving user by email: {Message}", ex.Message);
+            throw new InvalidOperationException("A database error occurred while retrieving user information. Please try again later.");
+        }
         catch (Exception ex)
         {
-            _logger.LogError("Error retrieving user by email: {Message}", ex.Message);
-            throw new Exception("An error occurred while retrieving user by email.");
+            _logger.LogError("Unexpected error retrieving user by email: {Message}", ex.Message);
+            throw new Exception("An unexpected error occurred while retrieving user information. Please try again later.");
         }
     }
 
     private string GenerateToken()
     {
-        using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-        var randomBytes = new byte[32];
-        rngCryptoServiceProvider.GetBytes(randomBytes);
-        return Convert.ToBase64String(randomBytes);
+        try
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var randomBytes = new byte[32];
+            rngCryptoServiceProvider.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
+        }
+        catch (CryptographicException ex)
+        {
+            _logger.LogError("Cryptographic error generating token: {Message}", ex.Message);
+            throw new InvalidOperationException("An error occurred while generating a security token.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Unexpected error generating token: {Message}", ex.Message);
+            throw new Exception("An unexpected error occurred while generating a security token.");
+        }
     }
+
 }
