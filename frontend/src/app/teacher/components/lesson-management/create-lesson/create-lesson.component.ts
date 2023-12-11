@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TeacherService } from "../../../services/teacher.service";
 import { CreateLessonCommand } from "../../../../shared/Models/CourseModel";
-import { ToastController } from '@ionic/angular';
 import {ActivatedRoute} from "@angular/router";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-create-lesson',
@@ -17,7 +17,7 @@ export class CreateLessonComponent {
   constructor(
       private fb: FormBuilder,
       private teacherService: TeacherService,
-      private toastController: ToastController,
+      private toastService : ToastService,
       private route: ActivatedRoute
   ) {
     this.lessonForm = this.fb.group({
@@ -44,22 +44,12 @@ export class CreateLessonComponent {
 
       this.teacherService.createLesson(command.courseId.toString(), command).subscribe(
           async response => {
-            await this.presentToast(response.messageToClient || 'Lesson created successfully', 'success');
+            await this.toastService.showSuccess(response.messageToClient || 'Lesson created successfully');
           },
           async error => {
-            await this.presentToast('Error creating lesson. Please try again.', 'danger');
-            console.error('Error creating lesson', error);
+            await this.toastService.showError('Error creating lesson. Please try again.');
           }
       );
     }
-  }
-
-  async presentToast(message: string, color: string = 'primary') {
-    const toast = await this.toastController.create({
-      message: message,
-      color: color,
-      duration: 5000
-    });
-    toast.present();
   }
 }

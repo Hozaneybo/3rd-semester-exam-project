@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TeacherService} from "../../services/teacher.service";
 import {User} from "../../../admin/components/LoginModels";
 import {ActivatedRoute} from "@angular/router";
-import {ToastController} from "@ionic/angular";
+import {ToastService} from "../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-show-users-by-role',
@@ -16,7 +16,7 @@ export class ShowUsersByRoleComponent implements OnInit {
   constructor(
     private teacherService: TeacherService,
     private route: ActivatedRoute,
-    private toastController: ToastController
+    private toastService : ToastService
   ) { }
 
 
@@ -43,21 +43,13 @@ export class ShowUsersByRoleComponent implements OnInit {
     this.teacherService.getUsersByRole(role).subscribe({
       next: (response) => {
         this.users = response.responseData;
-        this.presentToast(response.messageToClient || `${role} users fetched successfully.`, 'success');
+        this.toastService.showSuccess(response.messageToClient || `${role} users fetched successfully.`);
       },
       error: (error) => {
         const errorMessage = error.error?.messageToClient || `Failed to fetch ${role} users. Please try again later.`;
-        this.presentToast(errorMessage, 'danger');
+        this.toastService.showError(errorMessage);
       }
     });
   }
 
-  private async presentToast(message: string, color: 'success' | 'danger') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      color: color
-    });
-    await toast.present();
-  }
 }

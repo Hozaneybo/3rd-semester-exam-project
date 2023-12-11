@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TeacherService } from "../../../services/teacher.service";
 import { AllCoursesView } from "../../../../shared/Models/CourseModel";
-import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-get-all-courses',
@@ -14,7 +14,7 @@ export class GetAllCoursesComponent implements OnInit {
 
   constructor(
       private teacherService: TeacherService,
-      private toastController: ToastController,
+      private toastService : ToastService,
       private router: Router
   ) {}
 
@@ -22,10 +22,10 @@ export class GetAllCoursesComponent implements OnInit {
     this.teacherService.getAllCourses().subscribe({
       next: (response) => {
         this.courses = response.responseData;
-        this.presentToast(response.messageToClient || 'Courses loaded successfully', 'success');
+        this.toastService.showSuccess(response.messageToClient || 'Courses loaded successfully');
       },
       error: (error) => {
-        this.presentToast('Failed to load courses. Please try again later.', 'danger');
+        this.toastService.showError('Failed to load courses. Please try again later.');
       }
     });
   }
@@ -34,12 +34,4 @@ export class GetAllCoursesComponent implements OnInit {
     this.router.navigate(['/teacher/course-details', courseId]);
   }
 
-  async presentToast(message: string, color: string = 'primary') {
-    const toast = await this.toastController.create({
-      message: message,
-      color: color,
-      duration: 5000
-    });
-    toast.present();
-  }
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {AccountServiceService} from "../../shared/services/account-service.service";
 import {catchError} from "rxjs/operators";
 import {TeacherService} from "../services/teacher.service";
-import {ToastController} from "@ionic/angular";
 import {SearchResultDto} from "../../shared/Models/SearchTerm";
+import {ToastService} from "../../shared/services/toast.service";
 
 @Component({
   selector: 'app-teacher-layout',
@@ -19,7 +19,7 @@ export class TeacherLayoutComponent{
     private router: Router,
     private accountService: AccountServiceService,
     private teacherService: TeacherService,
-    private toastController: ToastController) { }
+    private toastService : ToastService) { }
 
 
   logout() {
@@ -39,26 +39,17 @@ export class TeacherLayoutComponent{
     if (searchTerm) {
       this.teacherService.search(searchTerm).pipe(
         catchError(err => {
-          this.presentToast('An error occurred while searching.');
+          this.toastService.showError(err.messageToClient || 'An error occurred while searching.');
           return [];
         })
       ).subscribe(response => {
         this.searchResults = response.responseData || [];
       }, err => {
-        this.presentToast(err.error.messageToClient || 'Error fetching search results.');
+        this.toastService.showError(err.error.messageToClient || 'Error fetching search results.');
       });
     } else {
       this.searchResults = [];
     }
-  }
-
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-    });
-    toast.present();
   }
 
   handleSearchResults(results: SearchResultDto[]) {

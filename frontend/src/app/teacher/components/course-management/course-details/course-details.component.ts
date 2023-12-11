@@ -4,6 +4,7 @@ import { TeacherService } from "../../../services/teacher.service";
 import { CourseView } from "../../../../shared/Models/CourseModel";
 import {ResponseDto} from "../../../../admin/components/LoginModels";
 import {ToastController} from "@ionic/angular";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-course-details',
@@ -17,7 +18,7 @@ export class CourseDetailsComponent implements OnInit {
     private teacherService: TeacherService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastController: ToastController
+    private toastService : ToastService
   ) {}
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class CourseDetailsComponent implements OnInit {
           this.course = response.responseData;
         },
         error: (error) => {
-          this.showToast(error.messageToClient || 'An error occurred while fetching the course details.');
+          this.toastService.showError(error.messageToClient || 'An error occurred while fetching the course details.');
         }
       });
     });
@@ -42,16 +43,8 @@ export class CourseDetailsComponent implements OnInit {
     if (this.course && this.course.id) {
       this.router.navigate(['/teacher/create-lesson', this.course.id]);
     } else {
-      this.showToast('Course ID is not available.');
+      this.toastService.showError('Course ID is not available.');
     }
-  }
-
-  private async showToast(message: string): Promise<void> {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000
-    });
-    toast.present();
   }
 
 }

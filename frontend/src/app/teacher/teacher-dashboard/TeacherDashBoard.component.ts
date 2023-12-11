@@ -3,6 +3,7 @@ import {ResponseDto, User, UserProfile} from "../../admin/components/LoginModels
 import {AccountServiceService} from "../../shared/services/account-service.service";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
+import {ToastService} from "../../shared/services/toast.service";
 
 @Component({
   selector: 'app-teacher-dashboard',
@@ -13,7 +14,9 @@ import {of} from "rxjs";
 export class TeacherDashBoardComponent implements OnInit {
   user!: UserProfile;
 
-  constructor(private accountService: AccountServiceService) {}
+  constructor(private accountService: AccountServiceService,
+              private toastService :  ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
@@ -23,17 +26,17 @@ export class TeacherDashBoardComponent implements OnInit {
   loadUserProfile() {
     this.accountService.whoAmI().pipe(
       catchError(err => {
-        this.accountService.presentToast('An error occurred while loading your profile.', 'warning');
+        this.toastService.showError(err.messageToClient || 'An error occurred while loading your profile.');
         return of({} as ResponseDto<User>);
       })
     ).subscribe(response => {
       if (response && response.responseData) {
         this.user = response.responseData;
       } else {
-        this.accountService.presentToast(response.messageToClient || 'No profile data available.', 'warning');
+        this.toastService.showError(response.messageToClient || 'No profile data available.');
       }
     }, error => {
-      this.accountService.presentToast(error.error.messageToClient || 'An unexpected error occurred.', 'warning');
+      this.toastService.showError(error.error.messageToClient || 'An unexpected error occurred.');
     });
   }
 }
