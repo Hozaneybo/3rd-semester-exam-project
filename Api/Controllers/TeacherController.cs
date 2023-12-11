@@ -24,131 +24,208 @@ public class TeacherController : ControllerBase
     }
 
     [HttpGet("courses")]
-    public ResponseDto GetAllCourses()
+    public IActionResult GetAllCourses()
     {
-       
-        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl
+            var courses = _courseService.GetAllCourses().Select(course => new AllCoursesResult
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl
             
-        }).ToList();
-        return new ResponseDto()
+            }).ToList();
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully fetched",
+                ResponseData = courses
+            });
+        }
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Successfully fetched",
-            ResponseData = courses,
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
 
     [HttpGet("courses/{id}")]
-    public ResponseDto GetCourseById(int id)
+    public IActionResult GetCourseById(int id)
     {
-        var course =  _courseService.GetCourseById(id);
-        var courseResult = new CourseContentById()
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl,
-            Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+            var course = _courseService.GetCourseById(id);
+
+            if (course == null)
             {
-                Id = lesson.Id,
-                Title = lesson.Title
-            }).ToList()
-        };
-        if (course == null)
-        {
-            return new ResponseDto
+                return NotFound(new ResponseDto
+                {
+                    MessageToClient = "Course not found"
+                });
+            }
+
+            var courseResult = new CourseContentById()
             {
-                MessageToClient = "Course not found",
-                
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl,
+                Lessons = course.Lessons.Select(lesson => new LessonIdAndTitleResult()
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title
+                }).ToList()
             };
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully found",
+                ResponseData = courseResult
+            });
         }
-        return new ResponseDto
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Successfully found ",
-            ResponseData = courseResult,
-                
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
     
 
     
     [HttpGet("courses/{courseId}/lessons/{id}")] 
-    public ResponseDto GetLessonById(int courseId, int id)
+    public IActionResult GetLessonById(int courseId, int id)
     {
-        
-        var lesson = _lessonService.GetLessonById(courseId, id);
-        var lessonContent = new LessonByIdResult()
+        try
         {
-            Id = lesson.Id,
-            Title = lesson.Title,
-            Content = lesson.Content,
-            ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult()
-            {
-                Id = imgUrl.Id,
-                PictureUrl = imgUrl.ImgUrl
-            }).ToList(),
-            VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult()
-            {
-                Id = videoUrl.Id,
-                VideoUrl = videoUrl.VideoUrl
-            }).ToList(),
-            CourseId = lesson.CourseId
+            var lesson = _lessonService.GetLessonById(courseId, id);
 
-        };
-        return new ResponseDto()
+            if (lesson == null)
+            {
+                return NotFound(new ResponseDto { MessageToClient = "Lesson not found" });
+            }
+
+            var lessonContent = new LessonByIdResult()
+            {
+                Id = lesson.Id,
+                Title = lesson.Title,
+                Content = lesson.Content,
+                ImgUrls = lesson.ImgUrls.Select(imgUrl => new PictureUrlResult
+                {
+                    Id = imgUrl.Id,
+                    PictureUrl = imgUrl.ImgUrl
+                }).ToList(),
+                VideoUrls = lesson.VideoUrls.Select(videoUrl => new VideoUrlResult
+                {
+                    Id = videoUrl.Id,
+                    VideoUrl = videoUrl.VideoUrl
+                }).ToList(),
+                CourseId = lesson.CourseId
+            };
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully found",
+                ResponseData = lessonContent
+            });
+        }
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Successfully found",
-            ResponseData = lessonContent
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
     
     
     [HttpPost("courses/lesson/create")]
-    public ResponseDto CreateLesson([FromBody] CreateLessonCommand command)
+    public IActionResult CreateLesson([FromBody] CreateLessonCommand command)
     {
-
-        var createdLesson = _lessonService.AddLesson(command);
-        
-        return new ResponseDto
+        try
         {
-            MessageToClient = "Successfully created",
-            ResponseData = GetLessonById(createdLesson.CourseId, createdLesson.Id)
-        };
+            var createdLesson = _lessonService.AddLesson(command);
+
+            if (createdLesson == null)
+            {
+                return BadRequest(new ResponseDto { MessageToClient = "Lesson could not be created" });
+            }
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully created",
+                ResponseData = GetLessonById(createdLesson.CourseId, createdLesson.Id)
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
+
     
     
     [HttpPut("lessons/update/{id}")]
-    public ResponseDto UpdateLesson(int id, [FromBody] UpdateLessonCommand command)
+    public IActionResult UpdateLesson(int id, [FromBody] UpdateLessonCommand command)
     {
-        
-        var updatedLesson =  _lessonService.UpdateLesson(command);
-
-        if (updatedLesson == null)
+        try
         {
-            return new ResponseDto { MessageToClient = "Lesson not found or update failed" };
+            var updatedLesson = _lessonService.UpdateLesson(command);
+
+            if (updatedLesson == null)
+            {
+                return BadRequest(new ResponseDto { MessageToClient = "Lesson not found or update failed" });
+            }
+
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Lesson successfully updated",
+                ResponseData = GetLessonById(command.CourseId, id)
+            });
         }
-
-        return new ResponseDto
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Lesson successfully updated",
-            ResponseData = GetLessonById(command.CourseId, id)
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
+
 
     
     [HttpDelete("lessons/delete/{id}")]
-    public ResponseDto DeleteLesson(int id)
+    public IActionResult DeleteLesson(int id)
     {
-         _lessonService.DeleteLesson(id);
-         return new ResponseDto
-         {
-             MessageToClient = "Successfully deleted "
-         };
+        try
+        {
+            _lessonService.DeleteLesson(id);
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully deleted"
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
+
     
     [HttpGet("users/role")]
     public IActionResult GetUsersByRole(RoleQueryModel roleQueryModel)

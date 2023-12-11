@@ -27,7 +27,7 @@ FROM learning_platform.lessons;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while retrieving lessons.", ex);
+            throw new InvalidOperationException("An error occurred while retrieving lessons.", ex);
         }
         catch (Exception ex)
         {
@@ -84,7 +84,7 @@ WHERE lesson_id = @Id;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while retrieving the lesson by ID.", ex);
+            throw new InvalidOperationException("An error occurred while retrieving the lesson by ID.", ex);
         }
         catch (Exception ex)
         {
@@ -146,7 +146,7 @@ RETURNING
         catch (NpgsqlException ex)
         {
             transaction.Rollback();
-            throw new Exception("An error occurred while adding a new lesson.", ex);
+            throw new InvalidOperationException("An error occurred while adding a new lesson.", ex);
         }
         catch (Exception ex)
         {
@@ -225,7 +225,7 @@ ON CONFLICT (video_url, lesson_id) DO NOTHING;";
     catch (NpgsqlException ex)
     {
         transaction.Rollback();
-        throw new Exception("An error occurred while updating the lesson.", ex);
+        throw new InvalidOperationException("An error occurred while updating the lesson.", ex);
     }
     catch (Exception ex)
     {
@@ -249,7 +249,7 @@ WHERE id = @Id;
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while deleting the lesson.", ex);
+            throw new InvalidOperationException("An error occurred while deleting the lesson.", ex);
         }
         catch (Exception ex)
         {

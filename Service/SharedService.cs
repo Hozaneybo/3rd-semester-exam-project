@@ -24,8 +24,7 @@ public class SharedService
         }
         catch (InvalidOperationException ex)
         {
-            
-            throw new InvalidOperationException("Search service is currently unavailable. Please try again later.");
+            throw;
         }
         catch (Exception ex)
         {
@@ -43,7 +42,7 @@ public class SharedService
         }
         catch (InvalidOperationException ex)
         {
-            throw new InvalidOperationException("GetUsersByRole service is currently unavailable. Please try again later.", ex);
+            throw;
         }
         catch (Exception ex)
         {

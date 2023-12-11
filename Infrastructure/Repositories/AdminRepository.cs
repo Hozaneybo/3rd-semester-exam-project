@@ -35,7 +35,7 @@ FROM learning_platform.users
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while retrieving users.", ex);
+            throw new InvalidOperationException("An error occurred while retrieving users.", ex);
         }
         catch (Exception ex)
         {
@@ -67,7 +67,7 @@ RETURNING id, full_name, email, avatar_url, role, email_verified;";
         }
         catch (NpgsqlException ex)
         {
-            throw new Exception("An error occurred while updating the user.", ex);
+            throw new InvalidOperationException("An error occurred while updating the user.", ex);
         }
         catch (Exception ex)
         {
@@ -85,7 +85,7 @@ RETURNING id, full_name, email, avatar_url, role, email_verified;";
             }
             catch (NpgsqlException ex)
             {
-                throw new Exception("An error occurred while deleting the user.", ex);
+                throw new InvalidOperationException("An error occurred while deleting the user.", ex);
             }
             catch (Exception ex)
             {

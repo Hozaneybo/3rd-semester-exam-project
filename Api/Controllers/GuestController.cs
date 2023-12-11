@@ -24,21 +24,21 @@ public class GuestController : ControllerBase
                 Title = course.Title,
                 Description = course.Description,
                 CourseImgUrl = course.CourseImgUrl
+            
             }).ToList();
-
-            return Ok(new ResponseDto()
+            return Ok(new ResponseDto
             {
                 MessageToClient = "Successfully fetched",
-                ResponseData = courses,
+                ResponseData = courses
             });
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
         catch (Exception ex)
-        { 
-            return StatusCode(500, new ResponseDto() 
-            { 
-                MessageToClient = "An error occurred while processing your request.",
-                ResponseData = null
-            });
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
 }

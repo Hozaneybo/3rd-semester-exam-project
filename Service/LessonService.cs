@@ -26,6 +26,10 @@ namespace Service
             {
                 return _lessonRepository.GetAllLessons();
             }
+            catch (InvalidOperationException ex)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error retrieving all lessons: {Message}", ex.Message);
@@ -38,6 +42,10 @@ namespace Service
             try
             {
                 return _lessonRepository.GetLessonById(courseId, id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -57,6 +65,10 @@ namespace Service
 
                 return lesson;
             }
+            catch (InvalidOperationException ex)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error adding lesson: {Message}", ex.Message);
@@ -71,6 +83,10 @@ namespace Service
                 var students = _sharedRepository.GetUsersByRole(Role.Student);
                 return students.Select(s => s.Email).ToList();
             }
+            catch (InvalidOperationException ex)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error retrieving student emails: {Message}", ex.Message);
@@ -84,6 +100,10 @@ namespace Service
             {
                 return _lessonRepository.UpdateLesson(command.Id, command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
             }
+            catch (InvalidOperationException ex)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Error updating lesson: {Message}", ex.Message);
@@ -96,6 +116,10 @@ namespace Service
             try
             {
                 _lessonRepository.DeleteLesson(id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw;
             }
             catch (Exception ex)
             {
