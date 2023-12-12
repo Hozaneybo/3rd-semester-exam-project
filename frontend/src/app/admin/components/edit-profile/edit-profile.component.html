@@ -3,19 +3,18 @@
     <h1>Edit Profile</h1>
   </div>
 
-  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-profile-form">
+  <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit()" class="edit-profile-form">
     <div class="form-avatar-container">
-      <!--<img [src]="editForm.value.avatar || 'assets/icon/avatar.png'" alt="User Avatar" class="profile-avatar">-->
       <input type="file" id="avatarInput" (change)="onFileSelect($event)" hidden>
       <label for="avatarInput" class="edit-avatar-btn">Change Avatar</label>
     </div>
     <div class="form-group">
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" formControlName="fullname" required>
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" formControlName="fullName" required>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email"   >
+      <input type="email" id="email" formControlName="email" readonly>
     </div>
     <button type="submit" class="save-profile-btn">Save Changes</button>
   </form>

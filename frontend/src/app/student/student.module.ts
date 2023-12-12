@@ -9,9 +9,10 @@ import {LessonViewComponent} from "./components/lesson-view/lesson-view.componen
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
 import {IonicModule} from "@ionic/angular";
 import {StudentLayoutComponent} from "./student-layout/student-layout.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 import {SharedModule} from "../shared/shared.module";
+import {EditProfileComponent} from "./components/edit-profile/edit-profile.component";
 
 
 @NgModule({
@@ -22,15 +23,17 @@ import {SharedModule} from "../shared/shared.module";
     LessonViewComponent,
     ShowUsersByRoleComponent,
     StudentLayoutComponent,
-    MyProfileComponent
+    MyProfileComponent,
+    EditProfileComponent
 
   ],
-    imports: [
-        CommonModule,
-        StudentRoutingModule,
-        IonicModule,
-        FormsModule,
-        SharedModule
-    ]
+  imports: [
+    CommonModule,
+    StudentRoutingModule,
+    IonicModule,
+    FormsModule,
+    SharedModule,
+    ReactiveFormsModule
+  ]
 })
 export class StudentModule { }

@@ -66,9 +66,11 @@ public interface IAccountRepository
     /// <summary>
     /// Updates the profile of a user.
     /// </summary>
-    /// <param name="userId">The ID of the user to update.</param>
-    /// <param name="fullName">The full name of the user.</param>
-    /// <param name="avatarUrl">The URL of the user's avatar.</param>
+    /// <param name="id">The unique identifier of the user.</param>
+    /// <param name="fullname">The new full name of the user.</param>
+    /// <param name="email">The new email address of the user.</param>
+    /// <param name="avatarUrl">The new avatar URL of the user. Pass null if no changes are made.</param>
+    /// <param name="role">The new role of the user.</param>
     /// <returns>The updated User object.</returns>
-    User UpdateProfile(int userId, string fullName, string? avatarUrl);
+    public User UpdateProfile(int id, string fullname, string email, string? avatarUrl, Role role);
 }

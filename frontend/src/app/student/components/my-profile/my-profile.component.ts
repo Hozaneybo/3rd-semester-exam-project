@@ -41,5 +41,7 @@ export class MyProfileComponent  implements OnInit {
     });
   }
 
-  editProfile(){}
+  editProfile(){
+
+  }
 }

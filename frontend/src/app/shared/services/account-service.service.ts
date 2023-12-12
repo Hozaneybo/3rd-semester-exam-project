@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {firstValueFrom, Observable} from "rxjs";
 import {ResponseDto, User} from "../Models/LoginModels";
 import {SearchResultDto} from "../Models/SearchTerm";
+import {UpdateUser} from "../Models/CourseModel";
 
 @Injectable({
   providedIn: 'root'
@@ -51,24 +52,10 @@ export class AccountServiceService {
     });
   }
 
-  updateUser(user: any, role: string | undefined, formData: FormData): Observable<ResponseDto<any>> {
-    let endpoint: string;
-    switch (role) {
-      case 'Admin':
-        endpoint = 'admin';
-        break;
-      case 'Teacher':
-        endpoint = 'teacher';
-        break;
-      case 'Student':
-        endpoint = 'student';
-        break;
-      default:
-        throw new Error('User role not recognized');
-    }
-
-    return this.http.put<ResponseDto<any>>(`http://localhost:5000/api/${endpoint}/users/update/${user.id}`, formData, { withCredentials: true });
+  updateUser(userId: number, userData: ResponseDto<UpdateUser>): Observable<ResponseDto<UpdateUser>> {
+    return this.http.put<ResponseDto<UpdateUser>>(`${this.url}update-profile`, userData, { withCredentials: true });
   }
+
 
    setupClock(): void {
     const updateClock = () => {

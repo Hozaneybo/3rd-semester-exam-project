@@ -206,25 +206,35 @@ WHERE email = @Email;";
     } 
 }
 
-public User UpdateProfile(int userId, string fullName, string? avatarUrl)
+public User UpdateProfile(int id, string fullname, string email, string? avatarUrl, Role role)
 {
+    if (!Enum.IsDefined(typeof(Role), role))
+    {
+        throw new ArgumentException("The role value is not valid.", nameof(role));
+    }
+        
     const string sql = @"
 UPDATE learning_platform.users
-SET full_name = COALESCE@FullName, avatar_url = COALESCE@AvatarUrl
-WHERE id = @UserId;
-";
+SET 
+    full_name = COALESCE(@fullname, full_name),
+    email = COALESCE(@email, email),
+    avatar_url = COALESCE(@avatarUrl, avatar_url),
+    role = COALESCE(@role::text, role)
+WHERE id = @id 
+RETURNING id, full_name, email, avatar_url, role, email_verified;";
+        
+    using var connection = _dataSource.OpenConnection();
     try
     {
-        using var connection = _dataSource.OpenConnection();
-        return connection.QuerySingle(sql, new { UserId = userId, FullName = fullName, AvatarUrl = avatarUrl });
+        return connection.QuerySingle<User>(sql, new { id, fullname, email, avatarUrl, role = role.ToString()});
     }
     catch (NpgsqlException ex)
     {
-        throw new InvalidOperationException("An error occurred while updating profile.", ex);
+        throw new InvalidOperationException("An error occurred while updating the user.", ex);
     }
     catch (Exception ex)
     {
-        throw new Exception("An unexpected error occurred while updating the profile.", ex);
+        throw new Exception("An unexpected error occurred while updating the user.", ex);
     }
 }
   

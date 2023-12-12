@@ -227,11 +227,11 @@ public class AccountService
         }
     }
     
-    public User? UpdateUserProfile(SessionData data, UpdateProfileCommand command)
+    public User UpdateUserProfile(UpdateUserCommand command)
     {
         try
         {
-            return _accountRepository.UpdateProfile(data.UserId, command.FullName, command.AvatarUrl);
+            return _accountRepository.UpdateProfile(command.Id, command.FullName, command.Email, command.AvatarUrl, command.Role);
         }
         catch (InvalidOperationException ex)
         {
@@ -240,7 +240,7 @@ public class AccountService
         catch (Exception ex)
         {
             _logger.LogError("Error updating user: {Message}", ex.Message);
-            throw new Exception("An error occurred while updating the profile.");
+            throw new Exception("An error occurred while updating the user.");
         }
     }
 

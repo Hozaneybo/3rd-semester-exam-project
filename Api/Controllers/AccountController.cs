@@ -86,17 +86,47 @@ public class AccountController : ControllerBase
     
     [RequireAuthentication]
     [HttpPut("update-profile")]
-    public IActionResult UpdateProfile([FromBody] UpdateProfileCommand command)
+    public IActionResult UpdateUserProfile([FromBody] UpdateUserCommand user)
     {
         try
         {
-            var session = HttpContext.GetSessionData()!;
-            var user = _service.UpdateUserProfile(session, command);
-            return Ok(new ResponseDto { MessageToClient = "Profile updated successfully.", ResponseData = user});
+            var loggedUser = HttpContext.GetSessionData()!;
+            if (loggedUser == null)
+            {
+                return NotFound(new ResponseDto
+                {
+                    MessageToClient = "User with given id not found",
+                    ResponseData = null
+                });
+            }
+
+            user.Id = loggedUser.UserId;
+            user.Role = loggedUser.Role;
+            var updatedUser = _service.UpdateUserProfile(user);
+            if (updatedUser != null)
+            {
+                return Ok(new ResponseDto
+                {
+                    MessageToClient = "Successfully updated",
+                    ResponseData = new { user.FullName, user.Email, user.AvatarUrl, user.Role }
+                });
+            }
+            else
+            {
+                return BadRequest(new ResponseDto
+                {
+                    MessageToClient = "User could not be updated",
+                    ResponseData = null
+                });
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
     
