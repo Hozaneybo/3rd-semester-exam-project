@@ -7,6 +7,14 @@ export interface User {
 
 }
 
+export interface UpdateProfileCommand {
+  fullname?: string;
+  email?: string;
+  avatarUrl?: string;
+  // Add other fields as per your backend requirements
+}
+
+
 export interface UserProfile {
   id: number;
   fullname: string;

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TeacherService} from "../../../services/teacher.service";
-import {ToastController} from "@ionic/angular";
 import {UpdateLessonCommand} from "../../../../shared/Models/CourseModel";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-update-lesson',
@@ -19,7 +19,7 @@ export class UpdateLessonComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private teacherService: TeacherService,
-    private toastController: ToastController,
+    private toastService : ToastService,
     private router: Router
   ) {
     this.updateLessonForm = this.fb.group({
@@ -39,8 +39,7 @@ export class UpdateLessonComponent implements OnInit {
         this.lessonId = +lessonId;
         this.loadLesson();
       } else {
-        // Handle the case where parameters are null
-        this.showToast('Invalid course or lesson ID');
+        this.toastService.showError('Invalid course or lesson ID');
       }
     });
 
@@ -58,13 +57,11 @@ export class UpdateLessonComponent implements OnInit {
             videoUrls: lesson.videoUrls.map(video => video.videoUrl).join(',')
           });
         } else {
-          // Handle the scenario when response.responseData is undefined.
-          this.showToast('No lesson data available.');
+          this.toastService.showError('No lesson data available.');
         }
       },
       error: err => {
-        this.showToast('Error fetching lesson details');
-        console.error(err);
+        this.toastService.showError(err.messageToClient || 'Error fetching lesson details');
       }
     });
   }
@@ -82,21 +79,13 @@ export class UpdateLessonComponent implements OnInit {
 
       this.teacherService.updateLesson(this.lessonId, command).subscribe({
         next: response => {
-          this.showToast('Lesson updated successfully');
+          this.toastService.showSuccess('Lesson updated successfully');
           this.router.navigate(['/teacher/course-details', this.courseId]);
         },
         error: err => {
-          this.showToast('Error updating lesson');
-          console.error(err);
+          this.toastService.showError(err.messageToClient || 'Error updating lesson');
         }
       });
     }
-  }
-
-  private showToast(message: string) {
-    this.toastController.create({
-      message: message,
-      duration: 3000
-    }).then(toast => toast.present());
   }
 }

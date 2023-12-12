@@ -4,50 +4,66 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.CQ.Commands;
 using Service.CQ.Queries;
+using System;
+using MailKit.Security;
+using Npgsql;
 
 namespace _3rd_semester_exam_project.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
+    private readonly SharedService _sharedService;
 
-    public AccountController(AccountService service)
+    public AccountController(AccountService service, SharedService sharedService)
     {
         _service = service;
+        _sharedService = sharedService;
     }
 
-    [HttpPost]
-    [Route("/api/account/login")]
-     public ResponseDto Login([FromBody] UserLoginCommand command)
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] UserLoginCommand command)
+    {
+        try
         {
             var user = _service.Authenticate(command);
-            HttpContext.SetSessionData(SessionData.FromUser(user));
-            return new ResponseDto
+            if (user != null)
             {
-                MessageToClient = "Successfully authenticated",
-                ResponseData = new { Role = user.Role }
-            };
-        }
+                HttpContext.SetSessionData(SessionData.FromUser(user));
+                return Ok(new ResponseDto
+                {
+                    MessageToClient = "Successfully authenticated",
+                    ResponseData = new { Role = user.Role }
+                });
+            }
 
-    [HttpPost]
-    [Route("/api/account/logout")]
-    public ResponseDto Logout()
+            return Unauthorized(new ResponseDto { MessageToClient = "Invalid credentials." });
+        }
+        catch (AuthenticationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = "Authentication failed." });
+        }
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
     {
         HttpContext.Session.Clear();
-        return new ResponseDto
-        {
-            MessageToClient = "Successfully logged out"
-        };
+        return Ok(new ResponseDto { MessageToClient = "Successfully logged out" });
     }
     
-    [HttpPost]
-    [Route("/api/account/register")]
+    [HttpPost("register")]
     public IActionResult Register([FromBody] CreateUserCommand command)
     {
         try
         {
             var user = _service.Register(command);
-
             return CreatedAtAction(nameof(WhoAmI), new { id = user.Id }, new ResponseDto
             {
                 MessageToClient = "Registration successful. Please check your email to verify your account."
@@ -55,15 +71,66 @@ public class AccountController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return BadRequest(new ResponseDto
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (NpgsqlException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = ex.Message });
+        }
+        
+    }
+    
+    [RequireAuthentication]
+    [HttpPut("update-profile")]
+    public IActionResult UpdateUserProfile([FromBody] UpdateUserCommand user)
+    {
+        try
+        {
+            var loggedUser = HttpContext.GetSessionData()!;
+            if (loggedUser == null)
             {
-                MessageToClient = ex.Message
-            });
+                return NotFound(new ResponseDto
+                {
+                    MessageToClient = "User with given id not found",
+                    ResponseData = null
+                });
+            }
+
+            user.Id = loggedUser.UserId;
+            user.Role = loggedUser.Role;
+            var updatedUser = _service.UpdateUserProfile(user);
+            if (updatedUser != null)
+            {
+                return Ok(new ResponseDto
+                {
+                    MessageToClient = "Successfully updated",
+                    ResponseData = new { user.FullName, user.Email, user.AvatarUrl, user.Role }
+                });
+            }
+            else
+            {
+                return BadRequest(new ResponseDto
+                {
+                    MessageToClient = "User could not be updated",
+                    ResponseData = null
+                });
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
         }
     }
     
-    [HttpGet]
-    [Route("/api/account/verify-email")]
+    [HttpGet("verify-email")]
     public IActionResult VerifyEmail([FromQuery] string token)
     {
         try
@@ -73,10 +140,7 @@ public class AccountController : ControllerBase
             {
                 return Ok(new ResponseDto { MessageToClient = "Email successfully verified." });
             }
-            else
-            {
-                return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired verification token." });
-            }
+            return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired verification token." });
         }
         catch (Exception ex)
         {
@@ -84,8 +148,7 @@ public class AccountController : ControllerBase
         }
     }
     
-    [HttpPost]
-    [Route("/api/account/request-password-reset")]
+    [HttpPost("request-password-reset")]
     public IActionResult RequestPasswordReset([FromBody] UserQuery query)
     {
         try
@@ -104,8 +167,7 @@ public class AccountController : ControllerBase
         }
     }
 
-    [HttpPost]
-    [Route("/api/account/reset-password")]
+    [HttpPost("reset-password")]
     public IActionResult ResetPassword([FromBody] ResetPasswordCommand command)
     {
         try
@@ -115,10 +177,7 @@ public class AccountController : ControllerBase
             {
                 return Ok(new ResponseDto { MessageToClient = "Password has been reset successfully." });
             }
-            else
-            {
-                return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired password reset token." });
-            }
+            return BadRequest(new ResponseDto { MessageToClient = "Invalid or expired password reset token." });
         }
         catch (Exception ex)
         {
@@ -126,18 +185,54 @@ public class AccountController : ControllerBase
         }
     }
 
-
+    [RequireAuthentication]
+    [HttpGet("whoami")]
+    public IActionResult WhoAmI()
+    {
+        try
+        {
+            var data = HttpContext.GetSessionData();
+            var user = _service.Get(data);
+            if (user != null)
+            {
+                return Ok(new ResponseDto
+                {
+                    ResponseData = new { user.Id, user.Fullname, user.Email, user.AvatarUrl, user.Role, user.EmailVerified }
+                });
+            }
+            return NotFound(new ResponseDto { MessageToClient = "User not found." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = "An error occurred." });
+        }
+    }
     
     [RequireAuthentication]
-    [HttpGet]
-    [Route("/api/account/whoami")]
-    public ResponseDto WhoAmI()
-    {
-        var data = HttpContext.GetSessionData();
-        var user = _service.Get(data);
-        return new ResponseDto
+    [HttpGet("search")]
+    public IActionResult Search([FromQuery] SearchQueryModel queryModel)
+    { 
+        try 
+        { 
+            var searchResults = _sharedService.Search(queryModel).Select(result => new SearchResultDto 
+            { 
+                Type = result.Type, 
+                Term = result.Term 
+            }).ToList();
+            
+            return Ok(new ResponseDto { MessageToClient = "Search results fetched successfully", ResponseData = searchResults }); 
+        }
+        catch (ArgumentException ex)
         {
-            ResponseData = new { user.Id, user.Fullname, user.Email, user.AvatarUrl, user.Role, user.EmailVerified }
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
 }

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {LessonView} from "../../../shared/Models/CourseModel";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import { ToastController } from "@ionic/angular";
 import {StudentService} from "../../services/student.service";
+import {ToastService} from "../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-lesson-view',
@@ -17,20 +17,20 @@ export class LessonViewComponent  implements OnInit {
   constructor(
     private studentService: StudentService,
     private route: ActivatedRoute,
-    private toastController: ToastController,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
       const courseId = params.get('courseId');
       const lessonId = params.get('lessonId');
-      console.log(`Course ID: ${courseId}, Lesson ID: ${lessonId}`); // Add logging to debug
+      //console.log(`Course ID: ${courseId}, Lesson ID: ${lessonId}`);
 
       if (courseId && lessonId) {
         this.loadLesson(+courseId, +lessonId);
       } else {
-        console.error('Course ID or Lesson ID is missing or invalid.');
-        this.showToast('Invalid course or lesson ID');
+        //console.error('Course ID or Lesson ID is missing or invalid.');
+        this.toastService.showError('Invalid course or lesson ID');
       }
     }));
   }
@@ -46,7 +46,7 @@ export class LessonViewComponent  implements OnInit {
       if (responseDto && responseDto.responseData) {
         this.lesson = responseDto.responseData;
       } else {
-        this.showToast('No data found for this lesson.');
+        this.toastService.showError('No data found for this lesson.');
       }
     }, error => {
       this.handleHttpError(error);
@@ -55,18 +55,15 @@ export class LessonViewComponent  implements OnInit {
 
   private handleHttpError(error: any): void {
     let errorMessage = 'An error occurred while fetching the lesson details.';
+
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
+    } else if (error.error && error.error.messageToClient) {
+      errorMessage = error.error.messageToClient;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    this.showToast(errorMessage);
-  }
 
-  private showToast(message: string): void {
-    this.toastController.create({
-      message: message,
-      duration: 3000
-    }).then(toast => toast.present());
+    this.toastService.showError(errorMessage);
   }
 }

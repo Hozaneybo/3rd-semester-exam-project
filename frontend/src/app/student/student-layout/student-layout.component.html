@@ -11,9 +11,8 @@
   <ion-title>Student Dashboard</ion-title>
 
   <ion-buttons slot="end">
-    <ion-searchbar placeholder="Search..." (ionInput)="onSearchChange($event.target.value || '')"></ion-searchbar>
-
-    <ion-button (click)="openProfile()">Profile</ion-button>
+    <app-shared-search (searchResultsEmitter)="handleSearchResults($event)"></app-shared-search>
+    <ion-img id = "prof-image" (click)="openProfile()" src="assets/icon/profile.png">Profile</ion-img>
     <ion-button (click)="logout()">Logout</ion-button>
   </ion-buttons>
 

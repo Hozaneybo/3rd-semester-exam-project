@@ -1,36 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {AccountServiceService} from "../../shared/services/account-service.service";
 import {catchError} from "rxjs/operators";
 import {TeacherService} from "../services/teacher.service";
-import {ToastController} from "@ionic/angular";
-import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {SearchResultDto} from "../../shared/Models/SearchTerm";
+import {ToastService} from "../../shared/services/toast.service";
 
 @Component({
   selector: 'app-teacher-layout',
   templateUrl: './teacher-layout.component.html',
   styleUrls: ['./teacher-layout.component.scss'],
 })
-export class TeacherLayoutComponent implements OnInit {
+export class TeacherLayoutComponent{
+
   searchResults: SearchResultDto[] = [];
-  private searchSubject = new Subject<string>();
 
   constructor(
     private router: Router,
     private accountService: AccountServiceService,
     private teacherService: TeacherService,
-    private toastController: ToastController) { }
+    private toastService : ToastService) { }
 
-  ngOnInit() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(searchTerm => {
-      this.performSearch(searchTerm);
-    });
-
-  }
 
   logout() {
     this.accountService.logout();
@@ -49,29 +39,21 @@ export class TeacherLayoutComponent implements OnInit {
     if (searchTerm) {
       this.teacherService.search(searchTerm).pipe(
         catchError(err => {
-          this.presentToast('An error occurred while searching.');
+          this.toastService.showError(err.messageToClient || 'An error occurred while searching.');
           return [];
         })
       ).subscribe(response => {
         this.searchResults = response.responseData || [];
       }, err => {
-        this.presentToast(err.error.messageToClient || 'Error fetching search results.');
+        this.toastService.showError(err.error.messageToClient || 'Error fetching search results.');
       });
     } else {
       this.searchResults = [];
     }
   }
 
-  onSearchChange(searchTerm: string) {
-    this.searchSubject.next(searchTerm);
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-    });
-    toast.present();
+  handleSearchResults(results: SearchResultDto[]) {
+    this.searchResults = results;
   }
 
 }

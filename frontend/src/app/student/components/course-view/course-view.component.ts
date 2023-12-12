@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseView} from "../../../shared/Models/CourseModel";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ToastController} from "@ionic/angular";
-import {ResponseDto} from "../../../admin/components/LoginModels";
+import {ResponseDto} from "../../../shared/Models/LoginModels";
 import {StudentService} from "../../services/student.service";
+import {ToastService} from "../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-course-view',
@@ -17,7 +17,7 @@ export class CourseViewComponent  implements OnInit {
     private studentService: StudentService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastController: ToastController
+    private toastService : ToastService
   ) {}
 
   ngOnInit() {
@@ -26,9 +26,9 @@ export class CourseViewComponent  implements OnInit {
       this.studentService.getCourseById(courseId).subscribe({
         next: (response: ResponseDto<CourseView>) => {
           this.course = response.responseData;
-        },
+          },
         error: (error) => {
-          this.showToast(error.messageToClient || 'An error occurred while fetching the course details.');
+          this.toastService.showError(error.messageToClient || 'An error occurred while fetching the course details.');
         }
       });
     });
@@ -36,15 +36,6 @@ export class CourseViewComponent  implements OnInit {
 
   navigateToLesson(courseId: number, lessonId: number) {
     this.router.navigate([`/student/courses/${courseId}/lessons/${lessonId}`]);
-  }
-
-
-  private async showToast(message: string): Promise<void> {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000
-    });
-    toast.present();
   }
 
 }

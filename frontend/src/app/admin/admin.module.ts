@@ -15,10 +15,11 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {QuillEditorComponent} from "ngx-quill";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
-import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {EditProfileComponent} from "./components/edit-profile/edit-profile.component";
 import {CourseForLessonComponent} from "./components/lesson/course-for-lesson/course-for-lesson.component";
 import {LessonDetailsComponent} from "./components/lesson/lesson-details/lesson-details.component";
 import {LessonsDetailsComponent} from "./components/lesson/lessons-details/lessons-details.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import {LessonsDetailsComponent} from "./components/lesson/lessons-details/lesso
     ReactiveFormsModule,
     IonicModule,
     FormsModule,
-    QuillEditorComponent
+    QuillEditorComponent,
+    SharedModule
   ]
 })
 export class AdminModule { }

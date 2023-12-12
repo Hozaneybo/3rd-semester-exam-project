@@ -13,7 +13,7 @@
 
       <ion-title>Admin Dashboard</ion-title>
       <ion-buttons slot="end">
-        <ion-searchbar placeholder="Search..." (ionInput)="onSearchChange($event.target.value || '')"></ion-searchbar>
+        <app-shared-search (searchResultsEmitter)="handleSearchResults($event)"></app-shared-search>
         <ion-button (click)="openProfile()">Profile</ion-button>
         <ion-button (click)="logout()">Logout</ion-button>
       </ion-buttons>

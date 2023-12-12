@@ -12,7 +12,7 @@ import {AdminPageComponent} from "./admin-page/admin-page.component";
 import {UpdateLessonComponent} from "./components/lesson/update-lesson/update-lesson.component";
 import {RoleGuard} from "../shared/guards/role.guard";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
-import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {EditProfileComponent} from "./components/edit-profile/edit-profile.component";
 import {CourseForLessonComponent} from "./components/lesson/course-for-lesson/course-for-lesson.component";
 import {LessonDetailsComponent} from "./components/lesson/lesson-details/lesson-details.component";
 import {LessonsDetailsComponent} from "./components/lesson/lessons-details/lessons-details.component";

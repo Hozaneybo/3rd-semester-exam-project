@@ -5,14 +5,15 @@ import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
 import {CustomValidators} from "../../CustomValidators";
 import {AccountServiceService} from "../../services/account-service.service";
+import {ToastService} from "../../services/toast.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent  implements OnInit {
-  ngOnInit() {}
+export class RegisterComponent   {
 
 
   readonly form = this.fb.group({
@@ -23,23 +24,29 @@ export class RegisterComponent  implements OnInit {
     avatarUrl: [null],
   });
 
-  constructor(private fb: FormBuilder, private service : AccountServiceService, private toast: ToastController ) { }
+  constructor(private fb: FormBuilder,
+              private service : AccountServiceService,
+              private toastService : ToastService,
+              private router : Router
+  ) { }
 
   async submit() {
-    try {
-      var response = await firstValueFrom(this.service.register(this.form.value));
-
-      (await this.toast.create({
-        message: response.messageToClient,
-        color: "success",
-        duration: 5000
-      })).present();
-    } catch (e) {
-      await (await this.toast.create({
-        message: (e as HttpErrorResponse).error.messageToClient,
-        color: "danger",
-        duration: 5000
-      })).present();
+    if (this.form.valid) {
+      try {
+        const response = await firstValueFrom(this.service.register(this.form.value));
+        if(response) {
+          this.toastService.showSuccess(response.messageToClient || 'Registration successful');
+          this.router.navigate(['/login'])
+        }
+      } catch (e) {
+        if (e instanceof HttpErrorResponse) {
+          this.toastService.showError(e.error.messageToClient || 'Registration failed');
+        } else {
+          this.toastService.showError('An unexpected error occurred');
+        }
+      }
+    } else {
+      this.toastService.showWarning('Please fill in all required fields correctly.');
     }
   }
 }

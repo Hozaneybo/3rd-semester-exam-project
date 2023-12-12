@@ -36,7 +36,7 @@ public class SharedRepository : ISharedRepository
         {
             throw new Exception("An unexpected error occurred while searching. Please try again later.");
         }
-        
+
     }
 
 
@@ -54,9 +54,18 @@ FROM learning_platform.users
 WHERE role = @Role;
 ";
 
-        using var connection = _dataSource.OpenConnection();
-        return connection.Query<User>(sql, new { Role = role.ToString() });
-
+        try
+        {
+            using var connection = _dataSource.OpenConnection();
+            return connection.Query<User>(sql, new { Role = role.ToString() });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("Database operation failed in GetUsersByRole. Please try again later.");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred in GetUsersByRole. Please try again later.");
+        }
     }
-
 }

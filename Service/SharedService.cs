@@ -24,8 +24,7 @@ public class SharedService
         }
         catch (InvalidOperationException ex)
         {
-            
-            throw new InvalidOperationException("Search service is currently unavailable. Please try again later.");
+            throw;
         }
         catch (Exception ex)
         {
@@ -37,6 +36,17 @@ public class SharedService
 
     public IEnumerable<User> GetUsersByRole(RoleQueryModel roleQueryModel)
     {
-        return _sharedRepository.GetUsersByRole(roleQueryModel.Role);
+        try
+        {
+            return _sharedRepository.GetUsersByRole(roleQueryModel.Role);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred in the GetUsersByRole service. Please try again later.", ex);
+        }
     }
 }

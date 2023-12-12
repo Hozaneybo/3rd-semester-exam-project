@@ -8,6 +8,7 @@ import {StudentLayoutComponent} from "./student-layout/student-layout.component"
 import {RoleGuard} from "../shared/guards/role.guard";
 import {ShowUsersByRoleComponent} from "./components/show-users-by-role/show-users-by-role.component";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {EditProfileComponent} from "./components/edit-profile/edit-profile.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
     data: { expectedRole: 'Student' },
     children:
       [
+        { path: 'edit-profile', component: EditProfileComponent},
         { path: 'my-profile', component: MyProfileComponent},
         { path: 'users/role/:role', component: ShowUsersByRoleComponent},
         { path: 'dashboard',component : StudentDashboardComponent },

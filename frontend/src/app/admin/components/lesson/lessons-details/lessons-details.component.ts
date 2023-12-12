@@ -2,8 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LessonView} from "../../../../shared/Models/CourseModel";
 import {Subscription, take} from "rxjs";
-import {AlertController, ToastController} from "@ionic/angular";
+import {AlertController} from "@ionic/angular";
 import {AdminService} from "../../../services/admin.service";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 @Component({
   selector: 'app-lesson-details',
@@ -19,7 +20,7 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private adminService: AdminService,
     private route: ActivatedRoute,
-    private toastController: ToastController,
+    private toastService : ToastService,
     private router: Router,
     private alertCtrl: AlertController
   ) {}
@@ -28,29 +29,25 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.route.paramMap.subscribe(params => {
       const courseId = params.get('courseId');
       const lessonId = params.get('lessonId');
-      console.log(`Course ID: ${courseId}, Lesson ID: ${lessonId}`); // Add logging to debug
 
       if (courseId && lessonId) {
         this.loadLesson(+courseId, +lessonId);
       } else {
-        console.error('Course ID or Lesson ID is missing or invalid.');
-        this.showToast('Invalid course or lesson ID');
+        this.toastService.showError('Invalid course or lesson ID');
       }
     }));
   }
 
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
 
   loadLesson(courseId: number, lessonId: number): void {
     this.adminService.getLessonById(courseId, lessonId).subscribe(responseDto => {
       if (responseDto && responseDto.responseData) {
         this.lesson = responseDto.responseData;
       } else {
-        this.showToast('No data found for this lesson.');
+        this.toastService.showError('No data found for this lesson.');
       }
     }, error => {
       this.handleHttpError(error);
@@ -59,20 +56,18 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
 
   private handleHttpError(error: any): void {
     let errorMessage = 'An error occurred while fetching the lesson details.';
+
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
+    } else if (error.error && error.error.messageToClient) {
+      errorMessage = error.error.messageToClient;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    this.showToast(errorMessage);
+
+    this.toastService.showError(errorMessage);
   }
 
-  private showToast(message: string): void {
-    this.toastController.create({
-      message: message,
-      duration: 3000
-    }).then(toast => toast.present());
-  }
 
   async presentConfirmation(lessonId: number) {
     const alert = await this.alertCtrl.create({
@@ -101,11 +96,11 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
   confirmDelete(lessonId: number) {
     this.adminService.deleteLesson(lessonId).subscribe({
       next: (response) => {
-        this.showToast(response.messageToClient || 'Lesson deleted successfully');
+        this.toastService.showSuccess(response.messageToClient || 'Lesson deleted successfully');
         this.router.navigate([`/admin/courses/${this.lesson?.courseId}`])
       },
       error: (error) => {
-        this.showToast(error.messageToClient || 'An error occurred while deleting the lesson.');
+        this.toastService.showError(error.messageToClient || 'An error occurred while deleting the lesson.');
       }
     });
   }
@@ -114,7 +109,7 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
     if (this.lesson?.id != null) {
       this.presentConfirmation(this.lesson.id);
     } else {
-      this.showToast('Lesson ID is not available.');
+      this.toastService.showError('Lesson ID is not available.');
     }
   }
 
@@ -125,7 +120,7 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
       if (courseId && lessonId) {
         this.router.navigate([`/admin/courses/${courseId}/update-lesson/${lessonId}`]);
       } else {
-        this.showToast('Lesson ID is not available.');
+        this.toastService.showError('Lesson ID is not available.');
       }
     });
   }

@@ -5,6 +5,7 @@ import { AccountServiceService } from "../../services/account-service.service";
 import { Router } from "@angular/router";
 import {firstValueFrom} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ToastService} from "../../services/toast.service";
 
 @Component({
   selector: 'app-login',
@@ -16,8 +17,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private accountService: AccountServiceService,
-    private toastController: ToastController,
-    private router: Router // Inject the Angular Router
+    private toastService : ToastService,
+    private router: Router
   ) {}
 
   readonly loginForm = this.fb.group({
@@ -37,12 +38,11 @@ export class LoginComponent {
         this.redirectUser(response.responseData.role);
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
-          const errorMsg = error.error?.message || 'Login failed';
-          this.showToast(errorMsg);
+          this.toastService.showError(error.error?.message || 'username or password is incorrect')
         }
       }
     } else {
-      this.showToast('Please fill in all required fields correctly.');
+      this.toastService.showError('Please fill in all required fields correctly.')
     }
   }
 
@@ -58,17 +58,8 @@ export class LoginComponent {
         this.router.navigate(['/student/dashboard']);
         break;
       default:
-        this.showToast('Unknown user role');
+        this.toastService.showError('Unknown user role')
         break;
     }
-  }
-
-  private async showToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-      cssClass: 'success-toast'
-    });
-    toast.present();
   }
 }
