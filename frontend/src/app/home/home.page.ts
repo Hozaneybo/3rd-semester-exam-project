@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {AllCoursesView} from "../shared/Models/CourseModel";
-import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AlertController} from "@ionic/angular";
@@ -19,7 +18,7 @@ import {ToastService} from "../shared/services/toast.service";
   selectedSection: string = 'home';
 
 
-  readonly url = environment.apiEndpoint + 'api/Guest/courses';
+  readonly url =  '/api/Guest/courses';
   courses: AllCoursesView[] = [];
 
   constructor(private http: HttpClient,
