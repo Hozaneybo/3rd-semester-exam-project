@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseView} from "../../../shared/Models/CourseModel";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ResponseDto} from "../../../admin/components/LoginModels";
+import {ResponseDto} from "../../../shared/Models/LoginModels";
 import {StudentService} from "../../services/student.service";
 import {ToastService} from "../../../shared/services/toast.service";
 

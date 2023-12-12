@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AccountServiceService } from "../../shared/services/account-service.service";
 import { AdminService } from "../services/admin.service";
-import {UserProfile} from "../components/LoginModels";
+import {UserProfile} from "../../shared/Models/LoginModels";
 import {ToastService} from "../../shared/services/toast.service";
 
 @Component({

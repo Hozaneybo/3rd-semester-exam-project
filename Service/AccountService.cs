@@ -226,5 +226,22 @@ public class AccountService
             throw new Exception("An unexpected error occurred while generating a security token.");
         }
     }
+    
+    public User? UpdateUserProfile(SessionData data, UpdateProfileCommand command)
+    {
+        try
+        {
+            return _accountRepository.UpdateProfile(data.UserId, command.FullName, command.AvatarUrl);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error updating user: {Message}", ex.Message);
+            throw new Exception("An error occurred while updating the profile.");
+        }
+    }
 
 }

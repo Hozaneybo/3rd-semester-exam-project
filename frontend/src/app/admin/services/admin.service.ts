@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {ResponseDto, User} from "../components/LoginModels";
+import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {Observable} from "rxjs";
 import {
   AllCoursesView,
   CourseView, CreateCourse,
-  LessonView,
+  LessonView, UpdateCourseCommand,
   UpdateLessonCommand,
   UpdateUser
 } from "../../shared/Models/CourseModel";
@@ -49,8 +49,8 @@ export class AdminService {
     return this.http.post<ResponseDto<CreateCourse>>(this.url + 'courses/create', courseData, { withCredentials: true });
   }
 
-  updateCourse(courseId: number, courseData: any): Observable<ResponseDto<any>> {
-    return this.http.put<ResponseDto<any>>(`${this.url}courses/update/${courseId}`, courseData, { withCredentials: true });
+  updateCourse(courseId: number, courseData: any): Observable<ResponseDto<UpdateCourseCommand>> {
+    return this.http.put<ResponseDto<UpdateCourseCommand>>(`${this.url}courses/update/${courseId}`, courseData, { withCredentials: true });
   }
 
 
@@ -62,8 +62,8 @@ export class AdminService {
     return this.http.delete<ResponseDto<any>>(this.url + `courses/delete/${courseId}`, { withCredentials: true });
   }
 
-  updateLesson(lessonId: number, lesson: UpdateLessonCommand): Observable<ResponseDto<any>> {
-    return this.http.put<ResponseDto<any>>(`${this.url}lessons/update/${lessonId}`, lesson, { withCredentials: true });
+  updateLesson(lessonId: number, lesson: UpdateLessonCommand): Observable<ResponseDto<UpdateLessonCommand>> {
+    return this.http.put<ResponseDto<UpdateLessonCommand>>(`${this.url}lessons/update/${lessonId}`, lesson, { withCredentials: true });
   }
 
   getLessonById(courseId: number, lessonId: number): Observable<ResponseDto<LessonView>> {

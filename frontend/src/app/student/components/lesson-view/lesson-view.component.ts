@@ -55,11 +55,15 @@ export class LessonViewComponent  implements OnInit {
 
   private handleHttpError(error: any): void {
     let errorMessage = 'An error occurred while fetching the lesson details.';
+
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
+    } else if (error.error && error.error.messageToClient) {
+      errorMessage = error.error.messageToClient;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+
     this.toastService.showError(errorMessage);
   }
 }

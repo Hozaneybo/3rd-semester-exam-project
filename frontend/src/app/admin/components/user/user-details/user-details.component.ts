@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AdminService } from "../../../services/admin.service";
-import { ResponseDto, User } from "../../LoginModels";
+import { ResponseDto, User } from "../../../../shared/Models/LoginModels";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {ToastService} from "../../../../shared/services/toast.service";

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ResponseDto, User} from "../../admin/components/LoginModels";
+import {ResponseDto, User} from "../../shared/Models/LoginModels";
 import {
   AllCoursesView,
   CourseView,

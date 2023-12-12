@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ResponseDto, User, UserProfile} from "../../../admin/components/LoginModels";
+import {ResponseDto, User, UserProfile} from "../../../shared/Models/LoginModels";
 import {ToastController} from "@ionic/angular";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";

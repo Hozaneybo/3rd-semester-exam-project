@@ -25,3 +25,12 @@ public class UpdateUserCommand
     public Role Role { get; set; }
 }
 
+public class UpdateProfileCommand
+{
+    [Required(ErrorMessage = "User ID is required.")]
+    public int Id { get; set; }
+    public string FullName { get; set; }
+    public string? AvatarUrl { get; set; }
+    
+}
+

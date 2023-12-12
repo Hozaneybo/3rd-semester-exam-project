@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { FormControl, Validators} from "@angular/forms";
 import {AccountServiceService} from "../../services/account-service.service";
-import {ResponseDto} from "../../../admin/components/LoginModels";
+import {ResponseDto} from "../../Models/LoginModels";
 import {ToastService} from "../../services/toast.service";
 
 @Component({

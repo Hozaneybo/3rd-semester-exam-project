@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseView} from "../../../../shared/Models/CourseModel";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ToastController} from "@ionic/angular";
-import {ResponseDto} from "../../LoginModels";
+import {ResponseDto} from "../../../../shared/Models/LoginModels";
 import {AdminService} from "../../../services/admin.service";
 import {ToastService} from "../../../../shared/services/toast.service";
 

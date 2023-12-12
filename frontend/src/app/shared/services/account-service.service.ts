@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom, Observable} from "rxjs";
-import {ResponseDto, User} from "../../admin/components/LoginModels";
+import {ResponseDto, User} from "../Models/LoginModels";
 import {SearchResultDto} from "../Models/SearchTerm";
-import {ToastController} from "@ionic/angular";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class AccountServiceService {
   private intervalId: any;
 
 
-  constructor(private http: HttpClient, private toastController : ToastController) { }
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<ResponseDto<any>> {
     return this.http.post<ResponseDto<any>>(this.url + 'login', { email, password });
@@ -96,15 +95,6 @@ export class AccountServiceService {
 
     this.intervalId = setInterval(updateClock, 1000);
     updateClock();
-  }
-
-  async presentToast(message: string, color : string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-      color : color
-    });
-    toast.present();
   }
 
 }

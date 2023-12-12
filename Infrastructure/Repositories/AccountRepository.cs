@@ -203,6 +203,28 @@ WHERE email = @Email;";
     catch (Exception ex)
     {
         throw new Exception("An unexpected error occurred while retrieving user by email.", ex);
+    } 
+}
+
+public User UpdateProfile(int userId, string fullName, string? avatarUrl)
+{
+    const string sql = @"
+UPDATE learning_platform.users
+SET full_name = COALESCE@FullName, avatar_url = COALESCE@AvatarUrl
+WHERE id = @UserId;
+";
+    try
+    {
+        using var connection = _dataSource.OpenConnection();
+        return connection.QuerySingle(sql, new { UserId = userId, FullName = fullName, AvatarUrl = avatarUrl });
+    }
+    catch (NpgsqlException ex)
+    {
+        throw new InvalidOperationException("An error occurred while updating profile.", ex);
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An unexpected error occurred while updating the profile.", ex);
     }
 }
   

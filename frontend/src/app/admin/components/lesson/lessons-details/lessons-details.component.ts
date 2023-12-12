@@ -43,27 +43,28 @@ export class LessonsDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadLesson(courseId: number, lessonId: number): void {
-    this.adminService.getLessonById(courseId, lessonId).subscribe({
-      next: (responseDto) => {
-        if (responseDto && responseDto.responseData) {
-          this.lesson = responseDto.responseData;
-        } else {
-          this.toastService.showError('No data found for this lesson.');
-        }
-      },
-      error: (error) => {
-        this.toastService.showError(error.messageToClient || 'An error occurred while fetching the lesson details.');
+    this.adminService.getLessonById(courseId, lessonId).subscribe(responseDto => {
+      if (responseDto && responseDto.responseData) {
+        this.lesson = responseDto.responseData;
+      } else {
+        this.toastService.showError('No data found for this lesson.');
       }
+    }, error => {
+      this.handleHttpError(error);
     });
   }
 
   private handleHttpError(error: any): void {
     let errorMessage = 'An error occurred while fetching the lesson details.';
+
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
+    } else if (error.error && error.error.messageToClient) {
+      errorMessage = error.error.messageToClient;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+
     this.toastService.showError(errorMessage);
   }
 

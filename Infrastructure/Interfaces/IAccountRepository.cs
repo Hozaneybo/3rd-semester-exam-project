@@ -63,4 +63,12 @@ public interface IAccountRepository
     /// <returns>The User object corresponding to the specified email address, or null if no user with that email address exists.</returns>
     public User? GetUserByEmail(string email);
 
+    /// <summary>
+    /// Updates the profile of a user.
+    /// </summary>
+    /// <param name="userId">The ID of the user to update.</param>
+    /// <param name="fullName">The full name of the user.</param>
+    /// <param name="avatarUrl">The URL of the user's avatar.</param>
+    /// <returns>The updated User object.</returns>
+    User UpdateProfile(int userId, string fullName, string? avatarUrl);
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountServiceService} from "../../../shared/services/account-service.service";
-import {ResponseDto, User, UserProfile} from "../../../admin/components/LoginModels";
+import {ResponseDto, User, UserProfile} from "../../../shared/Models/LoginModels";
 import {of} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ToastService} from "../../../shared/services/toast.service";

@@ -7,7 +7,7 @@ import { firstValueFrom } from "rxjs";
 
 import { CustomValidators } from "../../CustomValidators";
 import { AccountServiceService } from "../../services/account-service.service";
-import { ResponseDto } from "../../../admin/components/LoginModels";
+import { ResponseDto } from "../../Models/LoginModels";
 import {ToastService} from "../../services/toast.service";
 
 @Component({

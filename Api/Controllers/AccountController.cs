@@ -84,6 +84,22 @@ public class AccountController : ControllerBase
         
     }
     
+    [RequireAuthentication]
+    [HttpPut("update-profile")]
+    public IActionResult UpdateProfile([FromBody] UpdateProfileCommand command)
+    {
+        try
+        {
+            var session = HttpContext.GetSessionData()!;
+            var user = _service.UpdateUserProfile(session, command);
+            return Ok(new ResponseDto { MessageToClient = "Profile updated successfully.", ResponseData = user});
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+    }
+    
     [HttpGet("verify-email")]
     public IActionResult VerifyEmail([FromQuery] string token)
     {
