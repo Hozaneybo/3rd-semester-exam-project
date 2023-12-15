@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AllCoursesView, LessonView } from "../../../../shared/Models/CourseModel";
 import { AdminService } from "../../../services/admin.service";
 import { Router } from "@angular/router";
-import { ToastService } from "../../../../shared/services/toast.service"; // Import ToastService
+import { ToastService } from "../../../../shared/services/toast.service";
+import {AlertController} from "@ionic/angular"; // Import ToastService
 
 @Component({
   selector: 'app-all-courses',
@@ -17,7 +18,8 @@ export class AllCoursesComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private router: Router,
-    private toastService: ToastService // Inject ToastService
+    private toastService: ToastService,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -35,24 +37,42 @@ export class AllCoursesComponent implements OnInit {
     });
   }
 
-  deleteCourse(courseId: number, event: Event): void {
-    event.stopPropagation();
-
-    if (confirm('Are you sure you want to delete this course?')) {
-      this.adminService.deleteCourse(courseId).subscribe({
-        next: (response) => {
-          if(response) {
-            this.toastService.showSuccess(response.messageToClient || 'Course deleted successfully');
-            this.courses = this.courses.filter(course => course.id !== courseId);
+  async presentConfirmation(courseId: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Delete',
+      message: 'Do you really want to delete this course?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.confirmDelete(courseId);
           }
-
-        },
-        error: (error) => {
-          this.toastService.showError(error.messageToClient || 'Error deleting courses')
-
         }
-      });
-    }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  confirmDelete(courseId: number) {
+    this.adminService.deleteCourse(courseId).subscribe({
+      next: (response) => {
+        this.toastService.showSuccess(response.messageToClient || 'Course deleted successfully');
+        this.courses = this.courses.filter(course => course.id !== courseId);
+      },
+      error: (error) => {
+        this.toastService.showError(error.messageToClient || 'Error deleting course');
+      }
+    });
+  }
+
+  deleteCourse(courseId: number, event: Event) {
+    event.stopPropagation();
+    this.presentConfirmation(courseId);
   }
 
   createCourse() {

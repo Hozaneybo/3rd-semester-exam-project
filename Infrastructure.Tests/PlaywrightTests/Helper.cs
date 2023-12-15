@@ -12,7 +12,9 @@ public static class Helper
     public static readonly Uri Uri;
     public static readonly string ProperlyFormattedConnectionString;
     public static readonly NpgsqlDataSource DataSource;
+    
     public static int? AdminUserId { get; private set; }
+    public static int? RegularUserId { get; private set; }
 
     static Helper()
     {
@@ -69,21 +71,37 @@ the connection-string to Postgres?", e);
         {
             try
             {
-                var user = Create();
-                InsertAdminPasswordHash(user.Id, "TTTTTTTT");
-                AdminUserId = user.Id;
+                // Create Admin User
+                var adminUser = Create("Test Admin", "test@admin.com", "Admin Photo", "Admin");
+                InsertAdminPasswordHash(adminUser.Id, "TTTTTTTT");
+                AdminUserId = adminUser.Id;
+
+                // Create Regular User
+                var regularUser = Create("PlayWright", "playwright@example.com", "playwright_photo.jpg", "Student");
+                InsertAdminPasswordHash(regularUser.Id, "pppppppp"); // Use a suitable password for the regular user
+                RegularUserId = regularUser.Id;
             }
             catch (Exception e)
             {
-                throw new Exception("There was an error creating the admin user.", e);
+                throw new Exception("There was an error creating the users.", e);
             }
         }
         else if (delete && AdminUserId.HasValue)
         {
             try
             {
-                DeleteUser(AdminUserId.Value);
-                AdminUserId = null;
+                if (AdminUserId.HasValue)
+                {
+                    DeleteUser(AdminUserId.Value);
+                    AdminUserId = null;
+                }
+
+                // Delete Regular User if it exists
+                if (RegularUserId.HasValue)
+                {
+                    DeleteUser(RegularUserId.Value);
+                    RegularUserId = null;
+                }
             }
             catch (Exception e)
             {
@@ -91,23 +109,26 @@ the connection-string to Postgres?", e);
             }
         }
     }
-
-
-    public static User Create()
+    
+    
+    public static User Create(string fullName, string email, string avatarUrl, string role)
     {
-        const string sql = $@"
+        const string sql = @"
 INSERT INTO learning_platform.users (full_name, email, avatar_url, role)
-VALUES ('Test Admin', 'test@admin.com', 'Admin Photo', 'Admin') RETURNING
-    id as {nameof(User.Id)},
-    full_name as {nameof(User.Fullname)},
-    email as {nameof(User.Email)},
-    avatar_url as {nameof(User.AvatarUrl)},
-    role as {nameof(User.Role)};
+VALUES (@FullName, @Email, @AvatarUrl, @Role) RETURNING
+    id, full_name, email, avatar_url, role;
 ";
         using var connection = DataSource.OpenConnection();
-        return connection.QueryFirst<User>(sql);
-        
+        return connection.QueryFirst<User>(sql, new 
+        { 
+            FullName = fullName, 
+            Email = email, 
+            AvatarUrl = avatarUrl, 
+            Role = role 
+        });
     }
+
+
     
     public static void DeleteUser(int id)
     {
@@ -143,6 +164,44 @@ VALUES ('Test Admin', 'test@admin.com', 'Admin Photo', 'Admin') RETURNING
             throw new Exception("There was an error creating the admin password hash.", e);
         }
     }
+    
+    public static void DeleteUserByEmail(string email)
+    {
+        const string sql = @"DELETE FROM learning_platform.users WHERE email = @Email;";
+        using var connection = DataSource.OpenConnection();
+        try
+        {
+            connection.Execute(sql, new { Email = email });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException($"An error occurred while deleting the user with email {email}.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An unexpected error occurred while deleting the user with email {email}.", ex);
+        }
+    }
+    
+    public static void DeleteCourseByTitle(string title)
+    {
+        const string sql = @"DELETE FROM learning_platform.courses WHERE title = @Title;";
+        using var connection = DataSource.OpenConnection();
+        try
+        {
+            connection.Execute(sql, new { Title = title });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException($"An error occurred while deleting the course with title {title}.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An unexpected error occurred while deleting the course with title {title}.", ex);
+        }
+    }
+
+
 
     public static string BuildScriptIfNotExists = @"
 CREATE SCHEMA IF NOT EXISTS learning_platform;

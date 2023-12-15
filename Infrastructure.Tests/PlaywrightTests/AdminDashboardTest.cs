@@ -9,33 +9,24 @@ namespace Infrastructure.Tests.PlaywrightTests;
 [TestFixture]
 public class AdminDashboardTest : PageTest
 {
+    
+    [SetUp]
+    public void Setup()
+    {
+        Helper.CreateAndDeleteAdminUser(create: true, delete: false);
+    }
+
+    [TearDown]
+    public void Teardown()
+    {
+        Helper.CreateAndDeleteAdminUser(create: false, delete: true);
+    }
 
     [Test]
     public async Task NavigateToAdminHomePageAndCheckIt()
     {
         
-        Helper.CreateAndDeleteAdminUser(true, false);
-        await Page.GotoAsync("http://localhost:5000/home");
-        
-        Page.WaitForNavigationAsync();
-
-        await Page.Locator("ion-buttons").Filter(new() { HasText = "Login" }).ClickAsync();
-        
-        Page.WaitForNavigationAsync();
-
-        await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/login"));
-        
-        await Page.GetByLabel("Username or email address").ClickAsync();
-
-        await Page.GetByLabel("Username or email address").FillAsync("test@admin.com");
-
-        await Page.GetByLabel("Password").ClickAsync();
-
-        await Page.GetByLabel("Password").FillAsync("TTTTTTTT");
-
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Sign in" }).ClickAsync();
-        
-        Page.WaitForNavigationAsync();
+        await AdminLoginHelper.AdminLoginAsync(Page);
         
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/dashboard"));
 
