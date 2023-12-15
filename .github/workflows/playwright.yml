@@ -56,4 +56,4 @@ jobs:
       - name: Run Playwright Tests
         run: |
           cd Infrastructure.Tests
-          dotnet test infrastructure.Test.csproj
+          dotnet test Infrastructure.Tests.csproj
