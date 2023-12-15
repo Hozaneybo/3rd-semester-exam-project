@@ -52,7 +52,7 @@ jobs:
       # Step 7: Start your API
       - name: Start API
         run: |
-          cd api
+          cd ./Api
           dotnet run &
 
       # Step 8: Sleep to allow time for the API to start
