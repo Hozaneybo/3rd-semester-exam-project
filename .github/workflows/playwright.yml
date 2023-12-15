@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env: 
+    env:
       pgconn: ${{ secrets.PGCONN }}
 
     steps:
@@ -22,7 +22,7 @@ jobs:
       # Step 1: Install Angular CLI
       - name: Install Angular CLI
         run: npm install -g @angular/cli
-        
+      
       # Step 2: Setup .NET SDK
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
@@ -36,24 +36,31 @@ jobs:
       # Step 4: Install Angular dependencies
       - name: Install Angular dependencies
         run: |
-            cd frontend
-            npm install
-            ng build
-          
+          cd frontend
+          npm install
+          ng build
+      
       # Step 5: Install API Nuget Packages
       - name: Install API Nuget Packages
         run: dotnet restore
 
       # Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
-        run: npx playwright install
+        run: npx playwright install chromium --with-deps
 
-      # Step 7: Sleep to allow time for the API to start
+
+      # Step 7: Start your API
+      - name: Start API
+        run: |
+          cd ./Api
+          dotnet run &
+
+      # Step 8: Sleep to allow time for the API to start
       - name: Sleep for 60 seconds
         run: sleep 60s
       
-      # Step 8: Run Playwright Tests
+      # Step 9: Run Playwright Tests
       - name: Run Playwright Tests
         run: |
-          cd Infrastructure.Tests/PlaywrightTests
-          dotnet test
+          cd Infrastructure.Tests
+          dotnet test Infrastructure.Tests.csproj

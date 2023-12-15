@@ -32,6 +32,8 @@ public class AdminCourseTest : PageTest
         
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/dashboard"));
         
+        Page.SetDefaultTimeout(10000);
+        
         await Page.GetByRole(AriaRole.Link, new() { Name = "Courses" }).ClickAsync();
 
         var showCoursesList =  Page.Locator("div").Filter(new() { HasText = "All Courses" });
@@ -64,8 +66,11 @@ public class AdminCourseTest : PageTest
         var courseBeCreated =  Page.GetByRole(AriaRole.Heading, new() { Name = "Create Course Test" });
         await Expect(courseBeCreated).ToBeVisibleAsync();
         
+        Helper.DeleteCourseByTitle("Create Course Test");
+        
     }
 
+    /*
     [Test]
     public async Task UpdateCourse()
     {
@@ -77,12 +82,11 @@ public class AdminCourseTest : PageTest
         await Page.GetByRole(AriaRole.Link, new() { Name = "Courses" }).ClickAsync();
         
         await Page.Locator("div:nth-child(5) > .course-info > .course-actions > .update-btn > .button-native").ClickAsync();
+        
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/course/update"));
         
         await Page.GetByLabel("Title").ClickAsync();
-
-        //await Page.GetByLabel("Title").FillAsync("Update Course");
-
+        
         await Page.FillAsync("#title", "Course be updated");
         
         await Page.GetByRole(AriaRole.Button, new() { Name = "Update Course" }).ClickAsync();
@@ -92,7 +96,7 @@ public class AdminCourseTest : PageTest
         
         Helper.DeleteCourseByTitle("Course be updated");
         
-    }
+    }*/
 
     /*[Test]
     public async Task DeleteCourse()

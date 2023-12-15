@@ -13,6 +13,8 @@ public class RegisterPage : PageTest
     {
         await Page.GotoAsync("http://localhost:5000/register", new PageGotoOptions { Timeout = 60000 });
         
+        Page.SetDefaultTimeout(10000);
+        
         await Page.GetByLabel("Full Name").ClickAsync();
 
         await Page.GetByLabel("Full Name").FillAsync("Play Wright Test ");
