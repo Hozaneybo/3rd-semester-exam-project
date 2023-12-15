@@ -26,7 +26,11 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore Infrastructure.Tests/Infrastructure.Tests.csproj
 
-      # Step 4: Run NUnit Tests
+      # Step 4: Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install
+        
+      # Step 5: Run NUnit Tests
       - name: Run NUnit Tests
         run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --logger "trx;LogFileName=test_results.xml"
 
