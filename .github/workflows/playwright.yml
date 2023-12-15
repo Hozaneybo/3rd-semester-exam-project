@@ -2,7 +2,7 @@ name: Playwright Tests Workflow
 
 on:
   push:
-    branches: [ Github Actions ] 
+
   workflow_dispatch:
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
       # Step 4: Install Angular dependencies
       - name: Install Angular dependencies
         run: |
-            cd frontend/BoxFactoryFrontend
+            cd frontend
             npm install
             ng build
           

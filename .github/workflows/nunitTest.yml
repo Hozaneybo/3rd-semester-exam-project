@@ -1,0 +1,41 @@
+﻿name: NUnit Repository Tests Workflow
+
+on:
+  push:
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      pgconn: ${{ secrets.PGCONN }}
+
+    steps:
+      # Step 1: Setup .NET SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
+      # Step 2: Checkout the current repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 3: Install NuGet packages 
+      - name: Install NuGet Packages
+        run: dotnet restore Infrastructure.Tests/Repositories
+
+      # Step 4: Run NUnit Tests
+      - name: Run NUnit Tests
+        run: |
+          cd Infrastructure.Tests/Repositories
+          dotnet test --logger "trx;LogFileName=test_results.xml" # Adjust path if necessary
+
+      # (Optional) Step 5: Upload Test Results
+      - name: Upload Test Results
+        if: always() # This ensures that test results are uploaded even if the tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: NUnit Test Results
+          path: Infrastructure.Tests/Repositories/**/TestResults/*.xml
