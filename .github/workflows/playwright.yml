@@ -55,5 +55,5 @@ jobs:
       # Step 8: Run Playwright Tests
       - name: Run Playwright Tests
         run: |
-          cd Infrastructure.Tests/PlaywrightTests
-          dotnet test
+          cd Infrastructure.Tests
+          dotnet test infrastructure.Test.csproj
