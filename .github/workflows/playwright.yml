@@ -48,6 +48,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install
 
+      # Step 5: Start your API
+      - name: Start API
+        run: |
+          cd api
+          dotnet run &
+
       # Step 7: Sleep to allow time for the API to start
       - name: Sleep for 60 seconds
         run: sleep 60s
