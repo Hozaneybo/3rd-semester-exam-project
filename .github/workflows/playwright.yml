@@ -46,19 +46,20 @@ jobs:
 
       # Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
-        run: npx playwright install
+        run: npx playwright install chromium --with-deps
 
-      # Step 5: Start your API
+
+      # Step 7: Start your API
       - name: Start API
         run: |
           cd api
           dotnet run &
 
-      # Step 7: Sleep to allow time for the API to start
+      # Step 8: Sleep to allow time for the API to start
       - name: Sleep for 60 seconds
         run: sleep 60s
       
-      # Step 8: Run Playwright Tests
+      # Step 9: Run Playwright Tests
       - name: Run Playwright Tests
         run: |
           cd Infrastructure.Tests
