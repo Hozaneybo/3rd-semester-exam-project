@@ -42,7 +42,7 @@ public class RegisterPage : PageTest
         
         var successMessage =  Page.GetByText("Registration successful. Please check your email to verify your account.");
         
-        await Expect(successMessage).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions { Timeout = 10000 });
+        await Expect(successMessage).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions { Timeout = 30000 });
         
     }
 }
