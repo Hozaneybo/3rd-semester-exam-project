@@ -9,7 +9,8 @@ namespace Infrastructure.Tests.PlaywrightTests;
 public class RegisterPage : PageTest
 {
     
-    public void Setup()
+    [TearDown]
+    public void Teardown()
     {
         Helper.DeleteUserByEmail("playwriht@playwright.com");
     }
