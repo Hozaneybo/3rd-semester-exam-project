@@ -32,7 +32,7 @@ jobs:
       # Step 3: Checkout the current repository
       - name: Checkout code
         uses: actions/checkout@v4
-          
+
       # Step 4: Install Angular dependencies
       - name: Install Angular dependencies
         run: |
@@ -40,15 +40,13 @@ jobs:
             npm install
             ng build
           
-      # Step 5: Install Playwright Test dependencies 
-      - name: Install Playwright Test dependencies
-        run: npm install
-        working-directory: ./Infrastructure.Tests/PlaywrightTests 
-          
+      # Step 5: Install API Nuget Packages
+      - name: Install API Nuget Packages
+        run: dotnet restore
+
       # Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
-        working-directory: ./Infrastructure.Tests/PlaywrightTests
 
       # Step 7: Sleep to allow time for the API to start
       - name: Sleep for 60 seconds
