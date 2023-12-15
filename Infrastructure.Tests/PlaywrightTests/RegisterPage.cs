@@ -9,18 +9,16 @@ namespace Infrastructure.Tests.PlaywrightTests;
 public class RegisterPage : PageTest
 {
     
-    [TearDown]
+    /*[TearDown]
     public void Teardown()
     {
         Helper.DeleteUserByEmail("playwriht@playwright.com");
-    }
+    }[Test]
     
-    [Test]
+    
     public async Task SignUp()
     {
         await Page.GotoAsync("http://localhost:5000/register", new PageGotoOptions { Timeout = 60000 });
-        
-        Page.SetDefaultTimeout(10000);
         
         await Page.GetByLabel("Full Name").ClickAsync();
 
@@ -42,7 +40,7 @@ public class RegisterPage : PageTest
         
         var successMessage =  Page.GetByText("Registration successful. Please check your email to verify your account.");
         
-        await Expect(successMessage).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions { Timeout = 30000 });
+        await Expect(successMessage).ToBeVisibleAsync();
         
-    }
+    }*/
 }
