@@ -1,0 +1,35 @@
+name: Playwright Tests Workflow
+
+on:
+  push:
+    branches: [ Github Actions ] 
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Setup .NET SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
+      # Step 2: Checkout the current repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+          
+      # Step 3: Install API Nuget Packages
+      - name: Install API Nuget Packages
+        run: dotnet restore
+
+      # Step 4: Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install
+      
+      # Step 5: Run Playwright Tests
+      - name: Run Playwright Tests
+        run: |
+          cd Infrastructure.Tests/PlaywrightTests
+          dotnet test
