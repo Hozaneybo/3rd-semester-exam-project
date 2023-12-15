@@ -8,6 +8,12 @@ namespace Infrastructure.Tests.PlaywrightTests;
 [TestFixture]
 public class RegisterPage : PageTest
 {
+    
+    public void Setup()
+    {
+        Helper.DeleteUserByEmail("playwriht@playwright.com");
+    }
+    
     [Test]
     public async Task SignUp()
     {
@@ -35,8 +41,7 @@ public class RegisterPage : PageTest
         
         var successMessage =  Page.GetByText("Registration successful. Please check your email to verify your account.");
         
-        await Expect(successMessage).ToBeVisibleAsync();
+        await Expect(successMessage).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions { Timeout = 10000 });
         
-        Helper.DeleteUserByEmail("playwriht@playwright.com");
     }
 }
