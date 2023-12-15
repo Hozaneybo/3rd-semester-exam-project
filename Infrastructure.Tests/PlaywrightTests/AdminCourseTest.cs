@@ -116,6 +116,5 @@ public class AdminCourseTest : PageTest
         await Expect(deleteCourse).ToBeVisibleAsync();
         
         //Helper.CreateAndDeleteAdminUser(false, true);
-        
     }*/
 }
