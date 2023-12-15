@@ -22,15 +22,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 3: Install NuGet packages 
-      - name: Install NuGet Packages
-        run: dotnet restore Infrastructure.Tests/Repositories
+       # Step 3: Restore NuGet packages for the test project
+      - name: Restore NuGet packages
+        run: dotnet restore Infrastructure.Tests/Infrastructure.Tests.csproj
 
       # Step 4: Run NUnit Tests
       - name: Run NUnit Tests
-        run: |
-          cd Infrastructure.Tests/Repositories
-          dotnet test --logger "trx;LogFileName=test_results.xml" # Adjust path if necessary
+        run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --logger "trx;LogFileName=test_results.xml"
 
       # (Optional) Step 5: Upload Test Results
       - name: Upload Test Results
