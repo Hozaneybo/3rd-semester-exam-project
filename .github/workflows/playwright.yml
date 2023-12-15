@@ -8,28 +8,52 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env: 
+      pgconn: ${{ secrets.PGCONN }}
 
     steps:
-      # Step 1: Setup .NET SDK
+
+      # Step 0: Setup Node.js for Angular
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.17.1'
+
+      # Step 1: Install Angular CLI
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+        
+      # Step 2: Setup .NET SDK
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
       
-      # Step 2: Checkout the current repository
+      # Step 3: Checkout the current repository
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # Step 4: Install Angular dependencies
+      - name: Install Angular dependencies
+        run: |
+            cd frontend/BoxFactoryFrontend
+            npm install
+            ng build
           
-      # Step 3: Install API Nuget Packages
+      # Step 5: Install API Nuget Packages
       - name: Install API Nuget Packages
         run: dotnet restore
 
-      # Step 4: Install Playwright Browsers
+      # Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
+
+      # Step 7: Sleep to allow time for the API to start
+      - name: Sleep for 60 seconds
+        run: sleep 60s
       
-      # Step 5: Run Playwright Tests
+      # Step 8: Run Playwright Tests
       - name: Run Playwright Tests
         run: |
           cd Infrastructure.Tests/PlaywrightTests
-          dotnet test
+          dotnet testz
