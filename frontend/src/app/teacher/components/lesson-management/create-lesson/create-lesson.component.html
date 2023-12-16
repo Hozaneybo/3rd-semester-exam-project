@@ -1,0 +1,69 @@
+<ion-content>
+  <form [formGroup]="lessonForm" (ngSubmit)="createLesson()">
+
+
+    <ion-item>
+      <ion-label position="floating">Title</ion-label>
+      <ion-input
+              type="text"
+              formControlName="title"
+              placeholder="Enter lesson title">
+      </ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="lessonForm.controls['title'].invalid && lessonForm.controls['title'].touched">
+      Title is required and must be between 3 and 50 characters.
+    </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating">Content</ion-label>
+      <quill-editor formControlName="content"
+                    placeholder="Enter lesson content"
+                    style="height: 200px;"> <!-- Adjust height as needed -->
+      </quill-editor>
+    </ion-item>
+    <ion-note color="danger" *ngIf="lessonForm.controls['content'].invalid && lessonForm.controls['content'].touched">
+      Content is required.
+    </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating">Course ID</ion-label>
+      <ion-input
+              type="number"
+              formControlName="courseId"
+              placeholder="Enter course ID"
+              readonly="true">
+      </ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="lessonForm.controls['courseId'].invalid && lessonForm.controls['courseId'].touched">
+      Course ID is required.
+    </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating">Picture URLs</ion-label>
+      <ion-input
+              type="text"
+              formControlName="pictureUrls"
+              placeholder="Enter picture URLs (comma-separated)">
+      </ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="floating">Video URLs</ion-label>
+      <ion-input
+              type="text"
+              formControlName="videoUrls"
+              placeholder="Enter video URLs (comma-separated)">
+      </ion-input>
+    </ion-item>
+
+
+    <ion-button expand="full" type="submit" color="primary" [disabled]="!lessonForm.valid">
+      Create Lesson
+    </ion-button>
+
+  </form>
+</ion-content>

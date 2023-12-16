@@ -1,0 +1,41 @@
+<ion-content class="platform-register" >
+  <div class="register-form" style="width: 600px; height: 400px">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <ion-list style="width: 500px; height: 400px">
+        <ion-list-header>
+          <ion-label style="font-size: 20px" class="ion-text-center header-title">Sign in to
+            <a routerLink = "/home">Learning Platform</a> </ion-label>
+        </ion-list-header>
+
+        <ion-item style="border-radius: 10px; margin: 5px">
+          <ion-label style="margin: 10px" position="floating">Full Name</ion-label>
+          <ion-input style="margin-left: 10px" formControlName="fullName" type="text" required></ion-input>
+        </ion-item>
+
+        <ion-item style="border-radius: 10px; margin: 5px">
+          <ion-label style="margin: 10px" position="floating">Email</ion-label>
+          <ion-input style="margin-left: 10px" formControlName="email" type="email" required></ion-input>
+        </ion-item>
+
+        <ion-item style="border-radius: 10px; margin: 5px">
+          <ion-label style="margin: 10px" position="floating">Password</ion-label>
+          <ion-input style="margin-left: 10px" formControlName="password" type="password" required minlength="8"></ion-input>
+        </ion-item>
+
+        <ion-item style="border-radius: 10px; margin: 5px">
+          <ion-label style="margin: 10px" position="floating">Confirm Password</ion-label>
+          <ion-input style="margin-left: 10px" formControlName="passwordRepeat" type="password" required></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button expand="block" type="submit" [disabled]="form.invalid" style="width: 500px" >
+        Sign Up
+      </ion-button>
+
+      <p class="ion-text-center" style="width: 500px">
+        Already have an account? <a href="/login">Sign in</a>
+      </p>
+    </form>
+  </div>
+</ion-content>

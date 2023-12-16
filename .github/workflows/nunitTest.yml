@@ -1,0 +1,46 @@
+name: NUnit Repository Tests Workflow
+
+on:
+  push:
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      pgconn: ${{ secrets.PGCONN }}
+
+    steps:
+      # Step 1: Setup .NET SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
+      # Step 2: Checkout the current repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Step 3: Restore NuGet packages for the test project
+      - name: Restore NuGet packages
+        run: dotnet restore Infrastructure.Tests/Infrastructure.Tests.csproj
+
+      # Step 4: Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install
+        
+      
+      # Step 5: Run NUnit Tests for Specific Classes
+      - name: Run NUnit Tests for Specific Classes
+        run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --filter "FullyQualifiedName~Infrastructure.Tests.Repositories.AdminRepositoryTest|FullyQualifiedName~Infrastructure.Tests.Repositories.SharedRepositoryTest" --logger "trx;LogFileName=test_results.xml"
+      
+      
+      
+      # (Optional) Step 6: Upload Test Results
+      - name: Upload Test Results
+        if: always() # This ensures that test results are uploaded even if the tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: NUnit Test Results
+          path: Infrastructure.Tests/Repositories/**/TestResults/*.xml

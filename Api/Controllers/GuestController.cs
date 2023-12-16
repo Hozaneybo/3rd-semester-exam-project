@@ -14,21 +14,31 @@ public class GuestController : ControllerBase
         _courseService = courseService;
     }
     [HttpGet("courses")]
-    public ResponseDto GetAllCourses()
+    public IActionResult GetAllCourses()
     {
-       
-        var courses =  _courseService.GetAllCourses().Select(course => new AllCoursesResult
+        try
         {
-            Id = course.Id,
-            Title = course.Title,
-            Description = course.Description,
-            CourseImgUrl = course.CourseImgUrl
+            var courses = _courseService.GetAllCourses().Select(course => new AllCoursesResult
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CourseImgUrl = course.CourseImgUrl
             
-        }).ToList();
-        return new ResponseDto()
+            }).ToList();
+            return Ok(new ResponseDto
+            {
+                MessageToClient = "Successfully fetched",
+                ResponseData = courses
+            });
+        }
+        catch (InvalidOperationException ex)
         {
-            MessageToClient = "Successfully fetched",
-            ResponseData = courses,
-        };
+            return BadRequest(new ResponseDto { MessageToClient = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDto { MessageToClient = "An internal error occurred. Please try again later." });
+        }
     }
 }

@@ -1,0 +1,44 @@
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.pricing-title {
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+.pricing-subtitle {
+  margin-bottom: 20px;
+}
+
+.pricing-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.pricing-table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.pricing-table th, .pricing-table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.pricing-table th {
+  background-color: #00468b;
+}
+
+@media (min-width: 768px) {
+  .pricing-table {
+    width: 60%;
+  }
+}

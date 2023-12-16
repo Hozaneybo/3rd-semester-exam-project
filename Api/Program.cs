@@ -39,6 +39,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var frontEndRelativePath = "./../frontend/www";
+builder.Services.AddSpaStaticFiles(conf => conf.RootPath = frontEndRelativePath);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,11 +50,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(options =>
+{ 
+    options.SetIsOriginAllowed(origin => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
 
 app.UseSecurityHeaders();
 app.UseSession();
 
 app.UseHttpsRedirection();
+
+app.UseSpaStaticFiles();
+
+app.UseSpa(conf =>
+{
+    conf.Options.SourcePath = frontEndRelativePath;
+});
 app.MapControllers();
 app.UseMiddleware<GlobalExceptionHandler>();
 app.Run();

@@ -1,0 +1,26 @@
+<div *ngIf="user; else loading" class="user-details-container">
+  <div class="user-details-card">
+    <div class="user-avatar">
+      <ion-avatar>
+        <img class="avatar-img" [src]="user.avatarUrl || 'default-avatar.png'"   *ngIf="user.avatarUrl"  />
+      </ion-avatar>
+      <!--<img [src]="user.avatarUrl || 'default-avatar.png'"  class="avatar-img" onerror="this.src='default-avatar.png';">-->
+    </div>
+    <div class="user-info">
+      <h2 class="user-name">{{ user.fullname }}</h2>
+      <p class="user-email"><i class="fas fa-envelope"></i> {{ user.email }}</p>
+      <p class="user-role"><i class="fas fa-briefcase"></i> {{ user.role }}</p>
+      <div class="user-actions">
+        <button (click)="navigateToUpdateUser()" class="btn btn-primary">Edit</button>
+        <button (click)="deleteUser()" class="btn btn-danger" style="margin-right: 10px">Delete</button>
+        <button (click)="goBack()" class="btn btn-back-to-list">Back to User List</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <p>Loading...</p>
+  </div>
+</ng-template>

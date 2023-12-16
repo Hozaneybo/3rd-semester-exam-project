@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar class="custom-toolbar">
+    <ion-button slot="start"  id="logo-image" (click)="selectedSection = 'home'" class="toolbar-button"  >
+      <ion-img src="assets/icon/logo.png" alt="Learning Platform Logo" ></ion-img>
+    </ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="selectedSection = 'home'" class="toolbar-button">Home</ion-button>
+      <ion-button (click)="selectedSection = 'features'" class="toolbar-button">Features</ion-button>
+      <ion-button (click)="selectedSection = 'company'" class="toolbar-button">Company</ion-button>
+      <ion-button (click)="selectedSection = 'pricing'" class="toolbar-button">Pricing</ion-button>
+      <ion-button (click)="selectedSection = 'customers'" class="toolbar-button">Customers</ion-button>
+      <ion-button (click)="selectedSection = 'support'" class="toolbar-button">Support</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/login" routerLinkActive="active-link" class="toolbar-button" style="margin-right: 15px">
+        Login
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-features *ngIf="selectedSection === 'features'"></app-features>
+  <app-company *ngIf="selectedSection === 'company'"></app-company>
+  <app-pricing *ngIf="selectedSection === 'pricing'"></app-pricing>
+  <app-customers *ngIf="selectedSection === 'customers'"></app-customers>
+  <app-support *ngIf="selectedSection === 'support'"></app-support>
+
+  <ion-list *ngIf="selectedSection === 'home'">
+    <div class="courses-container">
+      <div class="course" *ngFor="let course of courses" (click)="onCourseClick()">
+        <img [src]="course.courseImgUrl" alt="{{ course.title }}">
+        <div class="course-info">
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.description }}</p>
+        </div>
+      </div>
+
+    </div>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h5>Contact</h5>
+      <p>Email: <a href="mailto:flexserve.mailer@gmail.com">flexserve.mailer&#64;gmail.com</a></p>
+      <p>Phone: 123-456-7890</p>
+    </div>
+  </div>
+</ion-footer>

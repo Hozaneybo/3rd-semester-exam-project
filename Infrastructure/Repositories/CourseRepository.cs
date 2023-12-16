@@ -23,9 +23,20 @@ title as {nameof(Course.Title)},
 description as {nameof(Course.Description)},
 course_img_url as {nameof(Course.CourseImgUrl)}
 FROM learning_platform.courses;";
-        
+
         using var connection = _dataSource.OpenConnection();
-        return connection.Query<Course>(sql);
+        try
+        {
+            return connection.Query<Course>(sql);
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while retrieving courses.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while retrieving courses.", ex);
+        }
     }
 
     public Course GetCourseById(int id)
@@ -48,15 +59,26 @@ WHERE course_id = @Id;
 ";
 
         using var connection = _dataSource.OpenConnection();
-        var course = connection.QuerySingleOrDefault<Course>(courseSql, new { Id = id });
-
-        if (course != null)
+        try
         {
-            var lessons = connection.Query<Lesson>(lessonsSql, new { Id = id });
-            course.Lessons = lessons.ToList();
-        }
+            var course = connection.QuerySingleOrDefault<Course>(courseSql, new { Id = id });
 
-        return course;
+            if (course != null)
+            {
+                var lessons = connection.Query<Lesson>(lessonsSql, new { Id = id });
+                course.Lessons = lessons.ToList();
+            }
+
+            return course;
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while retrieving the course by ID.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while retrieving the course by ID.", ex);
+        }
     }
 
 
@@ -72,7 +94,19 @@ RETURNING
     course_img_url as {nameof(Course.CourseImgUrl)};
 ";
         using var connection = _dataSource.OpenConnection();
-        return connection.QueryFirst<Course>(sql, new { Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        try
+        {
+            return connection.QueryFirst<Course>(sql,
+                new { Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while adding a new course.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while adding a new course.", ex);
+        }
     }
 
     public Course UpdateCourse(int id, string title, string description, string courseImgUrl)
@@ -87,7 +121,19 @@ WHERE id = @Id
 RETURNING *;
 ";
         using var connection = _dataSource.OpenConnection();
-        return connection.QueryFirstOrDefault<Course>(sql, new { Id = id, Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        try
+        {
+            return connection.QueryFirstOrDefault<Course>(sql,
+                new { Id = id, Title = title, Description = description, CourseImgUrl = courseImgUrl });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while updating the course.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while updating the course.", ex);
+        }
     }
 
 
@@ -98,6 +144,17 @@ DELETE FROM learning_platform.courses
 WHERE id = @Id;
 ";
         using var connection = _dataSource.OpenConnection();
-        connection.Execute(sql, new { id });
+        try
+        {
+            connection.Execute(sql, new { Id = id });
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while deleting course.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while deleting the course.", ex);
+        }
     }
 }

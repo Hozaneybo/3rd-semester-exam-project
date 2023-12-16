@@ -1,0 +1,83 @@
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.create-course-btn {
+  font-size: 1.5em;
+}
+
+.courses-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.course {
+  flex-basis: calc(15% - 20px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.course img {
+  width: 100%;
+  height: auto;
+}
+
+.course-info {
+  padding: 15px;
+}
+
+.course h3 {
+  margin-top: 10px;
+}
+
+.course p {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.course-actions ion-button {
+  --background: transparent;
+  margin: 5px;
+}
+
+.update-btn ion-icon {
+  color: #4CAF50;
+  text-shadow: 0px 0px 8px rgba(76, 175, 80, 0.7);
+}
+
+.delete-btn ion-icon {
+  color: #F44336;
+  text-shadow: 0px 0px 8px rgba(244, 67, 54, 0.7);
+}
+
+ion-button {
+  --background: transparent;
+}
+
+ion-icon {
+  font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .course {
+    flex-basis: calc(30% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .course {
+    flex-basis: calc(60% - 20px);
+  }
+}
+

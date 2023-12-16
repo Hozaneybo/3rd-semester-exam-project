@@ -1,0 +1,17 @@
+<ion-content>
+  <div *ngIf="lesson; else loading">
+    <h2>{{ lesson.title }}</h2>
+    <div [innerHTML]="lesson.content"></div>
+
+    <div class="lesson-images">
+      <ion-img *ngFor="let image of lesson.imgUrls" [src]="image.pictureUrl" alt="Lesson Image"></ion-img>
+    </div>
+
+    <div class="lesson-videos">
+      <video *ngFor="let video of lesson.videoUrls" [src]="video.videoUrl" controls></video>
+    </div>
+  </div>
+  <ng-template #loading>
+    <p>Loading lesson details...</p>
+  </ng-template>
+</ion-content>

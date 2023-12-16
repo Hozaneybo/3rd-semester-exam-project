@@ -1,0 +1,32 @@
+
+<ion-content>
+  <div class="courses-header">
+    <h2>All Courses</h2>
+    <ion-button fill="clear" class="create-course-btn" (click)="createCourse()">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-list>
+    <div class="courses-container">
+      <div class="course" *ngFor="let course of courses">
+        <div class="course-image-container">
+          <img [src]="course.courseImgUrl" alt="{{ course.title }}">
+        </div>
+        <div class="course-info">
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.description }}</p>
+          <div class="course-actions">
+            <ion-button class="update-btn" (click)="updateCourse(course.id, $event)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button class="delete-btn" (click)="deleteCourse(course.id, $event)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

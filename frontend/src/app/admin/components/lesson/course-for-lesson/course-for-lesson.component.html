@@ -1,0 +1,22 @@
+<ion-content>
+
+  <h2 class="courses-header" >Choose the lessons from the course</h2>
+
+  <ion-list>
+    <div class="courses-container">
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let course of courses">
+        <ion-card (click)="navigateToCourseDetails(course.id)">
+          <div class="course-info">
+            <img [src]="course.courseImgUrl" alt="Course image"  />
+            </div>
+          <ion-card-header>
+            <ion-card-title>{{ course.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{ course.description }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,32 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>My Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="profile-card-container" *ngIf="userProfile">
+    <ion-avatar class="profile-avatar">
+      <img [src]="userProfile.avatarUrl || 'assets/default-avatar.png'" alt="User Avatar"/>
+    </ion-avatar>
+    <ion-card class="ion-margin profile-card">
+      <ion-card-header>
+        <ion-card-title>{{ userProfile.fullname }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Email:</strong> {{ userProfile.email }}</p>
+        <p><strong>Role:</strong> {{ userProfile.role }}</p>
+        <p *ngIf="userProfile.emailVerified" class="verified">
+          Email Verified <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        </p>
+        <p *ngIf="!userProfile.emailVerified" class="not-verified">
+          Email Not Verified <ion-icon name="close-circle" color="danger"></ion-icon>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-button expand="block" fill="outline" class="edit-profile-button" routerLink="/student/edit-profile">
+    Edit Profile
+  </ion-button>
+</ion-content>

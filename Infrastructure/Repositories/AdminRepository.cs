@@ -29,7 +29,18 @@ SELECT
 FROM learning_platform.users
 ";
         using var connection = _dataSource.OpenConnection();
-        return connection.Query<User>(sql);
+        try
+        {
+            return connection.Query<User>(sql);
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while retrieving users.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while retrieving users.", ex);
+        }
     }
     
     public User UpdateUser(int id, string fullname, string email, string? avatarUrl, Role role)
@@ -50,15 +61,35 @@ WHERE id = @id
 RETURNING id, full_name, email, avatar_url, role, email_verified;";
         
         using var connection = _dataSource.OpenConnection();
-        return connection.QuerySingle<User>(sql, new { id, fullname, email, avatarUrl, role = role.ToString()});
+        try
+        {
+            return connection.QuerySingle<User>(sql, new { id, fullname, email, avatarUrl, role = role.ToString()});
+        }
+        catch (NpgsqlException ex)
+        {
+            throw new InvalidOperationException("An error occurred while updating the user.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred while updating the user.", ex);
+        }
     }
     
     public void DeleteUser(int id)
     {
         const string sql = @"DELETE FROM learning_platform.users WHERE id = @Id;";
         using (var connection = _dataSource.OpenConnection())
-        { 
-            connection.Execute(sql, new { Id = id });
-        }
+            try
+            {
+                connection.Execute(sql, new { Id = id });
+            }
+            catch (NpgsqlException ex)
+            {
+                throw new InvalidOperationException("An error occurred while deleting the user.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred while deleting the user.", ex);
+            }
     }
 }

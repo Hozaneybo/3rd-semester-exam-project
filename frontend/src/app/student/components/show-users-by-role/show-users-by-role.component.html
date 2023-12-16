@@ -1,0 +1,43 @@
+<div class="role-selection-container">
+  <ion-item class="custom-select">
+    <ion-label>Select a Role</ion-label>
+    <ion-select [(ngModel)]="selectedRole" (ionChange)="selectedRole !== 'Select' && fetchUsersByRole(selectedRole)">
+      <ion-select-option value="Select" disabled>Select a Role</ion-select-option>
+      <ion-select-option value="Admin">Administrator</ion-select-option>
+      <ion-select-option value="Teacher">Teacher</ion-select-option>
+      <ion-select-option value="Student">Student</ion-select-option>
+    </ion-select>
+  </ion-item>
+</div>
+
+<ng-container *ngIf="users; else noUsersOrLoading">
+  <div *ngIf="users.length > 0; else noUsersMessage" class="user-card-container">
+    <ion-card *ngFor="let user of users">
+      <ion-card-header>
+        <ion-card-title>{{ user.fullname }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Email: {{ user.email }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ng-container>
+
+<ng-template #noUsersOrLoading>
+  <div *ngIf="message; else loading" class="message-container">
+    <ion-text>{{ message }}</ion-text>
+  </div>
+</ng-template>
+
+<ng-template #noUsersMessage>
+  <div class="message-container">
+    <ion-text>No users found for the selected role.</ion-text>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <ion-spinner></ion-spinner>
+    <ion-text>Loading user data...</ion-text>
+  </div>
+</ng-template>

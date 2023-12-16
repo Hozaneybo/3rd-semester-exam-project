@@ -5,7 +5,7 @@ namespace Service.CQ.Queries;
 
 public class UserQuery
 { 
-    [EmailAddress]
+    [EmailAddress(ErrorMessage = "Invalid email address format.")]
     public string? Email { get; set; }
 }
 

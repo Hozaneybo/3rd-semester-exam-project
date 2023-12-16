@@ -1,0 +1,23 @@
+
+<div *ngIf="users; else loading" class="user-list-container">
+  <h2 style="margin: 25px">All Users</h2>
+  <div class="user-card" *ngFor="let user of users">
+    <div class="user-info" style="height: 20px">
+      <ion-avatar>
+        <img class="user-avatar" [src]="user.avatarUrl ? user.avatarUrl : 'assets/icon/avatar.jpg' "  style="margin: 5px"  />
+      </ion-avatar>
+      <div class="user-details">
+        <span class="user-name">{{ user.fullname  }}</span>
+      </div>
+    </div>
+    <div class="user-actions">
+      <button (click)="viewDetails(user.id)" class="user-button details-button">Details</button>
+      <button (click)="updateUser(user.id)" class="user-button update-button ">Update</button>
+      <button (click)="deleteUser(user.id)" class="user-button delete-button">Delete</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading users...</p>
+</ng-template>
