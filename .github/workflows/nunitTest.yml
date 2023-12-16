@@ -29,12 +29,12 @@ jobs:
       # Step 4: Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
-    
-
+        
+      
       # Step 5: Run NUnit Tests for Specific Classes
       - name: Run NUnit Tests for Specific Classes
-        run: |
-          dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --filter FullyQualifiedName~Infrastructure.Tests.Repositories.AdminRepositoryTest|FullyQualifiedName~Infrastructure.Tests.Repositories.SharedRepositoryTest --logger "trx;LogFileName=test_results.xml"
+        run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --filter "FullyQualifiedName~Infrastructure.Tests.Repositories.AdminRepositoryTest|FullyQualifiedName~Infrastructure.Tests.Repositories.SharedRepositoryTest" --logger "trx;LogFileName=test_results.xml"
+      
       
       
       # (Optional) Step 6: Upload Test Results
