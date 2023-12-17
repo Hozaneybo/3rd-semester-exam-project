@@ -5,22 +5,22 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=NUnit3x/@EntryIndexedValue">db4927dd-2e12-48a7-9a84-2b7e3e31b9c8</s:String>
 	<s:Boolean x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/ShowAdvancedOptions/@EntryValue">True</s:Boolean>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2e69d088_002D25e3_002D4ac7_002Db593_002Dd4001ed25fac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Search_ValidString_ReturnsSearchResult" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.HomePage&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest.CheckAdminHomePage&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminCourseTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2e69d088_002D25e3_002D4ac7_002Db593_002Dd4001ed25fac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Search_ValidString_ReturnsSearchResult" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.HomePage&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest.CheckAdminHomePage&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminCourseTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8be8f864_002Dd294_002D4cff_002Dafa8_002D8bb3592f1f30/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DelateUser" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminCourseTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardUsers&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.LoginPage&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.RegisterPage&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest.NavigateToAdminHomePageAndCheckIt&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8be8f864_002Dd294_002D4cff_002Dafa8_002D8bb3592f1f30/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DelateUser" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminCourseTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardUsers&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.LoginPage&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.RegisterPage&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest.NavigateToAdminHomePageAndCheckIt&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	

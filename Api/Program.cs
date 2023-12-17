@@ -15,7 +15,8 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromHours(4);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
@@ -52,7 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors(options =>
 { 
-    options.SetIsOriginAllowed(origin => true)
+    options.WithOrigins("https://learning-platform-e7259.web.app")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();

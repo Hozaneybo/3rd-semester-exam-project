@@ -4,6 +4,7 @@ import {firstValueFrom, Observable} from "rxjs";
 import {ResponseDto, User} from "../Models/LoginModels";
 import {SearchResultDto} from "../Models/SearchTerm";
 import {UpdateUser} from "../Models/CourseModel";
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,14 @@ import {UpdateUser} from "../Models/CourseModel";
 export class AccountServiceService {
 
 
-  private readonly url = '/api/account/' ;
+  private readonly url = environment.apiUrl + '/api/account/' ;
   private intervalId: any;
 
 
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<ResponseDto<any>> {
-    return this.http.post<ResponseDto<any>>(this.url + 'login', { email, password });
+    return this.http.post<ResponseDto<any>>(this.url + 'login', { email, password }, {withCredentials : true});
   }
 
   register(userData: any): Observable<ResponseDto<any>> {
@@ -38,7 +39,7 @@ export class AccountServiceService {
   }
 
   whoAmI(): Observable<ResponseDto<any>> {
-    return this.http.get<ResponseDto<any>>(this.url + 'whoami');
+    return this.http.get<ResponseDto<any>>(this.url + 'whoami', {withCredentials : true});
   }
 
   async logout(): Promise<ResponseDto<any>> {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../environments/environment.prod";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseDto, User} from "../../shared/Models/LoginModels";
@@ -11,7 +11,7 @@ import {SearchResultDto} from "../../shared/Models/SearchTerm";
 })
 export class StudentService {
 
-  private baseUrl = '/api/student';
+  private baseUrl = environment.apiUrl + '/api/student';
 
   constructor(private http: HttpClient) {
   }

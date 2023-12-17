@@ -9,6 +9,7 @@ import {
   UpdateLessonCommand,
   UpdateUser
 } from "../../shared/Models/CourseModel";
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import {
 export class AdminService {
 
 
-  private readonly url = '/api/admin/' ;
+  private readonly url = environment.apiUrl + '/api/admin/' ;
 
 
   constructor(private http: HttpClient) { }

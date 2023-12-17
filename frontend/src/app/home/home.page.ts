@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AlertController} from "@ionic/angular";
 import {ToastService} from "../shared/services/toast.service";
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -18,7 +19,7 @@ import {ToastService} from "../shared/services/toast.service";
   selectedSection: string = 'home';
 
 
-  readonly url =  '/api/Guest/courses';
+  readonly url =  environment.apiUrl + '/api/Guest/courses';
   courses: AllCoursesView[] = [];
 
   constructor(private http: HttpClient,
