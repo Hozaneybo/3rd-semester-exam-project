@@ -57,7 +57,7 @@ public static class MailService
 
     public static void SendVerificationEmail(string email, string token)
     {
-        var verificationLink = $"http://localhost:4200/verify-email?token={token}";
+        var verificationLink = $"https://learning-platform-80506.web.app/verify-email?token={token}";
         string body = $"<p>Please verify your email by clicking on the link below:</p><p><a href='{verificationLink}'>Verify Email</a></p>";
         var message = CreateEmailMessage("Please verify your email", body, new[] { email });
         SendEmail(message);
@@ -65,7 +65,7 @@ public static class MailService
 
     public static void SendPasswordResetEmail(string email, string token)
     {
-        var resetPasswordLink = $"http://localhost:4200/reset-password?token={token}";
+        var resetPasswordLink = $"https://learning-platform-80506.web.app/reset-password?token={token}";
         string body = $"<p>You have requested to reset your password. Please click the link below to reset it:</p><p><a href='{resetPasswordLink}'>Reset Password</a></p>";
         var message = CreateEmailMessage("Password Reset Request", body, new[] { email });
         SendEmail(message);
