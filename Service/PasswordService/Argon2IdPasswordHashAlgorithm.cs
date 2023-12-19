@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Konscious.Security.Cryptography;
 
 namespace Service.PasswordService;

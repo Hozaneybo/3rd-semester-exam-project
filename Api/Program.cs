@@ -53,7 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors(options =>
 { 
-    options.WithOrigins("https://learning-platform-e7259.web.app")
+    options.SetIsOriginAllowed(origin => true)
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();
