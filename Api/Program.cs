@@ -51,9 +51,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors(options =>
 { 
-    options.SetIsOriginAllowed(origin => true)
+    options.WithOrigins("https://learning-platform-80506.web.app")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();
