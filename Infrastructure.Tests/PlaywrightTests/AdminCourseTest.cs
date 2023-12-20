@@ -21,6 +21,7 @@ public class AdminCourseTest : PageTest
     public void Teardown()
     {
         Helper.CreateAndDeleteAdminUser(create: false, delete: true);
+        Helper.DeleteCourseByTitle("Create Course Test");
     }
     
     
@@ -65,8 +66,6 @@ public class AdminCourseTest : PageTest
 
         var courseBeCreated =  Page.GetByRole(AriaRole.Heading, new() { Name = "Create Course Test" });
         await Expect(courseBeCreated).ToBeVisibleAsync();
-        
-        Helper.DeleteCourseByTitle("Create Course Test");
         
     }
 
