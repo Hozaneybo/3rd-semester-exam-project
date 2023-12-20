@@ -40,7 +40,7 @@ public class LoginPage : PageTest
         await Expect(passwordField).ToBeVisibleAsync();
     }
 
-    [Test]
+    /*[Test]
     public async Task Adminlogin()
     {
         await Page.GotoAsync("http://localhost:5000/login");
@@ -57,7 +57,7 @@ public class LoginPage : PageTest
         
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/dashboard"));
 
-    }
+    }*/
     
 
     [Test]

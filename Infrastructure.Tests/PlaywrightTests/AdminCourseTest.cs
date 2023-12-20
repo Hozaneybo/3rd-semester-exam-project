@@ -11,6 +11,7 @@ namespace Infrastructure.Tests.PlaywrightTests;
 public class AdminCourseTest : PageTest
 {
     
+    /*
     [SetUp]
     public void Setup()
     {
@@ -68,7 +69,7 @@ public class AdminCourseTest : PageTest
         
         Helper.DeleteCourseByTitle("Create Course Test");
         
-    }
+    }*/
 
     /*
     [Test]

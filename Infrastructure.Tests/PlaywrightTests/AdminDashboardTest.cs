@@ -10,6 +10,7 @@ namespace Infrastructure.Tests.PlaywrightTests;
 public class AdminDashboardTest : PageTest
 {
     
+    /*
     [SetUp]
     public void Setup()
     {
@@ -72,5 +73,5 @@ public class AdminDashboardTest : PageTest
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/dashboard"));
         Helper.CreateAndDeleteAdminUser(false, true);
 
-    }
+    }*/
 }

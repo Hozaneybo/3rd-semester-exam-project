@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿/*using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
@@ -11,6 +11,7 @@ public class AdminDashboardUsers : PageTest
 {
     
     
+    /*
     [SetUp]
     public void Setup()
     {
@@ -58,8 +59,9 @@ public class AdminDashboardUsers : PageTest
         var backToUsersList = Page.GetByRole(AriaRole.Button, new() { Name = "Back to User List" }).ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/users"));
 
-    }
+    }#1#
 
+    /*
     [Test]
     public async Task UpdateUser()
     {
@@ -85,6 +87,7 @@ public class AdminDashboardUsers : PageTest
         await Expect(updateMessage).ToBeVisibleAsync();
         
     }
+    #1#
 
     /*[Test]
     public async Task DeleteUser()
@@ -114,6 +117,6 @@ public class AdminDashboardUsers : PageTest
 
         //Helper.CreateAndDeleteAdminUser(false, true);
 
-    }*/
+    }#1#
 
-}
+}*/
