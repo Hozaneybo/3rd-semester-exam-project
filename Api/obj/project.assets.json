@@ -1417,23 +1417,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ahmad\\.nuget\\packages\\": {},
+    "C:\\Users\\dilbe\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
-      "packagesPath": "C:\\Users\\ahmad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Api\\obj\\",
+      "projectPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\dilbe\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ahmad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dilbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1448,8 +1448,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj": {
-              "projectPath": "C:\\Users\\ahmad\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj"
+            "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj": {
+              "projectPath": "C:\\Users\\dilbe\\RiderProjects\\3rd-semester-exam-project\\Service\\Service.csproj"
             }
           }
         }
@@ -1458,6 +1458,9 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "default"
       }
     },
     "frameworks": {
