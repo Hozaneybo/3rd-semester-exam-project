@@ -5,7 +5,7 @@ using Infrastructure.Models;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Infrastructure.Tests.Repositories;
+namespace Infrastructure.Tests.NUnitTests;
 
 [TestFixture]
 public class SharedRepositoryTest

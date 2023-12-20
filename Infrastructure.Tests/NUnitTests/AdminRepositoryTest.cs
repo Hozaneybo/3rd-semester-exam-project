@@ -1,12 +1,11 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Moq;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Infrastructure.Tests.Repositories;
+namespace Infrastructure.Tests.NUnitTests;
 
 [TestFixture]
 public class AdminRepositoryTest

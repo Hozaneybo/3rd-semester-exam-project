@@ -33,7 +33,7 @@ jobs:
       
       # Step 5: Run NUnit Tests for Specific Classes
       - name: Run NUnit Tests for Specific Classes
-        run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --filter "FullyQualifiedName~Infrastructure.Tests.Repositories.AdminRepositoryTest|FullyQualifiedName~Infrastructure.Tests.Repositories.SharedRepositoryTest" --logger "trx;LogFileName=test_results.xml"
+        run: dotnet test Infrastructure.Tests/Infrastructure.Tests.csproj --filter "FullyQualifiedName~Infrastructure.Tests.NUnitTests.AdminRepositoryTest|FullyQualifiedName~Infrastructure.Tests.NUnitTests.SharedRepositoryTest" --logger "trx;LogFileName=test_results.xml"
       
       
       
