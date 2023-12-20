@@ -39,24 +39,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options =>
-{
-    // Development policy
-    options.AddPolicy("AllowAnyOrigin",
-        builder => builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-
-    // Production policy
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder
-            .WithOrigins("https://learning-platform-80506.web.app")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-});
 
 var frontEndRelativePath = "./../frontend/www";
 builder.Services.AddSpaStaticFiles(conf => conf.RootPath = frontEndRelativePath);
@@ -69,14 +51,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("AllowAnyOrigin");
-}
-else
-{
-    app.UseCors("AllowSpecificOrigin");
-}
+app.UseCors(options =>
+{ 
+    options.SetIsOriginAllowed(origin => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
+
 app.UseSecurityHeaders();
 app.UseSession();
 
