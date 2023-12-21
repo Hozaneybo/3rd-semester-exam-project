@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment.prod';
 export class AccountServiceService {
 
 
-  private readonly url =  '/api/account/' ;
+  private readonly url = environment.apiUrl + '/api/account/' ;
   private intervalId: any;
 
 
