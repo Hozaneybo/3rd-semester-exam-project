@@ -43,4 +43,5 @@ public class RegisterPage : PageTest
         await Expect(successMessage).ToBeVisibleAsync();
         
     }
+    
 }
