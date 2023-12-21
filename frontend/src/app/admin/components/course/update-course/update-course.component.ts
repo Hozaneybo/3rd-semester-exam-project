@@ -25,8 +25,8 @@ export class UpdateCourseComponent implements OnInit {
   ) {
     this.updateCourseForm = this.fb.group({
       courseId: [this.courseId],
-      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      description: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(250)]],
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
       courseImgUrl: ['', [Validators.required]]
     });
   }

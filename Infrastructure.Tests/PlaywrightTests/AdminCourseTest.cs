@@ -69,8 +69,8 @@ public class AdminCourseTest : PageTest
         
     }
 
-    /*
-    [Test]
+    
+    /*[Test]
     public async Task UpdateCourse()
     {
         
