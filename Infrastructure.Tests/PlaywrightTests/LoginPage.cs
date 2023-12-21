@@ -41,7 +41,6 @@ public class LoginPage : PageTest
     }
 
     
-    /*
     [Test]
     public async Task Adminlogin()
     {
@@ -59,7 +58,7 @@ public class LoginPage : PageTest
         
         await Expect(Page).ToHaveURLAsync(new Regex("http://localhost:5000/admin/dashboard"));
 
-    }*/
+    }
     
 
     [Test]

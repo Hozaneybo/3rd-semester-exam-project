@@ -1,4 +1,5 @@
-﻿/*using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
@@ -114,5 +115,5 @@ public class AdminDashboardUsers : PageTest
 
         //Helper.CreateAndDeleteAdminUser(false, true);
 
-    }#1#
-}*/
+    }*/
+}

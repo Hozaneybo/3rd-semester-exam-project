@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
@@ -95,7 +95,7 @@ public class AdminCourseTest : PageTest
         
         Helper.DeleteCourseByTitle("Course be updated");
         
-    }#1#
+    }*/
 
     /*[Test]
     public async Task DeleteCourse()
@@ -119,5 +119,5 @@ public class AdminCourseTest : PageTest
         await Expect(deleteCourse).ToBeVisibleAsync();
         
         //Helper.CreateAndDeleteAdminUser(false, true);
-    }#1#
-}*/
+    }*/
+}
