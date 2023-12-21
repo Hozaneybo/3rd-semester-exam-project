@@ -23,6 +23,9 @@
     &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.LoginPage&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.RegisterPage&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.AdminDashboardTest.NavigateToAdminHomePageAndCheckIt&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.HomePage.HomepageHasLearningPlatformInTitle&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.HomePage.ClickOnSendEmailFromFooter&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6B1C5004-DEB2-4D0B-943A-DA87EDD8A7D5::net8.0::Infrastructure.Tests.PlaywrightTests.HomePage.Login&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

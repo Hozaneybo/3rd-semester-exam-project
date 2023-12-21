@@ -52,21 +52,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(options =>
+/* app.UseCors(options =>
 { 
-    options.WithOrigins("https://learning-platform-80506.web.app")
+    options.WithOrigins("https://learning-platform-80506.web.app", "http://localhost:5000")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();
-});
+}); */
 
-/*app.UseCors(options =>
+app.UseCors(options =>
 { 
     options.SetIsOriginAllowed(origin => true)
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();
-});*/
+});
 
 app.UseSecurityHeaders();
 app.UseSession();
