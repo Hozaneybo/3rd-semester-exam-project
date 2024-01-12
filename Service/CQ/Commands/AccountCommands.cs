@@ -13,8 +13,8 @@ public class ResetPasswordCommand
 
 public class UserLoginCommand
 {
-    [EmailAddress(ErrorMessage = "Invalid email address format."), Required(ErrorMessage = "Email is required."), NoXss]
+    [EmailAddress(ErrorMessage = "Invalid email address format."), Required(ErrorMessage = "Email is required.")]
     public string Email { get; set; }
-    [Required(ErrorMessage = "Password is required."), NoXss]
+    [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; }
 }

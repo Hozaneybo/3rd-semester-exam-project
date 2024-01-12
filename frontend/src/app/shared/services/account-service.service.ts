@@ -4,7 +4,7 @@ import {firstValueFrom, Observable} from "rxjs";
 import {ResponseDto, User} from "../Models/LoginModels";
 import {SearchResultDto} from "../Models/SearchTerm";
 import {UpdateUser} from "../Models/CourseModel";
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AccountServiceService {
 
 
-  private readonly url = environment.apiUrl + '/api/account/';
+  private readonly url = environment.apiUrl + '/api/account/' ;
   private intervalId: any;
 
 
