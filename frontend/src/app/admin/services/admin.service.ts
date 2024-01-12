@@ -9,7 +9,7 @@ import {
   UpdateLessonCommand,
   UpdateUser
 } from "../../shared/Models/CourseModel";
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'

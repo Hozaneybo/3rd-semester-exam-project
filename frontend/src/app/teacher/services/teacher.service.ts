@@ -10,7 +10,7 @@ import {
   UpdateLessonCommand
 } from "../../shared/Models/CourseModel";
 import {SearchResultDto} from "../../shared/Models/SearchTerm";
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'

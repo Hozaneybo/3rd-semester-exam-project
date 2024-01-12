@@ -28,7 +28,7 @@ export class RoleGuard implements CanActivate {
       this.toastService.showError('Not being logged in')
     }
 
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
     return false;
   }
 }

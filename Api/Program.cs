@@ -6,6 +6,8 @@ using Infrastructure.Repositories;
 using Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -34,9 +36,27 @@ builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<CourseService>();
 builder.Services.AddSingleton<SharedService>();
 
+// CORS configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    options.AddPolicy("ProdCorsPolicy", builder =>
+    {
+        builder.WithOrigins("https://learning-platform-e7259.web.app")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    });
+});
+
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -46,39 +66,48 @@ builder.Services.AddSpaStaticFiles(conf => conf.RootPath = frontEndRelativePath)
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-/* app.UseCors(options =>
-{ 
-    options.WithOrigins("https://learning-platform-80506.web.app", "http://localhost:5000")
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials();
-}); */
+app.UseHttpsRedirection();
 
-app.UseCors(options =>
-{ 
-    options.SetIsOriginAllowed(origin => true)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials();
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self'; media-src 'none'; frame-src 'none'; font-src 'self'; connect-src 'self'");
+    context.Response.Headers.Add("X-Frame-Options", "DENY");
+    context.Response.Headers.Add("Feature-Policy", "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'");
+    context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+    await next();
 });
 
 app.UseSecurityHeaders();
+
 app.UseSession();
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("DevCorsPolicy");
+}
+else
+{
+    app.UseCors("ProdCorsPolicy");
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseSpaStaticFiles();
-
-app.UseSpa(conf =>
+app.UseSpa(spa =>
 {
-    conf.Options.SourcePath = frontEndRelativePath;
+    spa.Options.SourcePath = frontEndRelativePath;
 });
+
 app.MapControllers();
 app.UseMiddleware<GlobalExceptionHandler>();
+
 app.Run();

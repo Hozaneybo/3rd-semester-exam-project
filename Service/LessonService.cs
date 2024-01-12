@@ -1,4 +1,5 @@
-﻿using Infrastructure.Interfaces;
+﻿using Ganss.Xss;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Microsoft.Extensions.Logging;
 using Service.CQ.Commands;
@@ -58,7 +59,9 @@ namespace Service
         {
             try
             {
-                var lesson = _lessonRepository.AddLesson(command.Title, command.Content, command.CourseId, command.PictureUrls, command.VideoUrls);
+                var sanitizer = new HtmlSanitizer();
+                var sanitizedContent = sanitizer.Sanitize(command.Content);
+                var lesson = _lessonRepository.AddLesson(command.Title, sanitizedContent, command.CourseId, command.PictureUrls, command.VideoUrls);
 
                 var studentEmails = GetStudentEmails();
                 MailService.SendEmailToMultipleRecipients(studentEmails, $"New Lesson Created", $"A new lesson ('{command.Title}') has been added to the course.");
